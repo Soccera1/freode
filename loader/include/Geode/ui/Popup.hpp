@@ -31,6 +31,9 @@ namespace geode {
             Popup* getPopup() const {
                 return m_impl->popup;
             }
+            EventListenerPool* getPool() const override {
+                return DefaultEventListenerPool::getForEvent<CloseEvent>();
+            }
         };
         class CloseEventFilter final : public ::geode::EventFilter<CloseEvent> {
         public:
@@ -56,6 +59,9 @@ namespace geode {
                     fn(event);
                 }
                 return ListenerResult::Propagate;
+            }
+            EventListenerPool* getPool() const override {
+                return DefaultEventListenerPool::getForEvent<CloseEvent>();
             }
         };
 

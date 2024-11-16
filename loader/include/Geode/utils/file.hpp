@@ -270,6 +270,7 @@ namespace geode::utils::file {
     public:
         FileWatchEvent(std::filesystem::path const& path);
         std::filesystem::path getPath() const;
+        EventListenerPool* getPool() const override;
     };
 
     class GEODE_DLL FileWatchFilter final : public EventFilter<FileWatchEvent> {
@@ -281,6 +282,7 @@ namespace geode::utils::file {
 
         ListenerResult handle(std::function<Callback> callback, FileWatchEvent* event);
         FileWatchFilter(std::filesystem::path const& path);
+        EventListenerPool* getPool() const override;
     };
 
     /**

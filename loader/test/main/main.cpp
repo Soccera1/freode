@@ -1,6 +1,7 @@
 #include <Geode/Loader.hpp>
 #include <Geode/loader/ModEvent.hpp>
 #include <Geode/utils/cocos.hpp>
+#include <Geode/UI.hpp>
 #include "../dependency/main.hpp"
 
 using namespace geode::prelude;
@@ -23,6 +24,10 @@ $execute {
         log::info("Received event: {}", event->getData());
         s_recievedEvent = event->getData();
     });
+
+    new EventListener(+[](EnterLayerEvent<MenuLayer>* event) {
+        log::info("Layer entered: {}", event->layerID);
+    }, EnterLayerFilter<MenuLayer>(std::nullopt));
 }
 
 #include <Geode/modify/MenuLayer.hpp>

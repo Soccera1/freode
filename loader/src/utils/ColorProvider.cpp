@@ -13,7 +13,25 @@ ListenerResult ColorProvidedFilter::handle(std::function<Callback> fn, ColorProv
     return ListenerResult::Propagate;
 }
 
+namespace {
+    EventListenerPool* getDispatchPool(std::string const& id) {
+        static std::unordered_map<std::string, std::shared_ptr<DefaultEventListenerPool>> pools;
+        if (pools.count(id) == 0) {
+            pools[id] = DefaultEventListenerPool::create();
+        }
+        return pools[id].get();
+    }
+}
+
+EventListenerPool* ColorProvidedEvent::getPool() const {
+    return getDispatchPool(id);
+}
+
 ColorProvidedFilter::ColorProvidedFilter(std::string const& id) : m_id(id) {}
+
+EventListenerPool* ColorProvidedFilter::getPool() const {
+    return getDispatchPool(m_id);
+}
 
 class ColorProvider::Impl {
 public:
