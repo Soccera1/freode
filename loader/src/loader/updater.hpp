@@ -3,6 +3,7 @@
 #include <string>
 #include <matjson.hpp>
 #include <Geode/loader/Event.hpp>
+#include "../server/Server.hpp"
 
 namespace geode::updater {
     using UpdateFinished = std::monostate;
@@ -42,7 +43,7 @@ namespace geode::updater {
     void downloadLatestLoaderResources();
     void downloadLoaderUpdate(std::string const& url);
     void fetchLatestGithubRelease(
-        const std::function<void(matjson::Value const&)>& then,
+        const std::function<void(server::ServerLoaderVersion const&)>& then,
         std::function<void(std::string const&)> expect,
         bool force = false
     );

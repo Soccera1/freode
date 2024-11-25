@@ -509,6 +509,20 @@ Result<ServerModsList> ServerModsList::parse(matjson::Value const& raw) {
     return payload.ok(list);
 }
 
+Result<ServerLoaderVersion> ServerLoaderVersion::parse(matjson::Value const& raw) {
+    auto root = checkJson(raw, "ServerLoaderVersion");
+
+    auto res = ServerLoaderVersion();
+    root.needs("version").into(res.version);
+    root.needs("tag").into(res.tag);
+    root.needs("commit_hash").into(res.commitHash);
+
+    auto gd_obj = root.needs("gd");
+    gd_obj.needs(GEODE_PLATFORM_SHORT_IDENTIFIER).into(res.gameVersion);
+
+    return root.ok(res);
+}
+
 ModMetadata ServerModMetadata::latestVersion() const {
     return this->versions.front().metadata;
 }
@@ -870,6 +884,47 @@ ServerRequest<std::vector<ServerModUpdate>> server::checkAllUpdates(bool useCach
     );
 }
 
+ServerRequest<ServerLoaderVersion> server::getLatestLoaderVersion(bool useCache) {
+    if (useCache) {
+        auto& cache = getCache<getLatestLoaderVersion>();
+
+        auto cachedRequest = cache.get();
+
+        // if mod installation was cancelled, remove it from cache and fetch again
+        if (cachedRequest.isCancelled()) {
+            cache.remove();
+            return cache.get();
+        } else {
+            return cachedRequest;
+        }
+    }
+
+    auto req = web::WebRequest();
+    req.userAgent(getServerUserAgent());
+
+    return req.get(formatServerURL("/loader/versions/latest?gd={}&platform={}", Loader::get()->getGameVersion(), GEODE_PLATFORM_SHORT_IDENTIFIER_NOARCH)).map(
+        [](web::WebResponse* response) -> Result<ServerLoaderVersion, ServerError> {
+            if (response->ok()) {
+                // Parse payload
+                auto payload = parseServerPayload(*response);
+                if (!payload) {
+                    return Err(payload.unwrapErr());
+                }
+                // Parse response
+                auto r = ServerLoaderVersion::parse(payload.unwrap());
+                if (!r) {
+                    return Err(ServerError(response->code(), "Unable to parse response: {}", r.unwrapErr()));
+                }
+                return Ok(r.unwrap());
+            }
+            return Err(parseServerError(*response));
+        },
+        [](web::WebProgress* progress) {
+            return parseServerProgress(*progress, "Checking for loader updates");
+        }
+    );
+}
+
 void server::clearServerCaches(bool clearGlobalCaches) {
     getCache<&getMods>().clear();
     getCache<&getMod>().clear();
@@ -879,6 +934,7 @@ void server::clearServerCaches(bool clearGlobalCaches) {
     if (clearGlobalCaches) {
         getCache<&getTags>().clear();
         getCache<&checkAllUpdates>().clear();
+        getCache<&getLatestLoaderVersion>().clear();
     }
 }
 

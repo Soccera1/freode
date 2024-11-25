@@ -41,11 +41,12 @@ updater::LoaderUpdateFilter::LoaderUpdateFilter() = default;
 
 // cache for the json of the latest github release to avoid hitting
 // the github api too much
-std::optional<matjson::Value> s_latestGithubRelease;
+
+std::optional<server::ServerLoaderVersion> s_latestGithubRelease;
 bool s_isNewUpdateDownloaded = false;
 
 void updater::fetchLatestGithubRelease(
-    const std::function<void(matjson::Value const&)>& then,
+    const std::function<void(server::ServerLoaderVersion const&)>& then,
     std::function<void(std::string const&)> expect, bool force
 ) {
     if (s_latestGithubRelease) {
@@ -58,66 +59,27 @@ void updater::fetchLatestGithubRelease(
 
     log::debug("Last update check result: {}", version.unwrap().toVString());
 
-    std::string modifiedSince;
-    if (!force && version && version.unwrap() <= Mod::get()->getVersion() && version.unwrap() != VersionInfo(0, 0, 0)) {
-        modifiedSince = Mod::get()->getSavedValue("last-modified-auto-update-check", std::string());
-    }
-
-    if (RUNNING_REQUESTS.contains("@loaderAutoUpdateCheck")) return;
-
-    auto req = web::WebRequest();
-    req.header("If-Modified-Since", modifiedSince);
-    req.userAgent("github_api/1.0");
-    RUNNING_REQUESTS.emplace(
-        "@loaderAutoUpdateCheck",
-        req.get("https://api.github.com/repos/geode-sdk/geode/releases/latest").map(
-            [expect = std::move(expect), then = std::move(then)](web::WebResponse* response) {
-                if (response->ok()) {
-                    if (response->data().empty()) {
-                        expect("Empty response");
-                    }
-                    else {
-                        auto json = response->json();
-                        if (!json) {
-                            expect("Not a JSON response");
-                        }
-                        else {
-                            Mod::get()->setSavedValue("last-modified-auto-update-check", response->header("Last-Modified").value_or(""));
-                            s_latestGithubRelease = json.unwrap();
-                            then(*s_latestGithubRelease);
-                        }
-                    }
-                }
-                else {
-                    expect(response->string().unwrapOr("Unknown error"));
-                }
-                RUNNING_REQUESTS.erase("@loaderAutoUpdateCheck");
-                return *response;
+    // nice task callback wrapper. what are we doing here
+    server::getLatestLoaderVersion(!force).listen(
+        [expect = std::move(expect), then = std::move(then)](Result<server::ServerLoaderVersion, server::ServerError>* result) {
+            if (result->ok()) {
+                s_latestGithubRelease = result->unwrap();
+                then(*s_latestGithubRelease);
+            } else {
+                expect(result->unwrapErr().details);
             }
-        )
+        }
     );
 }
 
 void updater::downloadLatestLoaderResources() {
     log::debug("Downloading latest resources", Loader::get()->getVersion().toVString());
     fetchLatestGithubRelease(
-        [](matjson::Value const& raw) {
-            auto root = checkJson(raw, "[]");
-
-            // find release asset
-            for (auto& obj : root.needs("assets").items()) {
-                if (obj.needs("name").get<std::string>() == "resources.zip") {
-                    updater::tryDownloadLoaderResources(
-                        obj.needs("browser_download_url").get<std::string>(),
-                        false
-                    );
-                    return;
-                }
-            }
-
-            ResourceDownloadEvent(
-                UpdateFailed("Unable to find resources in latest GitHub release")
-            ).post();
+        [](server::ServerLoaderVersion const& release) {
+            updater::tryDownloadLoaderResources(
+                fmt::format("https://github.com/geode-sdk/geode/releases/download/{}/resources.zip", release.tag),
+                false
+            );
         },
         [](std::string const& info) {
             ResourceDownloadEvent(
@@ -355,11 +317,8 @@ void updater::downloadLoaderUpdate(std::string const& url) {
 void updater::checkForLoaderUpdates() {
     // Check for updates in the background
     fetchLatestGithubRelease(
-        [](matjson::Value const& raw) {
-            auto root = checkJson(raw, "[]");
-
-            VersionInfo ver { 0, 0, 0 };
-            root.needs("tag_name").into(ver);
+        [](server::ServerLoaderVersion const& release) {
+            auto ver = VersionInfo::parse(release.tag).unwrapOrDefault();
 
             log::info("Latest version is {}", ver.toVString());
             Mod::get()->setSavedValue("latest-version-auto-update-check", ver.toVString());
@@ -379,25 +338,9 @@ void updater::checkForLoaderUpdates() {
                 return;
             }
 
-            // find release asset
-            for (auto& obj : root.needs("assets").items()) {
-                if (string::endsWith(
-                    obj.needs("name").get<std::string>(),
-                    fmt::format("{}.zip", PlatformID::toShortString(GEODE_PLATFORM_TARGET, true))
-                )) {
-                    updater::downloadLoaderUpdate(
-                        obj.needs("browser_download_url").get<std::string>()
-                    );
-                    return;
-                }
-            }
-
-            log::error("Failed to find release asset for " GEODE_PLATFORM_NAME);
-            LoaderUpdateEvent(
-                UpdateFailed("Unable to find release asset for " GEODE_PLATFORM_NAME)
-            ).post();
-            
-            Mod::get()->setSavedValue("last-modified-auto-update-check", std::string());
+            updater::downloadLoaderUpdate(
+                fmt::format("https://github.com/geode-sdk/geode/releases/download/{0}/geode-{0}-{1}.zip", release.tag, GEODE_PLATFORM_SHORT_IDENTIFIER_NOARCH)
+            );
         },
         [](std::string const& info) {
             log::error("Failed to fetch updates {}", info);
