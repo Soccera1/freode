@@ -37,7 +37,7 @@ New to modding GD? Freode's documentation also comes with a handy [tutorial book
 
 ## Contribution
 
-You can contribute to Freode by opening a [Pull Request](https://github.com/freode-sdk/freode/pulls)! Please follow the contribution guidelines.
+You can contribute to Freode by opening a [Pull Request](https://github.com/Soccera1/freode/pulls)! Please follow the contribution guidelines.
 
 ## Questions, help, etc.
 
