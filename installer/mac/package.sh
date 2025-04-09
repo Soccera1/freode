@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pkgbuild --root "$1" --identifier com.geode-sdk.geode --scripts "installer/mac/Scripts" --install-location "/tmp/geode-install" $2
+pkgbuild --root "$1" --identifier com.freod-sdk.freod --scripts "installer/mac/Scripts" --install-location "/tmp/freod-install" $2

@@ -53,7 +53,7 @@ There are also functions for saving the render texture to disk in PNG or JPG for
 */
 class CC_DLL CCRenderTexture : public CCNode 
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
     /** The CCSprite being used.
     The sprite, by default, will use the following blending function: GL_ONE, GL_ONE_MINUS_SRC_ALPHA.
     The blending function can be changed in runtime by calling:
@@ -61,7 +61,7 @@ class CC_DLL CCRenderTexture : public CCNode
     */
     CC_PROPERTY(CCSprite*, m_pSprite, Sprite)
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCRenderTexture, CCNode)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCRenderTexture, CCNode)
 
     /**
      * @js ctor

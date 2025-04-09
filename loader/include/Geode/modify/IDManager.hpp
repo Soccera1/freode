@@ -7,16 +7,16 @@ namespace cocos2d {
     class CCNode;
 }
 
-namespace geode {
+namespace freod {
     template<class T>
     concept IDProvidable = std::is_base_of_v<cocos2d::CCNode, T> && requires {
         { T::CLASS_NAME } -> std::convertible_to<const char*>;
     };
 
-    class GEODE_DLL NodeIDs final {
+    class FREOD_DLL NodeIDs final {
     public:
         template<class T>
-        using Provider = void(GEODE_CALL*)(T*);
+        using Provider = void(FREOD_CALL*)(T*);
 
     protected:
         std::unordered_map<std::string, Provider<cocos2d::CCNode>> m_providers;
@@ -25,7 +25,7 @@ namespace geode {
         static NodeIDs* get();
 
         template<IDProvidable T>
-        void registerProvider(void(GEODE_CALL* fun)(T*)) {
+        void registerProvider(void(FREOD_CALL* fun)(T*)) {
             m_providers.insert({
                 T::CLASS_NAME,
                 reinterpret_cast<Provider<cocos2d::CCNode>>(fun)
@@ -49,7 +49,7 @@ namespace geode {
     };
 
     template<IDProvidable For>
-    void GEODE_CALL geodeInternalProvideIDsFor(For* cls) {
+    void FREOD_CALL freodInternalProvideIDsFor(For* cls) {
         if (cls->CCNode::getID() != For::CLASS_NAME) {
             cls->CCNode::setID(For::CLASS_NAME);
             cls->provide();
@@ -59,12 +59,12 @@ namespace geode {
 }
 
 #define $register_ids(Layer_) \
-    struct GEODE_CONCAT(ProvideIDsFor, Layer_) : public Layer_ {\
+    struct FREOD_CONCAT(ProvideIDsFor, Layer_) : public Layer_ {\
         void provide();\
     };\
 	$execute {\
 		NodeIDs::get()->registerProvider(\
-            &geodeInternalProvideIDsFor<GEODE_CONCAT(ProvideIDsFor, Layer_)>\
+            &freodInternalProvideIDsFor<FREOD_CONCAT(ProvideIDsFor, Layer_)>\
         );\
 	};\
-    void GEODE_CONCAT(ProvideIDsFor, Layer_)::provide() 
+    void FREOD_CONCAT(ProvideIDsFor, Layer_)::provide() 

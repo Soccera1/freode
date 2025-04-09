@@ -2,7 +2,7 @@
 
 using namespace cocos2d;
 
-#ifdef GEODE_IS_IOS
+#ifdef FREOD_IS_IOS
 
 CCKeyboardDispatcher::CCKeyboardDispatcher()
     : m_bUnknown38(false),
@@ -348,7 +348,7 @@ const char* CCKeyboardDispatcher::keyToString(enumKeyCodes key)
         case CONTROLLER_Left: return "Controller_Left";
         case CONTROLLER_Right: return "Controller_Right";
 
-        // Geode Additions
+        // Freod Additions
 
         case CONTROLLER_LTHUMBSTICK_UP: return "Controller_LTHUMBSTICK_UP";
         case CONTROLLER_LTHUMBSTICK_DOWN: return "Controller_LTHUMBSTICK_DOWN";

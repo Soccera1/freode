@@ -1,20 +1,20 @@
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
 // GLEW needs to be included before GL but GLFW3 doesn't do that so this is 
 // just to make sure all of the GL-related headers are in order
-#include <Geode/cocos/include/cocos2d.h>
-#include <Geode/cocos/robtop/glfw/glfw3.h>
-#include <Geode/cocos/robtop/keyboard_dispatcher/CCKeyboardDispatcher.h>
-#include <Geode/cocos/robtop/keyboard_dispatcher/CCKeyboardDelegate.h>
-#include <Geode/cocos/text_input_node/CCIMEDispatcher.h>
-#include <Geode/modify/Modify.hpp>
-#include <Geode/modify/CCEGLView.hpp>
-#include <Geode/modify/CCKeyboardDispatcher.hpp>
+#include <Freod/cocos/include/cocos2d.h>
+#include <Freod/cocos/robtop/glfw/glfw3.h>
+#include <Freod/cocos/robtop/keyboard_dispatcher/CCKeyboardDispatcher.h>
+#include <Freod/cocos/robtop/keyboard_dispatcher/CCKeyboardDelegate.h>
+#include <Freod/cocos/text_input_node/CCIMEDispatcher.h>
+#include <Freod/modify/Modify.hpp>
+#include <Freod/modify/CCEGLView.hpp>
+#include <Freod/modify/CCKeyboardDispatcher.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-class $modify(GeodeCCEGLView, CCEGLView) {
+class $modify(FreodCCEGLView, CCEGLView) {
     void onGLFWKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
         bool extraKey = isExtraKey(key);
         bool numpad = isKeyNumpad(key);
@@ -160,7 +160,7 @@ class $modify(GeodeCCEGLView, CCEGLView) {
 };
 
 class $modify(CCKeyboardDispatcher) {
-    GEODE_FORWARD_COMPAT_DISABLE_HOOKS("CCKeyboardDispatcher new keys")
+    FREOD_FORWARD_COMPAT_DISABLE_HOOKS("CCKeyboardDispatcher new keys")
 
     const char* keyToString(enumKeyCodes key) {
         if (key < 0x1000) {

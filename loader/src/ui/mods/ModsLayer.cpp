@@ -1,21 +1,21 @@
 #include "ModsLayer.hpp"
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/ui/BasedButtonSprite.hpp>
-#include <Geode/utils/file.hpp>
-#include <Geode/cocos/cocoa/CCObject.h>
+#include <Freod/binding/CCMenuItemSpriteExtra.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/ui/BasedButtonSprite.hpp>
+#include <Freod/utils/file.hpp>
+#include <Freod/cocos/cocoa/CCObject.h>
 #include "SwelvyBG.hpp"
-#include <Geode/ui/TextInput.hpp>
-#include <Geode/utils/ColorProvider.hpp>
-#include <Geode/utils/ranges.hpp>
-#include <Geode/ui/GeodeUI.hpp>
-#include <Geode/binding/Slider.hpp>
-#include <Geode/binding/SetTextPopup.hpp>
-#include <Geode/binding/SetIDPopup.hpp>
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/binding/MenuLayer.hpp>
+#include <Freod/ui/TextInput.hpp>
+#include <Freod/utils/ColorProvider.hpp>
+#include <Freod/utils/ranges.hpp>
+#include <Freod/ui/FreodUI.hpp>
+#include <Freod/binding/Slider.hpp>
+#include <Freod/binding/SetTextPopup.hpp>
+#include <Freod/binding/SetIDPopup.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/binding/MenuLayer.hpp>
 #include "popups/ConfirmInstall.hpp"
-#include "GeodeStyle.hpp"
+#include "FreodStyle.hpp"
 #include "ui/mods/sources/ModListSource.hpp"
 #include <loader/LoaderImpl.hpp>
 
@@ -59,7 +59,7 @@ bool ModsStatusNode::init() {
     m_btnMenu->setID("button-menu");
     m_btnMenu->setContentWidth(m_obContentSize.width);
 
-    auto restartSpr = createGeodeButton("Restart Now");
+    auto restartSpr = createFreodButton("Restart Now");
     restartSpr->setScale(.65f);
     m_restartBtn = CCMenuItemSpriteExtra::create(
         restartSpr, this, menu_selector(ModsStatusNode::onRestart)
@@ -67,13 +67,13 @@ bool ModsStatusNode::init() {
     m_restartBtn->setID("restart-button");
     m_btnMenu->addChild(m_restartBtn);
 
-    auto viewSpr = createGeodeButton("View");
+    auto viewSpr = createFreodButton("View");
     viewSpr->setScale(.65f);
     m_viewBtn = CCMenuItemSpriteExtra::create(viewSpr, this, nullptr);
     m_viewBtn->setID("view-button");
     m_btnMenu->addChild(m_viewBtn);
 
-    auto cancelSpr = createGeodeButton("Cancel");
+    auto cancelSpr = createFreodButton("Cancel");
     cancelSpr->setScale(.65f);
     m_cancelBtn = CCMenuItemSpriteExtra::create(
         cancelSpr, this, menu_selector(ModsStatusNode::onCancel)
@@ -279,7 +279,7 @@ void ModsLayer::onAddModFromFile(CCObject*) {
         return FLAlertLayer::create(
             nullptr,
             "Manually Installing Mods",
-            "You can <cg>manually install mods</c> by selecting their <cd>.geode</c> files. "
+            "You can <cg>manually install mods</c> by selecting their <cd>.freod</c> files. "
             "Do note that manually installed mods <co>are not verified to be safe and stable</c>!\n"
             "<cr>Proceed at your own risk!</c>",
             "OK", nullptr,
@@ -288,8 +288,8 @@ void ModsLayer::onAddModFromFile(CCObject*) {
     }
     file::pick(file::PickMode::OpenFile, file::FilePickOptions {
         .filters = { file::FilePickOptions::Filter {
-            .description = "Geode Mods",
-            .files = { "*.geode" },
+            .description = "Freod Mods",
+            .files = { "*.freod" },
         }}
     }).listen([](Result<std::filesystem::path>* path) {
         if (*path) {
@@ -342,9 +342,9 @@ bool ModsLayer::init() {
     auto winSize = CCDirector::get()->getWinSize();
     const bool isSafeMode = LoaderImpl::get()->isSafeMode();
     
-    const bool geodeTheme = isGeodeTheme();
+    const bool freodTheme = isFreodTheme();
     if (!isSafeMode) {
-        if (geodeTheme) {
+        if (freodTheme) {
             this->addChild(SwelvyBG::create());
         }
         else {
@@ -383,7 +383,7 @@ bool ModsLayer::init() {
     rightActionsMenu->setContentHeight(200.0f);
     rightActionsMenu->setAnchorPoint({ .5f, .0f });
 
-    auto reloadSpr = createGeodeCircleButton(
+    auto reloadSpr = createFreodCircleButton(
         CCSprite::createWithSpriteFrameName("reload.png"_spr), 1.f,
         CircleBaseSize::Medium
     );
@@ -395,7 +395,7 @@ bool ModsLayer::init() {
     reloadBtn->setID("reload-button");
     rightActionsMenu->addChild(reloadBtn);
 
-    auto settingsSpr = createGeodeCircleButton(
+    auto settingsSpr = createFreodCircleButton(
         CCSprite::createWithSpriteFrameName("settings.png"_spr), 1.f,
         CircleBaseSize::Medium
     );
@@ -407,7 +407,7 @@ bool ModsLayer::init() {
     settingsBtn->setID("settings-button");
     actionsMenu->addChild(settingsBtn);
 
-    auto folderSpr = createGeodeCircleButton(
+    auto folderSpr = createFreodCircleButton(
         CCSprite::createWithSpriteFrameName("gj_folderBtn_001.png"), 1.f,
         CircleBaseSize::Medium
     );
@@ -420,7 +420,7 @@ bool ModsLayer::init() {
     folderBtn->setID("mods-folder-button");
     actionsMenu->addChild(folderBtn);
 
-    auto addSpr = createGeodeCircleButton(
+    auto addSpr = createFreodCircleButton(
         CCSprite::createWithSpriteFrameName("file-add.png"_spr), 1.f,
         CircleBaseSize::Medium
     );
@@ -465,24 +465,24 @@ bool ModsLayer::init() {
     frameBG->ignoreAnchorPointForPosition(false);
     m_frame->addChildAtPosition(frameBG, Anchor::Center);
 
-    auto tabsTop = CCSprite::createWithSpriteFrameName(geodeTheme ? "mods-list-top.png"_spr : "mods-list-top-gd.png"_spr);
+    auto tabsTop = CCSprite::createWithSpriteFrameName(freodTheme ? "mods-list-top.png"_spr : "mods-list-top-gd.png"_spr);
     tabsTop->setID("frame-top-sprite");
     tabsTop->setAnchorPoint({ .5f, .0f });
     tabsTop->setZOrder(1);
     m_frame->addChildAtPosition(tabsTop, Anchor::Top, ccp(0, -2));
 
-    auto tabsLeft = CCSprite::createWithSpriteFrameName(geodeTheme ? "mods-list-side.png"_spr : "mods-list-side-gd.png"_spr);
+    auto tabsLeft = CCSprite::createWithSpriteFrameName(freodTheme ? "mods-list-side.png"_spr : "mods-list-side-gd.png"_spr);
     tabsLeft->setID("frame-left-sprite");
     tabsLeft->setScaleY(m_frame->getContentHeight() / tabsLeft->getContentHeight());
     m_frame->addChildAtPosition(tabsLeft, Anchor::Left, ccp(6.5f, 1));
 
-    auto tabsRight = CCSprite::createWithSpriteFrameName(geodeTheme ? "mods-list-side.png"_spr : "mods-list-side-gd.png"_spr);
+    auto tabsRight = CCSprite::createWithSpriteFrameName(freodTheme ? "mods-list-side.png"_spr : "mods-list-side-gd.png"_spr);
     tabsRight->setID("frame-right-sprite");
     tabsRight->setFlipX(true);
     tabsRight->setScaleY(m_frame->getContentHeight() / tabsRight->getContentHeight());
     m_frame->addChildAtPosition(tabsRight, Anchor::Right, ccp(-6.5f, 1));
 
-    auto tabsBottom = CCSprite::createWithSpriteFrameName(geodeTheme ? "mods-list-bottom.png"_spr : "mods-list-bottom-gd.png"_spr);
+    auto tabsBottom = CCSprite::createWithSpriteFrameName(freodTheme ? "mods-list-bottom.png"_spr : "mods-list-bottom-gd.png"_spr);
     tabsBottom->setID("frame-bottom-sprite");
     tabsBottom->setAnchorPoint({ .5f, 1.f });
     tabsBottom->setZOrder(1);
@@ -506,7 +506,7 @@ bool ModsLayer::init() {
         { "d_artCloud_03_001.png", "Modtober", ServerModListSource::get(ServerModListType::Modtober24), "modtober-button", true },
     }) {
         auto btn = CCMenuItemSpriteExtra::create(
-            GeodeTabSprite::create(std::get<0>(item), std::get<1>(item), 100, std::get<4>(item)),
+            FreodTabSprite::create(std::get<0>(item), std::get<1>(item), 100, std::get<4>(item)),
             this, menu_selector(ModsLayer::onTab)
         );
         btn->setUserData(std::get<2>(item));
@@ -527,7 +527,7 @@ bool ModsLayer::init() {
     listDisplayMenu->setScale(.65f);
 
     auto smallSizeBtn = CCMenuItemSpriteExtra::create(
-        GeodeSquareSprite::createWithSpriteFrameName("GJ_smallModeIcon_001.png"),
+        FreodSquareSprite::createWithSpriteFrameName("GJ_smallModeIcon_001.png"),
         this, menu_selector(ModsLayer::onDisplay)
     );
     smallSizeBtn->setTag(static_cast<int>(ModListDisplay::SmallList));
@@ -536,7 +536,7 @@ bool ModsLayer::init() {
     m_displayBtns.push_back(smallSizeBtn);
 
     auto bigSizeBtn = CCMenuItemSpriteExtra::create(
-        GeodeSquareSprite::createWithSpriteFrameName("GJ_extendedIcon_001.png"),
+        FreodSquareSprite::createWithSpriteFrameName("GJ_extendedIcon_001.png"),
         this, menu_selector(ModsLayer::onDisplay)
     );
     bigSizeBtn->setTag(static_cast<int>(ModListDisplay::BigList));
@@ -545,7 +545,7 @@ bool ModsLayer::init() {
     m_displayBtns.push_back(bigSizeBtn);
 
     auto gridBtn = CCMenuItemSpriteExtra::create(
-        GeodeSquareSprite::createWithSpriteFrameName("grid-view.png"_spr),
+        FreodSquareSprite::createWithSpriteFrameName("grid-view.png"_spr),
         this, menu_selector(ModsLayer::onDisplay)
     );
     gridBtn->setTag(static_cast<int>(ModListDisplay::Grid));
@@ -554,7 +554,7 @@ bool ModsLayer::init() {
     m_displayBtns.push_back(gridBtn);
 
     // auto searchBtn = CCMenuItemSpriteExtra::create(
-    //     GeodeSquareSprite::createWithSpriteFrameName("search.png"_spr, &m_showSearch),
+    //     FreodSquareSprite::createWithSpriteFrameName("search.png"_spr, &m_showSearch),
     //     this, menu_selector(ModsLayer::onSearch)
     // );
     // searchBtn->setID("search-button");
@@ -645,7 +645,7 @@ void ModsLayer::gotoTab(ModListSource* src) {
     // Update selected tab
     for (auto tab : m_tabs) {
         auto selected = tab->getUserData() == static_cast<void*>(src);
-        static_cast<GeodeTabSprite*>(tab->getNormalImage())->select(selected);
+        static_cast<FreodTabSprite*>(tab->getNormalImage())->select(selected);
         tab->setEnabled(!selected);
     }
 
@@ -731,7 +731,7 @@ void ModsLayer::updateState() {
 
     // Update display button
     for (auto btn : m_displayBtns) {
-        static_cast<GeodeSquareSprite*>(btn->getNormalImage())->setState(
+        static_cast<FreodSquareSprite*>(btn->getNormalImage())->setState(
             static_cast<ModListDisplay>(btn->getTag()) == m_modListDisplay
         );
     }
@@ -791,18 +791,18 @@ void ModsLayer::onSearch(CCObject*) {
     }
 }
 void ModsLayer::onTheme(CCObject*) {
-    auto old = Mod::get()->getSettingValue<bool>("enable-geode-theme");
+    auto old = Mod::get()->getSettingValue<bool>("enable-freod-theme");
     createQuickPopup(
         "Switch Theme",
         fmt::format(
-            "Do you want to switch the <cp>color scheme</c> of the Geode menu "
+            "Do you want to switch the <cp>color scheme</c> of the Freod menu "
             "to {}?",
-            (old ? "<cy>GD-style colors</c>" : "<ca>Geode-style colors</c>")
+            (old ? "<cy>GD-style colors</c>" : "<ca>Freod-style colors</c>")
         ),
         "Cancel", "Switch",
         [old](auto*, bool btn2) {
             if (btn2) {
-                Mod::get()->setSettingValue("enable-geode-theme", !old);
+                Mod::get()->setSettingValue("enable-freod-theme", !old);
                 // todo: the touch priority on the new scene is screwed up and i can't figure out how to fix it
                 Loader::get()->queueInMainThread([] {
                     ModsLayer::scene();

@@ -1,8 +1,8 @@
-#include <Geode/modify/CCTextInputNode.hpp>
+#include <Freod/modify/CCTextInputNode.hpp>
 
-#ifdef GEODE_IS_ANDROID
+#ifdef FREOD_IS_ANDROID
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // TODO: commenting cause cctextinputnode is changed enough that i'm not sure how it works now
 

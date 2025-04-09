@@ -1,9 +1,9 @@
-#include <Geode/loader/Loader.hpp>
+#include <Freod/loader/Loader.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-#include <Geode/modify/AppDelegate.hpp>
-#include <Geode/modify/CCApplication.hpp>
+#include <Freod/modify/AppDelegate.hpp>
+#include <Freod/modify/CCApplication.hpp>
 
 namespace {
     void saveModData() {
@@ -21,17 +21,17 @@ namespace {
 }
 
 struct SaveLoader : Modify<SaveLoader, AppDelegate> {
-    GEODE_FORWARD_COMPAT_DISABLE_HOOKS("save moved to CCApplication::gameDidSave()")
+    FREOD_FORWARD_COMPAT_DISABLE_HOOKS("save moved to CCApplication::gameDidSave()")
     void trySaveGame(bool p0) {
         saveModData();
         return AppDelegate::trySaveGame(p0);
     }
 };
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
 
 struct FallbackSaveLoader : Modify<FallbackSaveLoader, CCApplication> {
-    GEODE_FORWARD_COMPAT_ENABLE_HOOKS("")
+    FREOD_FORWARD_COMPAT_ENABLE_HOOKS("")
     void gameDidSave() {
         saveModData();
         return CCApplication::gameDidSave();
@@ -40,12 +40,12 @@ struct FallbackSaveLoader : Modify<FallbackSaveLoader, CCApplication> {
 
 #endif
 
-#ifdef GEODE_IS_ANDROID
+#ifdef FREOD_IS_ANDROID
 
-#include <Geode/modify/FileOperation.hpp>
-#include <Geode/loader/Dirs.hpp>
+#include <Freod/modify/FileOperation.hpp>
+#include <Freod/loader/Dirs.hpp>
 
-// redirects the save path to what geode knows, in case launcher's fopen hook fails
+// redirects the save path to what freod knows, in case launcher's fopen hook fails
 struct FileOperationOverride : Modify<FileOperationOverride, FileOperation> {
     static gd::string getFilePath() {
         return dirs::getSaveDir().string() + "/";

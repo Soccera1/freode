@@ -1,13 +1,13 @@
 ﻿#include "updater.hpp"
-#include <Geode/utils/web.hpp>
+#include <Freod/utils/web.hpp>
 #include <resources.hpp>
 #include <hash.hpp>
 #include <utility>
 #include "LoaderImpl.hpp"
 #include "ModMetadataImpl.hpp"
-#include <Geode/utils/string.hpp>
+#include <Freod/utils/string.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 static std::unordered_map<std::string, web::WebTask> RUNNING_REQUESTS {};
 
@@ -75,7 +75,7 @@ void updater::fetchLatestGithubRelease(
     req.userAgent("github_api/1.0");
     RUNNING_REQUESTS.emplace(
         "@loaderAutoUpdateCheck",
-        req.get("https://api.github.com/repos/geode-sdk/geode/releases/latest").map(
+        req.get("https://api.github.com/repos/freod-sdk/freod/releases/latest").map(
             [expect = std::move(expect), then = std::move(then)](web::WebResponse* response) {
                 if (response->ok()) {
                     if (response->data().empty()) {
@@ -135,7 +135,7 @@ void updater::downloadLatestLoaderResources() {
 
 void updater::tryDownloadLoaderResources(std::string const& url, bool tryLatestOnError) {
     auto tempResourcesZip = dirs::getTempDir() / "new.zip";
-    auto resourcesDir = dirs::getGeodeResourcesDir() / Mod::get()->getID();
+    auto resourcesDir = dirs::getFreodResourcesDir() / Mod::get()->getID();
 
     if (RUNNING_REQUESTS.contains(url)) return;
 
@@ -188,7 +188,7 @@ void updater::tryDownloadLoaderResources(std::string const& url, bool tryLatestO
 }
 
 void updater::updateSpecialFiles() {
-    auto resourcesDir = dirs::getGeodeResourcesDir() / Mod::get()->getID();
+    auto resourcesDir = dirs::getFreodResourcesDir() / Mod::get()->getID();
     auto res = ModMetadataImpl::getImpl(ModImpl::get()->m_metadata).addSpecialFiles(resourcesDir);
     if (res.isErr()) {
         log::warn("Unable to add special files: {}", res.unwrapErr());
@@ -203,7 +203,7 @@ void updater::downloadLoaderResources(bool useLatestRelease) {
     req.userAgent("github_api/1.0");
     RUNNING_REQUESTS.emplace(
         "@downloadLoaderResources",
-        req.get("https://api.github.com/repos/geode-sdk/geode/releases/tags/" + Loader::get()->getVersion().toVString()).map(
+        req.get("https://api.github.com/repos/freod-sdk/freod/releases/tags/" + Loader::get()->getVersion().toVString()).map(
         [useLatestRelease](web::WebResponse* response) {
             RUNNING_REQUESTS.erase("@downloadLoaderResources");
             if (response->ok()) {
@@ -244,8 +244,8 @@ bool updater::verifyLoaderResources() {
         return CACHED.value();
     }
 
-    // geode/resources/geode.loader
-    auto resourcesDir = dirs::getGeodeResourcesDir() / Mod::get()->getID();
+    // freod/resources/freod.loader
+    auto resourcesDir = dirs::getFreodResourcesDir() / Mod::get()->getID();
 
     // if the resources dir doesn't exist, then it's probably incorrect
     if (!(
@@ -300,7 +300,7 @@ bool updater::verifyLoaderResources() {
 
 void updater::downloadLoaderUpdate(std::string const& url) {
     auto updateZip = dirs::getTempDir() / "loader-update.zip";
-    auto targetDir = dirs::getGeodeDir() / "update";
+    auto targetDir = dirs::getFreodDir() / "update";
 
     if (RUNNING_REQUESTS.contains("@downloadLoaderUpdate")) return;
 
@@ -366,7 +366,7 @@ void updater::checkForLoaderUpdates() {
             VersionInfo ver { 0, 0, 0 };
             root.needs("tag_name").into(ver);
 
-            log::info("Latest Geode version is {}", ver.toVString());
+            log::info("Latest Freod version is {}", ver.toVString());
             Mod::get()->setSavedValue("latest-version-auto-update-check", ver.toVString());
 
             // make sure release is newer
@@ -388,7 +388,7 @@ void updater::checkForLoaderUpdates() {
             for (auto& obj : root.needs("assets").items()) {
                 if (string::endsWith(
                     obj.needs("name").get<std::string>(),
-                    fmt::format("{}.zip", PlatformID::toShortString(GEODE_PLATFORM_TARGET, true))
+                    fmt::format("{}.zip", PlatformID::toShortString(FREOD_PLATFORM_TARGET, true))
                 )) {
                     updater::downloadLoaderUpdate(
                         obj.needs("browser_download_url").get<std::string>()
@@ -397,9 +397,9 @@ void updater::checkForLoaderUpdates() {
                 }
             }
 
-            log::error("Failed to find release asset for " GEODE_PLATFORM_NAME);
+            log::error("Failed to find release asset for " FREOD_PLATFORM_NAME);
             LoaderUpdateEvent(
-                UpdateFailed("Unable to find release asset for " GEODE_PLATFORM_NAME)
+                UpdateFailed("Unable to find release asset for " FREOD_PLATFORM_NAME)
             ).post();
             
             Mod::get()->setSavedValue("last-modified-auto-update-check", std::string());

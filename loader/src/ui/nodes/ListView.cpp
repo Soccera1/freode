@@ -1,10 +1,10 @@
-#include <Geode/binding/TableView.hpp>
-#include <Geode/binding/CCContentLayer.hpp>
-#include <Geode/ui/ListView.hpp>
-#include <Geode/utils/casts.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/binding/TableView.hpp>
+#include <Freod/binding/CCContentLayer.hpp>
+#include <Freod/ui/ListView.hpp>
+#include <Freod/utils/casts.hpp>
+#include <Freod/utils/cocos.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 GenericListCell::GenericListCell(char const* name, CCSize size) :
     TableViewCell(name, size.width, size.height),

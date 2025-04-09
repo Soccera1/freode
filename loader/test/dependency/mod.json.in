@@ -1,15 +1,15 @@
 {
-    "geode":        "@GEODE_VERSION_FULL@",
+    "freod":        "@FREOD_VERSION_FULL@",
     "gd": {
         "win": "*",
         "mac": "*",
         "android": "*"
     },
 	"version":      "1.0.0",
-	"id":           "geode.testdep",
-    "name":         "Geode Test Dependency",
-    "developer":    "Geode Team",
-    "description":  "Unit test dependency for Geode",
+	"id":           "freod.testdep",
+    "name":         "Freod Test Dependency",
+    "developer":    "Freod Team",
+    "description":  "Unit test dependency for Freod",
     "api": {
         "include": []
     },

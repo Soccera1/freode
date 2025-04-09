@@ -1,11 +1,11 @@
 #pragma once
 
-#include <Geode/utils/VersionInfo.hpp>
+#include <Freod/utils/VersionInfo.hpp>
 
 namespace about {
-    GEODE_DLL geode::VersionInfo getLoaderVersion();
-    GEODE_DLL const char* getLoaderVersionStr();
-    GEODE_DLL const char* getLoaderCommitHash();
-    GEODE_DLL const char* getBindingsCommitHash();
-    GEODE_DLL const char* getLoaderModJson();
+    FREOD_DLL freod::VersionInfo getLoaderVersion();
+    FREOD_DLL const char* getLoaderVersionStr();
+    FREOD_DLL const char* getLoaderCommitHash();
+    FREOD_DLL const char* getBindingsCommitHash();
+    FREOD_DLL const char* getLoaderModJson();
 };

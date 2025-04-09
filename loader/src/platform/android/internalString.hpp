@@ -1,5 +1,5 @@
 #pragma once
 
-#include <Geode/c++stl/string.hpp>
+#include <Freod/c++stl/string.hpp>
 
 void setEmptyInternalString(gd::string* str);

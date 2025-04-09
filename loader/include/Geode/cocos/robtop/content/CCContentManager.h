@@ -13,7 +13,7 @@ class CC_DLL CCContentManager : public cocos2d::CCObject
 public:
     static CCContentManager* sharedManager();
     CCContentManager() {}
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCContentManager, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCContentManager, CCObject)
 
     bool init();
 

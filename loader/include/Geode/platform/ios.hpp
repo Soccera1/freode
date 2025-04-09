@@ -6,7 +6,7 @@
 #include <typeinfo>
 #include "ItaniumCast.hpp"
 
-namespace geode {
+namespace freod {
     using dylib_t = void*;
 
     struct PlatformInfo {
@@ -14,8 +14,8 @@ namespace geode {
     };
 }
 
-namespace geode::base {
-    GEODE_NOINLINE inline uintptr_t get() {
+namespace freod::base {
+    FREOD_NOINLINE inline uintptr_t get() {
         static uintptr_t base = []() -> uintptr_t {
             for(uint32_t gdii = 0; gdii < _dyld_image_count(); gdii++) {
                 std::string_view imageName(_dyld_get_image_name(gdii));
@@ -31,6 +31,6 @@ namespace geode::base {
     }
 }
 
-extern "C" inline uintptr_t _geode_ios_base() {
-    return geode::base::get();
+extern "C" inline uintptr_t _freod_ios_base() {
+    return freod::base::get();
 }

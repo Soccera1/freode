@@ -1,9 +1,9 @@
-#include <Geode/loader/Loader.hpp>
-#include <Geode/utils/JsonValidation.hpp>
-#include <Geode/utils/VersionInfo.hpp>
-#include <Geode/utils/file.hpp>
-#include <Geode/utils/string.hpp>
-#include <Geode/utils/general.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/utils/JsonValidation.hpp>
+#include <Freod/utils/VersionInfo.hpp>
+#include <Freod/utils/file.hpp>
+#include <Freod/utils/string.hpp>
+#include <Freod/utils/general.hpp>
 #include <about.hpp>
 #include <matjson.hpp>
 #include <utility>
@@ -12,7 +12,7 @@
 #include "ModMetadataImpl.hpp"
 #include "LoaderImpl.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 std::optional<std::string> ModMetadataLinks::getHomepageURL() const {
     return m_impl->m_homepage;
@@ -24,7 +24,7 @@ std::optional<std::string> ModMetadataLinks::getCommunityURL() const {
     return m_impl->m_community;
 }
 
-#if defined(GEODE_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
+#if defined(FREOD_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
 ModMetadataLinks::Impl* ModMetadataLinks::getImpl() {
     return m_impl.get();
 }
@@ -114,27 +114,27 @@ Result<ModMetadata> ModMetadata::Impl::createFromSchemaV010(ModJson const& rawJs
 
     auto checkerRoot = fmt::format(
         "[{}/v0.0.0/mod.json]",
-        rawJson.contains("id") ? GEODE_UNWRAP(rawJson["id"].asString()) : "unknown.mod"
+        rawJson.contains("id") ? FREOD_UNWRAP(rawJson["id"].asString()) : "unknown.mod"
     );
     // JsonChecker did it this way too
     try {
         checkerRoot = fmt::format(
             "[{}/{}/mod.json]",
-            rawJson.contains("id") ? GEODE_UNWRAP(rawJson["id"].asString()) : "unknown.mod",
-            rawJson.contains("version") ? GEODE_UNWRAP(rawJson["version"].as<VersionInfo>()).toVString() : "v0.0.0"
+            rawJson.contains("id") ? FREOD_UNWRAP(rawJson["id"].asString()) : "unknown.mod",
+            rawJson.contains("version") ? FREOD_UNWRAP(rawJson["version"].as<VersionInfo>()).toVString() : "v0.0.0"
         );
     }
     catch (...) { }
 
     auto root = checkJson(impl->m_rawJSON, checkerRoot);
-    root.needs("geode").into(impl->m_geodeVersion);
+    root.needs("freod").into(impl->m_freodVersion);
     
     if (auto gd = root.needs("gd")) {
         // todo in v5: get rid of the string alternative and makes this always be an object
         gd.assertIs({ matjson::Type::Object, matjson::Type::String });
         if (gd.isObject()) {
-            if (gd.has(GEODE_PLATFORM_SHORT_IDENTIFIER_NOARCH)) {
-                gd.needs(GEODE_PLATFORM_SHORT_IDENTIFIER_NOARCH)
+            if (gd.has(FREOD_PLATFORM_SHORT_IDENTIFIER_NOARCH)) {
+                gd.needs(FREOD_PLATFORM_SHORT_IDENTIFIER_NOARCH)
                     .mustBe<std::string>("a valid gd version", [](auto const& str) {
                         return str == "*" || numFromString<double>(str).isOk();
                     })
@@ -185,9 +185,9 @@ Result<ModMetadata> ModMetadata::Impl::createFromSchemaV010(ModJson const& rawJs
         impl->m_isAPI = true;
     }
 
-    if (info.getID() != "geode.loader") {
+    if (info.getID() != "freod.loader") {
         impl->m_dependencies.push_back({
-            "geode.loader",
+            "freod.loader",
             {about::getLoaderVersion(), VersionCompare::Exact},
             Dependency::Importance::Required,
             Mod::get()
@@ -211,7 +211,7 @@ Result<ModMetadata> ModMetadata::Impl::createFromSchemaV010(ModJson const& rawJs
             if (dep.isObject()) {
                 bool onThisPlatform = !dep.has("platforms");
                 for (auto& plat : dep.has("platforms").items()) {
-                    if (PlatformID::coveredBy(plat.get<std::string>(), GEODE_PLATFORM_TARGET)) {
+                    if (PlatformID::coveredBy(plat.get<std::string>(), FREOD_PLATFORM_TARGET)) {
                         onThisPlatform = true;
                     }
                 }
@@ -263,12 +263,12 @@ Result<ModMetadata> ModMetadata::Impl::createFromSchemaV010(ModJson const& rawJs
         deps.assertIs({ matjson::Type::Object, matjson::Type::Array });
         if (deps.isObject()) {
             for (auto& [id, dep] : deps.properties()) {
-                GEODE_UNWRAP(addDependency(id, dep, false));
+                FREOD_UNWRAP(addDependency(id, dep, false));
             }
         }
         else {
             for (auto& dep : deps.items()) {
-                GEODE_UNWRAP(addDependency(dep.needs("id").template get<std::string>(), dep, true));
+                FREOD_UNWRAP(addDependency(dep.needs("id").template get<std::string>(), dep, true));
             }
         }
     }
@@ -290,7 +290,7 @@ Result<ModMetadata> ModMetadata::Impl::createFromSchemaV010(ModJson const& rawJs
             if (incompat.isObject()) {
                 bool onThisPlatform = !incompat.has("platforms");
                 for (auto& plat : incompat.has("platforms").items()) {
-                    if (PlatformID::coveredBy(plat.get<std::string>(), GEODE_PLATFORM_TARGET)) {
+                    if (PlatformID::coveredBy(plat.get<std::string>(), FREOD_PLATFORM_TARGET)) {
                         onThisPlatform = true;
                     }
                 }
@@ -326,12 +326,12 @@ Result<ModMetadata> ModMetadata::Impl::createFromSchemaV010(ModJson const& rawJs
         incompats.assertIs({ matjson::Type::Object, matjson::Type::Array });
         if (incompats.isObject()) {
             for (auto& [id, incompat] : incompats.properties()) {
-                GEODE_UNWRAP(addIncompat(id, incompat, false));
+                FREOD_UNWRAP(addIncompat(id, incompat, false));
             }
         }
         else {
             for (auto& incompat : incompats.items()) {
-                GEODE_UNWRAP(addIncompat(incompat.needs("id").template get<std::string>(), incompat, true));
+                FREOD_UNWRAP(addIncompat(incompat.needs("id").template get<std::string>(), incompat, true));
             }
         }
     }
@@ -341,7 +341,7 @@ Result<ModMetadata> ModMetadata::Impl::createFromSchemaV010(ModJson const& rawJs
         if (value.is(matjson::Type::Object)) {
             bool onThisPlatform = !value.has("platforms");
             for (auto& plat : value.has("platforms").items()) {
-                if (PlatformID::coveredBy(plat.get<std::string>(), GEODE_PLATFORM_TARGET)) {
+                if (PlatformID::coveredBy(plat.get<std::string>(), FREOD_PLATFORM_TARGET)) {
                     onThisPlatform = true;
                 }
             }
@@ -378,7 +378,7 @@ Result<ModMetadata> ModMetadata::Impl::createFromSchemaV010(ModJson const& rawJs
     }
 
     // with new cli, binary name is always mod id
-    impl->m_binaryName = impl->m_id + GEODE_PLATFORM_EXTENSION;
+    impl->m_binaryName = impl->m_id + FREOD_PLATFORM_EXTENSION;
 
     root.checkUnknownKeys();
 
@@ -388,10 +388,10 @@ Result<ModMetadata> ModMetadata::Impl::createFromSchemaV010(ModJson const& rawJs
 Result<ModMetadata> ModMetadata::Impl::create(ModJson const& json) {
     // Check mod.json target version
     auto schema = about::getLoaderVersion();
-    if (json.contains("geode") && json["geode"].isString()) {
-        GEODE_UNWRAP_INTO(
+    if (json.contains("freod") && json["freod"].isString()) {
+        FREOD_UNWRAP_INTO(
             schema,
-            VersionInfo::parse(GEODE_UNWRAP(json["geode"].asString())).mapErr(
+            VersionInfo::parse(FREOD_UNWRAP(json["freod"].asString())).mapErr(
                 [](auto const& err) {
                     return fmt::format("[mod.json] has invalid target loader version: {}", err);
                 }
@@ -407,7 +407,7 @@ Result<ModMetadata> ModMetadata::Impl::create(ModJson const& json) {
     // if (schema < Loader::get()->minModVersion()) {
     //     return Err(
     //         "[mod.json] is built for an older version (" + schema.toString() +
-    //         ") of Geode (current: " + Loader::get()->getVersion().toString() +
+    //         ") of Freod (current: " + Loader::get()->getVersion().toString() +
     //         "). Please update the mod to the latest version, "
     //         "and if the problem persists, contact the developer "
     //         "to update it."
@@ -416,8 +416,8 @@ Result<ModMetadata> ModMetadata::Impl::create(ModJson const& json) {
     // if (schema > Loader::get()->maxModVersion()) {
     //     return Err(
     //         "[mod.json] is built for a newer version (" + schema.toString() +
-    //         ") of Geode (current: " + Loader::get()->getVersion().toString() +
-    //         "). You need to update Geode in order to use "
+    //         ") of Freod (current: " + Loader::get()->getVersion().toString() +
+    //         "). You need to update Freod in order to use "
     //         "this mod."
     //     );
     // }
@@ -428,8 +428,8 @@ Result<ModMetadata> ModMetadata::Impl::create(ModJson const& json) {
             "[mod.json] targets a version (" + schema.toVString() +
             ") that isn't supported by this version (v" +
             about::getLoaderVersionStr() +
-            ") of geode. This is probably a bug; report it to "
-            "the Geode Development Team."
+            ") of freod. This is probably a bug; report it to "
+            "the Freod Development Team."
         );
     }
 
@@ -437,9 +437,9 @@ Result<ModMetadata> ModMetadata::Impl::create(ModJson const& json) {
 }
 
 Result<ModMetadata> ModMetadata::Impl::createFromFile(std::filesystem::path const& path) {
-    GEODE_UNWRAP_INTO(auto read, utils::file::readString(path));
+    FREOD_UNWRAP_INTO(auto read, utils::file::readString(path));
 
-    GEODE_UNWRAP_INTO(auto info, ModMetadata::create(GEODE_UNWRAP(matjson::parse(read).mapErr([&](auto const& err) {
+    FREOD_UNWRAP_INTO(auto info, ModMetadata::create(FREOD_UNWRAP(matjson::parse(read).mapErr([&](auto const& err) {
         return fmt::format("Unable to parse mod.json: {}", err);
     }))));
 
@@ -447,40 +447,40 @@ Result<ModMetadata> ModMetadata::Impl::createFromFile(std::filesystem::path cons
 
     impl->m_path = path;
     if (path.has_parent_path()) {
-        GEODE_UNWRAP(info.addSpecialFiles(path.parent_path()));
+        FREOD_UNWRAP(info.addSpecialFiles(path.parent_path()));
     }
     return Ok(info);
 }
 
-Result<ModMetadata> ModMetadata::Impl::createFromGeodeFile(std::filesystem::path const& path) {
-    GEODE_UNWRAP_INTO(auto unzip, file::Unzip::create(path));
-    return ModMetadata::createFromGeodeZip(unzip);
+Result<ModMetadata> ModMetadata::Impl::createFromFreodFile(std::filesystem::path const& path) {
+    FREOD_UNWRAP_INTO(auto unzip, file::Unzip::create(path));
+    return ModMetadata::createFromFreodZip(unzip);
 }
 
-Result<ModMetadata> ModMetadata::Impl::createFromGeodeZip(file::Unzip& unzip) {
+Result<ModMetadata> ModMetadata::Impl::createFromFreodZip(file::Unzip& unzip) {
     // Check if mod.json exists in zip
     if (!unzip.hasEntry("mod.json")) {
         return Err("\"" + unzip.getPath().string() + "\" is missing mod.json");
     }
 
     // Read mod.json & parse if possible
-    GEODE_UNWRAP_INTO(
+    FREOD_UNWRAP_INTO(
         auto jsonData, unzip.extract("mod.json").mapErr([](auto const& err) {
             return fmt::format("Unable to extract mod.json: {}", err);
         })
     );
 
-    ModJson json = GEODE_UNWRAP(matjson::parse(std::string(jsonData.begin(), jsonData.end())).mapErr([](auto const& err) {
+    ModJson json = FREOD_UNWRAP(matjson::parse(std::string(jsonData.begin(), jsonData.end())).mapErr([](auto const& err) {
         return fmt::format("Unable to parse mod.json: {}", err);
     }));
 
-    auto info = GEODE_UNWRAP(ModMetadata::create(json).mapErr([&](auto const& err) {
+    auto info = FREOD_UNWRAP(ModMetadata::create(json).mapErr([&](auto const& err) {
         return fmt::format("\"{}\" - {}", unzip.getPath().string(), err);
     }));
     auto impl = info.m_impl.get();
     impl->m_path = unzip.getPath();
 
-    GEODE_UNWRAP(info.addSpecialFiles(unzip).mapErr([](auto const& err) {
+    FREOD_UNWRAP(info.addSpecialFiles(unzip).mapErr([](auto const& err) {
         return fmt::format("Unable to add extra files: {}", err);
     }));
 
@@ -493,7 +493,7 @@ Result<> ModMetadata::Impl::addSpecialFiles(file::Unzip& unzip) {
         if (unzip.hasEntry(file)) {
             // reference to local binding 'file' declared in enclosing function 
             std::string_view fileStr(file); 
-            GEODE_UNWRAP_INTO(auto data, unzip.extract(fileStr).mapErr([&](auto const& err) {
+            FREOD_UNWRAP_INTO(auto data, unzip.extract(fileStr).mapErr([&](auto const& err) {
                 return fmt::format("Unable to extract \"{}\": {}", fileStr, err);
             }));
             *target = sanitizeDetailsData(std::string(data.begin(), data.end()));
@@ -621,8 +621,8 @@ std::optional<std::string> ModMetadata::getGameVersion() const {
     if (m_impl->m_gdVersion.empty()) return std::nullopt;
     return m_impl->m_gdVersion;
 }
-VersionInfo ModMetadata::getGeodeVersion() const {
-    return m_impl->m_geodeVersion;
+VersionInfo ModMetadata::getFreodVersion() const {
+    return m_impl->m_freodVersion;
 }
 Result<> ModMetadata::checkGameVersion() const {
     if (!m_impl->m_gdVersion.empty() && m_impl->m_gdVersion != "*") {
@@ -639,48 +639,48 @@ Result<> ModMetadata::checkGameVersion() const {
         }
 
         if (LoaderImpl::get()->isForwardCompatMode()) {
-            // this means current gd version is > GEODE_GD_VERSION
-            if (modTargetVer <= GEODE_GD_VERSION) {
+            // this means current gd version is > FREOD_GD_VERSION
+            if (modTargetVer <= FREOD_GD_VERSION) {
                 return Err(fmt::format("This mod doesn't support this version of Geometry Dash ({})", ver));
             }
-        } else if (ver != GEODE_STR(GEODE_GD_VERSION)) {
-            // we are not in forward compat mode, so GEODE_GD_VERSION is the current gd version
+        } else if (ver != FREOD_STR(FREOD_GD_VERSION)) {
+            // we are not in forward compat mode, so FREOD_GD_VERSION is the current gd version
             return Err(
                 fmt::format(
                     "This mod was created for a different version of Geometry Dash ({}). You currently have version {}.",
                     ver,
-                    GEODE_STR(GEODE_GD_VERSION)
+                    FREOD_STR(FREOD_GD_VERSION)
                 )
             );
         }
     }
     return Ok();
 }
-Result<> ModMetadata::checkGeodeVersion() const {
-    if (!LoaderImpl::get()->isModVersionSupported(m_impl->m_geodeVersion)) {
+Result<> ModMetadata::checkFreodVersion() const {
+    if (!LoaderImpl::get()->isModVersionSupported(m_impl->m_freodVersion)) {
         auto current = LoaderImpl::get()->getVersion();
-        if (m_impl->m_geodeVersion > current) {
+        if (m_impl->m_freodVersion > current) {
             return Err(
-                "This mod was made for a newer version of Geode ({}). You currently have version {}.",
-                m_impl->m_geodeVersion, current
+                "This mod was made for a newer version of Freod ({}). You currently have version {}.",
+                m_impl->m_freodVersion, current
             );
         }
         else {
             return Err(
-                "This mod was made for an older version of Geode ({}). You currently have version {}.",
-                m_impl->m_geodeVersion, current
+                "This mod was made for an older version of Freod ({}). You currently have version {}.",
+                m_impl->m_freodVersion, current
             );
         }
     }
     return Ok();
 }
 Result<> ModMetadata::checkTargetVersions() const {
-    GEODE_UNWRAP(this->checkGameVersion());
-    GEODE_UNWRAP(this->checkGeodeVersion());
+    FREOD_UNWRAP(this->checkGameVersion());
+    FREOD_UNWRAP(this->checkFreodVersion());
     return Ok();
 }
 
-#if defined(GEODE_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
+#if defined(FREOD_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
 void ModMetadata::setPath(std::filesystem::path const& value) {
     m_impl->m_path = value;
 }
@@ -744,19 +744,19 @@ void ModMetadata::setIsAPI(bool const& value) {
 void ModMetadata::setGameVersion(std::string const& value) {
     m_impl->m_gdVersion = value;
 }
-void ModMetadata::setGeodeVersion(VersionInfo const& value) {
-    m_impl->m_geodeVersion = value;
+void ModMetadata::setFreodVersion(VersionInfo const& value) {
+    m_impl->m_freodVersion = value;
 }
 ModMetadataLinks& ModMetadata::getLinksMut() {
     return m_impl->m_links;
 }
 #endif
 
-Result<ModMetadata> ModMetadata::createFromGeodeZip(utils::file::Unzip& zip) {
-    return Impl::createFromGeodeZip(zip);
+Result<ModMetadata> ModMetadata::createFromFreodZip(utils::file::Unzip& zip) {
+    return Impl::createFromFreodZip(zip);
 }
-Result<ModMetadata> ModMetadata::createFromGeodeFile(std::filesystem::path const& path) {
-    return Impl::createFromGeodeFile(path);
+Result<ModMetadata> ModMetadata::createFromFreodFile(std::filesystem::path const& path) {
+    return Impl::createFromFreodFile(path);
 }
 Result<ModMetadata> ModMetadata::createFromFile(std::filesystem::path const& path) {
     return Impl::createFromFile(path);

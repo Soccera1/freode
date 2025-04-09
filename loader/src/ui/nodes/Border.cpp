@@ -1,8 +1,8 @@
-#include <Geode/ui/Border.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/ui/Border.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/utils/cocos.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 Border* Border::create(CCNode* node, const ccColor4B& backgroundColor, const CCSize& size, const CCPoint& padding) {
     Border* instance = new Border(padding);

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Geode/utils/VersionInfo.hpp"
-#include <Geode/DefaultInclude.hpp>
-#include <Geode/utils/web.hpp>
+#include "Freod/utils/VersionInfo.hpp"
+#include <Freod/DefaultInclude.hpp>
+#include <Freod/utils/web.hpp>
 #include <chrono>
 #include <matjson.hpp>
 #include <vector>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 namespace server {
     // todo: replace parse()s with Serialize::fromJson now that it uses Results
@@ -113,7 +113,7 @@ namespace server {
 
     struct ModsQuery final {
         std::optional<std::string> query;
-        std::unordered_set<PlatformID> platforms = { GEODE_PLATFORM_TARGET };
+        std::unordered_set<PlatformID> platforms = { FREOD_PLATFORM_TARGET };
         std::unordered_set<std::string> tags;
         std::optional<bool> featured;
         ModsSort sorting = ModsSort::Downloads;

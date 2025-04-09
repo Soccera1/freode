@@ -1,12 +1,12 @@
 #include "ModSettingsPopup.hpp"
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/loader/ModSettingsManager.hpp>
-#include <Geode/ui/ScrollLayer.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/ui/General.hpp>
-#include <Geode/ui/Scrollbar.hpp>
-#include <Geode/loader/Setting.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/loader/ModSettingsManager.hpp>
+#include <Freod/ui/ScrollLayer.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/ui/General.hpp>
+#include <Freod/ui/Scrollbar.hpp>
+#include <Freod/loader/Setting.hpp>
 #include <loader/SettingNode.hpp>
 // needed for weightedFuzzyMatch
 #include <ui/mods/sources/ModListSource.hpp>
@@ -60,7 +60,7 @@ bool ModSettingsPopup::setup(Mod* mod) {
     m_searchInput->setID("search-input");
     searchContainer->addChildAtPosition(m_searchInput, Anchor::Left, ccp(7.5f, 0), ccp(0, .5f));
 
-    auto searchClearSpr = GeodeSquareSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png", nullptr, m_forceDisableTheme);
+    auto searchClearSpr = FreodSquareSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png", nullptr, m_forceDisableTheme);
     searchClearSpr->setScale(.45f);
     m_searchClearBtn = CCMenuItemSpriteExtra::create(
         searchClearSpr, this, menu_selector(ModSettingsPopup::onClearSearch)
@@ -104,7 +104,7 @@ bool ModSettingsPopup::setup(Mod* mod) {
 
     // layer borders
 
-    m_mainLayer->addChildAtPosition(createGeodeListBorders(layerSize, m_forceDisableTheme), Anchor::Center);
+    m_mainLayer->addChildAtPosition(createFreodListBorders(layerSize, m_forceDisableTheme), Anchor::Center);
 
     auto scrollBar = Scrollbar::create(m_list);
     m_mainLayer->addChildAtPosition(
@@ -119,14 +119,14 @@ bool ModSettingsPopup::setup(Mod* mod) {
     m_applyMenu->getLayout()->ignoreInvisibleChildren(true);
     m_applyMenu->setTouchPriority(buttonPriority);
 
-    auto restartBtnSpr = createGeodeButton("Restart Now", true, GeodeButtonSprite::Default, m_forceDisableTheme);
+    auto restartBtnSpr = createFreodButton("Restart Now", true, FreodButtonSprite::Default, m_forceDisableTheme);
     restartBtnSpr->setScale(.6f);
     m_restartBtn = CCMenuItemSpriteExtra::create(
         restartBtnSpr, this, menu_selector(ModSettingsPopup::onRestart)
     );
     m_applyMenu->addChildAtPosition(m_restartBtn, Anchor::Bottom, ccp(0, 20));
 
-    m_applyBtnSpr = createGeodeButton("Apply", true, GeodeButtonSprite::Default, m_forceDisableTheme);
+    m_applyBtnSpr = createFreodButton("Apply", true, FreodButtonSprite::Default, m_forceDisableTheme);
     m_applyBtnSpr->setScale(.6f);
     m_applyBtn = CCMenuItemSpriteExtra::create(
         m_applyBtnSpr, this, menu_selector(ModSettingsPopup::onApply)
@@ -135,7 +135,7 @@ bool ModSettingsPopup::setup(Mod* mod) {
 
     m_mainLayer->addChildAtPosition(m_applyMenu, Anchor::Bottom, ccp(0, 20));
 
-    auto resetBtnSpr = createGeodeButton("Reset All", true, GeodeButtonSprite::Default, m_forceDisableTheme);
+    auto resetBtnSpr = createFreodButton("Reset All", true, FreodButtonSprite::Default, m_forceDisableTheme);
     resetBtnSpr->setScale(.6f);
 
     auto resetBtn = CCMenuItemSpriteExtra::create(
@@ -160,7 +160,7 @@ bool ModSettingsPopup::setup(Mod* mod) {
         folderSprSub->setOpacity(155);
         folderSprSub->setScale(.55f);
         folderSpr->addChildAtPosition(folderSprSub, Anchor::Center, ccp(0, -3));
-        auto buttonSpr = createGeodeButton(folderSpr, "", GeodeButtonSprite::Default, m_forceDisableTheme);
+        auto buttonSpr = createFreodButton(folderSpr, "", FreodButtonSprite::Default, m_forceDisableTheme);
         buttonSpr->setScale(.6f);
         buttonSpr->getIcon()->setScale(buttonSpr->getIcon()->getScale() * 1.4f);
         auto folderBtn = CCMenuItemSpriteExtra::create(
@@ -308,7 +308,7 @@ void ModSettingsPopup::updateState(SettingNode* invoker) {
         m_applyBtn->setEnabled(false);
     }
     
-    auto clearSpr = static_cast<GeodeSquareSprite*>(m_searchClearBtn->getNormalImage());
+    auto clearSpr = static_cast<FreodSquareSprite*>(m_searchClearBtn->getNormalImage());
     m_searchClearBtn->setEnabled(hasSearch);
     clearSpr->setColor(hasSearch ? ccWHITE : ccGRAY);
     clearSpr->setOpacity(hasSearch ? 255 : 90);
@@ -334,18 +334,18 @@ void ModSettingsPopup::onClose(CCObject* sender) {
             "Cancel", "Discard",
             [this](FLAlertLayer*, bool btn2) {
                 if (btn2) {
-                    GeodePopup::onClose(nullptr);
+                    FreodPopup::onClose(nullptr);
                 }
             }
         );
         return;
     }
-    GeodePopup::onClose(sender);
+    FreodPopup::onClose(sender);
 }
 
 ModSettingsPopup* ModSettingsPopup::create(Mod* mod, bool forceDisableTheme) {
     auto ret = new ModSettingsPopup();
-    if (ret->init(440, 280, mod, GeodePopupStyle::Default, forceDisableTheme)) {
+    if (ret->init(440, 280, mod, FreodPopupStyle::Default, forceDisableTheme)) {
         ret->autorelease();
         return ret;
     }

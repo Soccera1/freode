@@ -1,15 +1,15 @@
 #pragma once
 #include "AsStaticFunction.hpp"
 #include "Field.hpp"
-#include <Geode/Enums.hpp>
+#include <Freod/Enums.hpp>
 #include "IDManager.hpp"
 
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Mod.hpp>
 #include <iostream>
 #include <tulip/TulipHook.hpp>
 
-#define GEODE_APPLY_MODIFY_FOR_FUNCTION(AddressInline_, Convention_, ClassName_, FunctionName_, ...)          \
+#define FREOD_APPLY_MODIFY_FOR_FUNCTION(AddressInline_, Convention_, ClassName_, FunctionName_, ...)          \
     do {                                                                                                      \
         static auto constexpr different = Unique::different<                                                  \
             Resolve<__VA_ARGS__>::func(&Base::FunctionName_),                                                 \
@@ -42,7 +42,7 @@
         }                                                                                                     \
     } while (0);
 
-#define GEODE_APPLY_MODIFY_FOR_FUNCTION_ERROR(ClassName_, FunctionName_, ...)                                 \
+#define FREOD_APPLY_MODIFY_FOR_FUNCTION_ERROR(ClassName_, FunctionName_, ...)                                 \
     do {                                                                                                      \
         static_assert(!FunctionExists_##FunctionName_<Derived __VA_ARGS__>,                                   \
             "Function " #ClassName_ "::" #FunctionName_ " does not have an available address in the"          \
@@ -50,7 +50,7 @@
         );                                                                                                    \
     } while (0);
 
-#define GEODE_APPLY_MODIFY_FOR_FUNCTION_ERROR_DEFINED(ClassName_, FunctionName_, ...)                         \
+#define FREOD_APPLY_MODIFY_FOR_FUNCTION_ERROR_DEFINED(ClassName_, FunctionName_, ...)                         \
     do {                                                                                                      \
         static auto constexpr different = Unique::different<                                                  \
             Resolve<__VA_ARGS__>::func(&Base::FunctionName_),                                                 \
@@ -62,7 +62,7 @@
         );                                                                                                    \
     } while (0);
 
-#define GEODE_APPLY_MODIFY_FOR_FUNCTION_ERROR_INLINE(ClassName_, FunctionName_, ...)                          \
+#define FREOD_APPLY_MODIFY_FOR_FUNCTION_ERROR_INLINE(ClassName_, FunctionName_, ...)                          \
     do {                                                                                                      \
         static auto constexpr different = Unique::different<                                                  \
             Resolve<__VA_ARGS__>::func(&Base::FunctionName_),                                                 \
@@ -74,7 +74,7 @@
         );                                                                                                    \
     } while (0);
 
-#define GEODE_APPLY_MODIFY_FOR_CONSTRUCTOR(AddressInline_, Convention_, ClassName_, ...)  \
+#define FREOD_APPLY_MODIFY_FOR_CONSTRUCTOR(AddressInline_, Convention_, ClassName_, ...)  \
     do {                                                                                  \
         if constexpr (HasConstructor<Derived>) {                                          \
             static auto address = AddressInline_;                                         \
@@ -90,7 +90,7 @@
         }                                                                                 \
     } while (0);
 
-#define GEODE_APPLY_MODIFY_FOR_DESTRUCTOR(AddressInline_, Convention_, ClassName_)                               \
+#define FREOD_APPLY_MODIFY_FOR_DESTRUCTOR(AddressInline_, Convention_, ClassName_)                               \
     do {                                                                                                         \
         if constexpr (HasDestructor<Derived>) {                                                                  \
             static auto address = AddressInline_;                                                                \
@@ -104,7 +104,7 @@
         }                                                                                                        \
     } while (0);
 
-namespace geode {
+namespace freod {
     class Priority {
     public:
         /// @brief First priority, used for running hooks before all others
@@ -192,7 +192,7 @@ namespace geode {
     };
 }
 
-namespace geode::modifier {
+namespace freod::modifier {
     template <class Derived, class Base>
     class ModifyDerive;
 
@@ -217,7 +217,7 @@ namespace geode::modifier {
         /// @param priority The priority to set the hook to
         /// @returns Ok if the hook was found and the priority was set, Err if the hook was not found
         Result<> setHookPriority(std::string_view name, int32_t priority = Priority::Normal) {
-            GEODE_UNWRAP_INTO(auto hook, this->getHook(name));
+            FREOD_UNWRAP_INTO(auto hook, this->getHook(name));
             hook->setPriority(priority);
             return Ok();
         }
@@ -243,7 +243,7 @@ namespace geode::modifier {
         /// @param after The mod to set the priority after
         /// @returns Ok if the hook was found and the priority was set, Err if the hook was not found
         Result<> setHookPriorityAfter(std::string_view name, Mod* mod) {
-            GEODE_UNWRAP_INTO(auto hook, this->getHook(name));
+            FREOD_UNWRAP_INTO(auto hook, this->getHook(name));
             auto func = [=](ModStateEvent* event){
                 auto hooks = mod->getHooks();
                 for (auto modHook : hooks) {
@@ -279,7 +279,7 @@ namespace geode::modifier {
         /// @param before The mod to set the priority before
         /// @returns Ok if the hook was found and the priority was set, Err if the hook was not found
         Result<> setHookPriorityBefore(std::string_view name, Mod* mod) {
-            GEODE_UNWRAP_INTO(auto hook, this->getHook(name));
+            FREOD_UNWRAP_INTO(auto hook, this->getHook(name));
             auto func = [=](ModStateEvent* event){
                 auto hooks = mod->getHooks();
                 for (auto modHook : hooks) {
@@ -390,7 +390,7 @@ namespace geode::modifier {
             static_assert(!hasImproperCustomFields,
                 "\n--- Error in modify class:\n"
                 "  Do not add members to a modify class, use `struct Fields` instead.\n"
-                "  See https://docs.geode-sdk.org/tutorials/fields for more info."
+                "  See https://docs.freod-sdk.org/tutorials/fields for more info."
                 "\n---"
             );
 
@@ -425,14 +425,14 @@ namespace geode::modifier {
         ModifyDerive() {
             static_assert(
                 alwaysFalse<Derived>,
-                "Modified class not recognized, please include <Geode/modify/ClassName.hpp> to be "
+                "Modified class not recognized, please include <Freod/modify/ClassName.hpp> to be "
                 "able to use it."
             );
         }
     };
 }
 
-namespace geode {
+namespace freod {
 
 // The intellisense compiler is quite dumb, and will very often error on modify classes
 // with an error of "incomplete type is not allowed", despite not being an issue in actual compilation.
@@ -489,7 +489,7 @@ namespace geode {
  *     struct hook0Parent {};
  * }
  * template<>
- * struct GEODE_HIDDEN hook0<hook0Parent> : Modify<hook0<hook0Parent>, MenuLayer> {
+ * struct FREOD_HIDDEN hook0<hook0Parent> : Modify<hook0<hook0Parent>, MenuLayer> {
  *     // code stuff idk
  * };
  *
@@ -499,7 +499,7 @@ namespace geode {
 
 #if __INTELLISENSE__ != 1 && !defined(__CLION_IDE__)
 
-#define GEODE_MODIFY_DECLARE_ANONYMOUS(base, derived) \
+#define FREOD_MODIFY_DECLARE_ANONYMOUS(base, derived) \
     derived##Dummy;                                   \
     template <class>                                  \
     struct derived {};                                \
@@ -507,28 +507,28 @@ namespace geode {
         struct derived##Parent {};                    \
     }                                                 \
     template <>                                       \
-    struct GEODE_HIDDEN derived<derived##Parent> : geode::Modify<derived<derived##Parent>, base>
+    struct FREOD_HIDDEN derived<derived##Parent> : freod::Modify<derived<derived##Parent>, base>
 
-#define GEODE_MODIFY_DECLARE(base, derived) \
+#define FREOD_MODIFY_DECLARE(base, derived) \
     derived##Dummy;                         \
-    struct GEODE_HIDDEN derived : geode::Modify<derived, base>
+    struct FREOD_HIDDEN derived : freod::Modify<derived, base>
 
 #else
 
 // Simplify the modify macro for intellisense, to hopefully help perfomance a bit
 
-#define GEODE_MODIFY_DECLARE(base, derived) \
+#define FREOD_MODIFY_DECLARE(base, derived) \
     derived##Dummy; \
-    struct derived : geode::Modify<derived, base>
+    struct derived : freod::Modify<derived, base>
 
-#define GEODE_MODIFY_DECLARE_ANONYMOUS(base, derived) GEODE_MODIFY_DECLARE(base, derived)
+#define FREOD_MODIFY_DECLARE_ANONYMOUS(base, derived) FREOD_MODIFY_DECLARE(base, derived)
 
 #endif
 
-#define GEODE_MODIFY_REDIRECT4(base, derived) GEODE_MODIFY_DECLARE(base, derived)
-#define GEODE_MODIFY_REDIRECT3(base, derived) GEODE_MODIFY_DECLARE_ANONYMOUS(base, derived)
-#define GEODE_MODIFY_REDIRECT2(base) GEODE_MODIFY_REDIRECT3(base, GEODE_CONCAT(hook, __LINE__))
-#define GEODE_MODIFY_REDIRECT1(base) GEODE_MODIFY_REDIRECT2(base)
+#define FREOD_MODIFY_REDIRECT4(base, derived) FREOD_MODIFY_DECLARE(base, derived)
+#define FREOD_MODIFY_REDIRECT3(base, derived) FREOD_MODIFY_DECLARE_ANONYMOUS(base, derived)
+#define FREOD_MODIFY_REDIRECT2(base) FREOD_MODIFY_REDIRECT3(base, FREOD_CONCAT(hook, __LINE__))
+#define FREOD_MODIFY_REDIRECT1(base) FREOD_MODIFY_REDIRECT2(base)
 
 /**
  * Interfaces for the class implementation
@@ -537,10 +537,10 @@ namespace geode {
  * class $modify(MyMenuLayerInterface, MenuLayer) {};
  */
 
-#define GEODE_CRTP1(base) GEODE_MODIFY_REDIRECT1(base)
-#define GEODE_CRTP2(derived, base) GEODE_MODIFY_REDIRECT4(base, derived)
+#define FREOD_CRTP1(base) FREOD_MODIFY_REDIRECT1(base)
+#define FREOD_CRTP2(derived, base) FREOD_MODIFY_REDIRECT4(base, derived)
 #define $modify(...) \
-    GEODE_INVOKE(GEODE_CONCAT(GEODE_CRTP, GEODE_NUMBER_OF_ARGS(__VA_ARGS__)), __VA_ARGS__)
+    FREOD_INVOKE(FREOD_CONCAT(FREOD_CRTP, FREOD_NUMBER_OF_ARGS(__VA_ARGS__)), __VA_ARGS__)
 
 /** 
  * This function is meant to hook / override a GD function in a Modified class. 

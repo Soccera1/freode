@@ -57,9 +57,9 @@ NS_CC_BEGIN;
  */
 class CC_DLL CCPointArray : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCPointArray, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCPointArray, CCObject)
     
     /** creates and initializes a Points array with capacity 
      * @lua NA
@@ -120,9 +120,9 @@ public:
  */
 class CC_DLL CCCardinalSplineTo : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCCardinalSplineTo, CCActionInterval)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCCardinalSplineTo, CCActionInterval)
 
     /** creates an action with a Cardinal Spline array of points and tension 
      *  @code
@@ -193,9 +193,9 @@ public:
  */
 class CC_DLL CCCardinalSplineBy : public CCCardinalSplineTo 
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCCardinalSplineBy, CCCardinalSplineTo)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCCardinalSplineBy, CCCardinalSplineTo)
     
     /** creates an action with a Cardinal Spline array of points and tension 
      *  @code
@@ -229,7 +229,7 @@ public:
  */
 class CC_DLL CCCatmullRomTo : public CCCardinalSplineTo
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     
     /** creates an action with a Cardinal Spline array of points and tension 
@@ -254,7 +254,7 @@ public:
  */
 class CC_DLL CCCatmullRomBy : public CCCardinalSplineBy
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     
     /** creates an action with a Cardinal Spline array of points and tension 

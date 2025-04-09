@@ -1,7 +1,7 @@
 #include "DownloadManager.hpp"
-#include "Geode/loader/Mod.hpp"
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/utils/map.hpp>
+#include "Freod/loader/Mod.hpp"
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/utils/map.hpp>
 #include <optional>
 #include <hash/hash.hpp>
 #include <loader/ModImpl.hpp>
@@ -130,7 +130,7 @@ public:
                         if (ec) {
                             removingInstalledWasError = true;
                             m_status = DownloadStatusError {
-                                .details = fmt::format("Unable to delete existing .geode package (code {})", ec),
+                                .details = fmt::format("Unable to delete existing .freod package (code {})", ec),
                             };
                         }
                         // Mark mod as updated
@@ -138,7 +138,7 @@ public:
                     }
                     // If this was an update, delete the old file first
                     if (!removingInstalledWasError) {
-                        auto ok = file::writeBinary(dirs::getModsDir() / (m_id + ".geode"), value->data());
+                        auto ok = file::writeBinary(dirs::getModsDir() / (m_id + ".freod"), value->data());
                         if (!ok) {
                             m_status = DownloadStatusError {
                                 .details = ok.unwrapErr(),

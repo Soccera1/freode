@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Geode/ui/Popup.hpp>
-#include <Geode/ui/TextInput.hpp>
+#include <Freod/ui/Popup.hpp>
+#include <Freod/ui/TextInput.hpp>
 #include "../sources/ModListSource.hpp"
-#include "../GeodeStyle.hpp"
+#include "../FreodStyle.hpp"
 #include <server/Server.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-class FiltersPopup : public GeodePopup<ModListSource*> {
+class FiltersPopup : public FreodPopup<ModListSource*> {
 protected:
     ModListSource* m_source;
     CCMenu* m_tagsMenu;

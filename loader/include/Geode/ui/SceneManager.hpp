@@ -5,12 +5,12 @@
 #include <cocos2d.h>
 #include <vector>
 #include <span>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/utils/cocos.hpp>
 
-namespace geode {
+namespace freod {
     struct SceneSwitch;
 
-    class GEODE_DLL SceneManager final {
+    class FREOD_DLL SceneManager final {
     protected:
         std::vector<Ref<cocos2d::CCNode>> m_persistedNodes;
         cocos2d::CCScene* m_lastScene = nullptr;

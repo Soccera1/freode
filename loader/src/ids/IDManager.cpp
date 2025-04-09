@@ -1,6 +1,6 @@
-#include <Geode/modify/IDManager.hpp>
+#include <Freod/modify/IDManager.hpp>
 
-using namespace geode;
+using namespace freod;
 
 NodeIDs* NodeIDs::get() {
     static auto inst = new NodeIDs;

@@ -141,7 +141,7 @@ Special features and Limitations:
 */
 class CC_DLL CCParticleSystemQuad : public CCParticleSystem
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
 
     ccV3F_C4B_T2F_Quad    *m_pQuads;        // quads to be rendered
@@ -158,7 +158,7 @@ public:
      * @js ctor
      */
     CCParticleSystemQuad();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCParticleSystemQuad, CCParticleSystem)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCParticleSystemQuad, CCParticleSystem)
     /**
      * @js NA
      * @lua NA

@@ -8,8 +8,8 @@
 #include <functional>
 #include <type_traits>
 #include "../loader/Event.hpp"
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
-#include <Geode/binding/CCMenuItemToggler.hpp>
+#include <Freod/binding/CCMenuItemSpriteExtra.hpp>
+#include <Freod/binding/CCMenuItemToggler.hpp>
 #include "../ui/Layout.hpp"
 #include "../ui/SpacerNode.hpp"
 
@@ -17,14 +17,14 @@
 
 template <>
 struct matjson::Serialize<cocos2d::ccColor3B> {
-    static geode::Result<cocos2d::ccColor3B> GEODE_DLL fromJson(Value const& value);
-    static Value GEODE_DLL toJson(cocos2d::ccColor3B const& value);
+    static freod::Result<cocos2d::ccColor3B> FREOD_DLL fromJson(Value const& value);
+    static Value FREOD_DLL toJson(cocos2d::ccColor3B const& value);
 };
 
 template <>
 struct matjson::Serialize<cocos2d::ccColor4B> {
-    static geode::Result<cocos2d::ccColor4B> GEODE_DLL fromJson(Value const& value);
-    static Value GEODE_DLL toJson(cocos2d::ccColor4B const& value);
+    static freod::Result<cocos2d::ccColor4B> FREOD_DLL fromJson(Value const& value);
+    static Value FREOD_DLL toJson(cocos2d::ccColor4B const& value);
 };
 
 // operators for CC geometry
@@ -188,7 +188,7 @@ namespace cocos2d {
 }
 
 // Ref & Bug
-namespace geode {
+namespace freod {
     /**
      * A smart pointer to a managed CCObject-deriving class. Retains shared
      * ownership over the managed instance. Releases the object when the Ref
@@ -341,7 +341,7 @@ namespace geode {
 
     class WeakRefPool;
 
-    class GEODE_DLL WeakRefController final {
+    class FREOD_DLL WeakRefController final {
     private:
         cocos2d::CCObject* m_obj;
 
@@ -358,7 +358,7 @@ namespace geode {
         cocos2d::CCObject* get() const;
     };
 
-    class GEODE_DLL WeakRefPool final {
+    class FREOD_DLL WeakRefPool final {
         std::unordered_map<cocos2d::CCObject*, std::shared_ptr<WeakRefController>> m_pool;
     
         void check(cocos2d::CCObject* obj);
@@ -609,7 +609,7 @@ namespace geode {
 }
 
 // Cocos2d utils
-namespace geode::cocos {
+namespace freod::cocos {
     /**
      * Get child at index. Checks bounds. A negative
      * index will get the child starting from the end
@@ -643,7 +643,7 @@ namespace geode::cocos {
      * @returns Rectangle fitting all nodes. Origin
      * will be <= 0 and size will be >= 0
      */
-    GEODE_DLL cocos2d::CCRect calculateNodeCoverage(std::vector<cocos2d::CCNode*> const& nodes);
+    FREOD_DLL cocos2d::CCRect calculateNodeCoverage(std::vector<cocos2d::CCNode*> const& nodes);
     /**
      * Get bounds for a set of nodes. Based on content
      * size
@@ -651,7 +651,7 @@ namespace geode::cocos {
      * @returns Rectangle fitting all nodes. Origin
      * will be <= 0 and size will be >= 0
      */
-    GEODE_DLL cocos2d::CCRect calculateNodeCoverage(cocos2d::CCArray* nodes);
+    FREOD_DLL cocos2d::CCRect calculateNodeCoverage(cocos2d::CCArray* nodes);
     /**
      * Get bounds for a set of nodes. Based on content
      * size
@@ -660,7 +660,7 @@ namespace geode::cocos {
      * @returns Rectangle fitting all the parent's children.
      * Origin will be <= 0 and size will be >= 0
      */
-    GEODE_DLL cocos2d::CCRect calculateChildCoverage(cocos2d::CCNode* parent);
+    FREOD_DLL cocos2d::CCRect calculateChildCoverage(cocos2d::CCNode* parent);
 
     /**
      * Create a CCScene from a layer and switch to it with the default fade
@@ -668,7 +668,7 @@ namespace geode::cocos {
      * @param layer Layer to create a scene from
      * @returns Created scene (not the fade transition)
      */
-    GEODE_DLL cocos2d::CCScene* switchToScene(cocos2d::CCLayer* layer);
+    FREOD_DLL cocos2d::CCScene* switchToScene(cocos2d::CCLayer* layer);
 
     using CreateLayerFunc = std::function<cocos2d::CCLayer*()>;
 
@@ -679,7 +679,7 @@ namespace geode::cocos {
      * finished, the game switches to the given layer instead of MenuLayer.
      * Leave nullptr to enable default behaviour
      */
-    GEODE_DLL void reloadTextures(CreateLayerFunc returnTo = nullptr);
+    FREOD_DLL void reloadTextures(CreateLayerFunc returnTo = nullptr);
 
     /**
      * Rescale node to fit inside given size
@@ -688,7 +688,7 @@ namespace geode::cocos {
      * @param def Default size
      * @param min Minimum size
      */
-    GEODE_DLL void limitNodeSize(cocos2d::CCNode* node, cocos2d::CCSize const& size, float def, float min);
+    FREOD_DLL void limitNodeSize(cocos2d::CCNode* node, cocos2d::CCSize const& size, float def, float min);
 
     /**
      * Rescale node to fit inside given width
@@ -697,7 +697,7 @@ namespace geode::cocos {
      * @param def Default scale
      * @param min Minimum scale
      */
-    GEODE_DLL void limitNodeWidth(cocos2d::CCNode* node, float width, float def, float min);
+    FREOD_DLL void limitNodeWidth(cocos2d::CCNode* node, float width, float def, float min);
 
     /**
      * Rescale node to fit inside given height
@@ -706,7 +706,7 @@ namespace geode::cocos {
      * @param def Default scale
      * @param min Minimum scale
      */
-    GEODE_DLL void limitNodeHeight(cocos2d::CCNode* node, float height, float def, float min);
+    FREOD_DLL void limitNodeHeight(cocos2d::CCNode* node, float height, float def, float min);
 
     /**
      * Checks if a node is visible (recursively
@@ -715,7 +715,7 @@ namespace geode::cocos {
      * @returns True if node is visibile. Does
      * not take into account if node is off-screen
      */
-    GEODE_DLL bool nodeIsVisible(cocos2d::CCNode* node);
+    FREOD_DLL bool nodeIsVisible(cocos2d::CCNode* node);
 
     /**
      * Gets a node by tag by traversing
@@ -726,7 +726,7 @@ namespace geode::cocos {
      * @return Child node with specified tag, or
      * null if there is none
      */
-    GEODE_DLL cocos2d::CCNode* getChildByTagRecursive(cocos2d::CCNode* node, int tag);
+    FREOD_DLL cocos2d::CCNode* getChildByTagRecursive(cocos2d::CCNode* node, int tag);
 
     /**
      *  Get first node that conforms to the predicate
@@ -764,7 +764,7 @@ namespace geode::cocos {
      * @returns True if the node has the given sprite frame
      * name
      */
-    GEODE_DLL bool isSpriteFrameName(cocos2d::CCNode* node, const char* name);
+    FREOD_DLL bool isSpriteFrameName(cocos2d::CCNode* node, const char* name);
 
     /**
      * Get the first child that has the given sprite frame
@@ -776,7 +776,7 @@ namespace geode::cocos {
      * @returns Child with the given sprite frame name, or
      * nullptr if there is none
      */
-    GEODE_DLL cocos2d::CCNode* getChildBySpriteFrameName(cocos2d::CCNode* parent, const char* name);
+    FREOD_DLL cocos2d::CCNode* getChildBySpriteFrameName(cocos2d::CCNode* parent, const char* name);
 
     /**
      * Checks if a node has the given sprite name either
@@ -786,7 +786,7 @@ namespace geode::cocos {
      * @param name Name of the sprite to search for
      * @returns True if the node has the given sprite name
      */
-    GEODE_DLL bool isSpriteName(cocos2d::CCNode* node, const char* name);
+    FREOD_DLL bool isSpriteName(cocos2d::CCNode* node, const char* name);
 
     /**
      * Get the first child that has the given sprite name
@@ -798,7 +798,7 @@ namespace geode::cocos {
      * @returns Child with the given sprite name, or
      * nullptr if there is none
      */
-    GEODE_DLL cocos2d::CCNode* getChildBySpriteName(cocos2d::CCNode* parent, const char* name);
+    FREOD_DLL cocos2d::CCNode* getChildBySpriteName(cocos2d::CCNode* parent, const char* name);
 
     /**
      * Checks if a given file exists in CCFileUtils
@@ -811,7 +811,7 @@ namespace geode::cocos {
      *      CCSprite::create("fallback.png");
      * }
      */
-    GEODE_DLL bool fileExistsInSearchPaths(char const* filename);
+    FREOD_DLL bool fileExistsInSearchPaths(char const* filename);
 
     inline void ccDrawColor4B(cocos2d::ccColor4B const& color) {
         cocos2d::ccDrawColor4B(color.r, color.g, color.b, color.a);
@@ -866,7 +866,7 @@ namespace geode::cocos {
      * @returns A ccColor3B if it could be successfully parsed, or an error 
      * indicating the failure reason
      */
-    GEODE_DLL Result<cocos2d::ccColor3B> cc3bFromHexString(std::string const& hexValue, bool permissive = false);
+    FREOD_DLL Result<cocos2d::ccColor3B> cc3bFromHexString(std::string const& hexValue, bool permissive = false);
     /**
      * Parse a ccColor4B from a hexadecimal string. The string may contain 
      * a leading '#'
@@ -879,9 +879,9 @@ namespace geode::cocos {
      * @returns A ccColor4B if it could be successfully parsed, or an error 
      * indicating the failure reason
      */
-    GEODE_DLL Result<cocos2d::ccColor4B> cc4bFromHexString(std::string const& hexValue, bool requireAlpha = false, bool permissive = false);
-    GEODE_DLL std::string cc3bToHexString(cocos2d::ccColor3B const& color);
-    GEODE_DLL std::string cc4bToHexString(cocos2d::ccColor4B const& color);
+    FREOD_DLL Result<cocos2d::ccColor4B> cc4bFromHexString(std::string const& hexValue, bool requireAlpha = false, bool permissive = false);
+    FREOD_DLL std::string cc3bToHexString(cocos2d::ccColor3B const& color);
+    FREOD_DLL std::string cc4bToHexString(cocos2d::ccColor4B const& color);
 
     template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>>>
     static cocos2d::CCArray* vectorToCCArray(std::vector<T> const& vec) {
@@ -931,31 +931,31 @@ namespace geode::cocos {
      * On mobile platforms this will probably return (0, 0)
      * @returns The mouse position
      */
-    GEODE_DLL cocos2d::CCPoint getMousePos();
+    FREOD_DLL cocos2d::CCPoint getMousePos();
 }
 
 // std specializations
 namespace std {
     // enables using Ref as the key in unordered_map etc.
     template <class T>
-    struct hash<geode::Ref<T>> {
-        size_t operator()(geode::Ref<T> const& ref) const {
+    struct hash<freod::Ref<T>> {
+        size_t operator()(freod::Ref<T> const& ref) const {
             return std::hash<T*>()(ref.data());
         }
     };
 
     template <typename T>
-    struct hash<geode::WeakRef<T>> {
-        size_t operator()(geode::WeakRef<T> const& ref) const {
+    struct hash<freod::WeakRef<T>> {
+        size_t operator()(freod::WeakRef<T> const& ref) const {
             // the explicit template argument is needed here because it would otherwise cast to WeakRef and recurse
-            return std::hash<std::shared_ptr<geode::WeakRefController>>{}(ref.m_controller);
+            return std::hash<std::shared_ptr<freod::WeakRefController>>{}(ref.m_controller);
         }
     };
 }
 
 // more utils
-namespace geode::cocos {
-    struct GEODE_DLL CCArrayInserter {
+namespace freod::cocos {
+    struct FREOD_DLL CCArrayInserter {
     public:
         CCArrayInserter(cocos2d::CCArray* p) : m_array(p) {}
 
@@ -1386,6 +1386,6 @@ namespace geode::cocos {
         }
     };
 
-    void GEODE_DLL handleTouchPriorityWith(cocos2d::CCNode* node, int priority, bool force = false);
-    void GEODE_DLL handleTouchPriority(cocos2d::CCNode* node, bool force = false);
+    void FREOD_DLL handleTouchPriorityWith(cocos2d::CCNode* node, int priority, bool force = false);
+    void FREOD_DLL handleTouchPriority(cocos2d::CCNode* node, bool force = false);
 }

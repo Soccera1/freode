@@ -10,13 +10,13 @@ NS_CC_BEGIN
  */
 class CC_DLL CCDevice
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 private:
 
 
     CCDevice();
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCDevice)
+    FREOD_CUSTOM_CONSTRUCTOR_BEGIN(CCDevice)
     /**
      *  Gets the DPI of device
      *  @return The DPI of device.

@@ -1,13 +1,13 @@
 #include "console.hpp"
 #include "LogImpl.hpp"
 
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/loader/Types.hpp>
-#include <Geode/utils/casts.hpp>
-#include <Geode/utils/general.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/loader/Types.hpp>
+#include <Freod/utils/casts.hpp>
+#include <Freod/utils/general.hpp>
 #include <fmt/chrono.h>
 #include <fmt/format.h>
 #include <iomanip>
@@ -15,13 +15,13 @@
 #include <ostream>
 #include <utility>
 
-using namespace geode::prelude;
-using namespace geode::log;
+using namespace freod::prelude;
+using namespace freod::log;
 using namespace cocos2d;
 
 // Parse overloads
 
-std::string geode::format_as(Mod* mod) {
+std::string freod::format_as(Mod* mod) {
     if (mod) {
         return fmt::format("{{ Mod, {} }}", mod->getName());
     }
@@ -30,7 +30,7 @@ std::string geode::format_as(Mod* mod) {
     }
 }
 
-std::string geode::format_as(CCObject const* obj) {
+std::string freod::format_as(CCObject const* obj) {
     if (obj) {
         // TODO: try catch incase typeid fails
         return fmt::format("{{ {}, {} }}", typeid(*obj).name(), fmt::ptr(obj));
@@ -40,7 +40,7 @@ std::string geode::format_as(CCObject const* obj) {
     }
 }
 
-std::string geode::format_as(CCNode* obj) {
+std::string freod::format_as(CCNode* obj) {
     if (obj) {
         auto bb = obj->boundingBox();
         return fmt::format(
@@ -58,7 +58,7 @@ std::string geode::format_as(CCNode* obj) {
     }
 }
 
-std::string geode::format_as(CCArray* arr) {
+std::string freod::format_as(CCArray* arr) {
     std::string out = "[";
 
     if (arr && arr->count()) {
@@ -227,7 +227,7 @@ void Logger::setup() {
         return;
     }
 
-    auto logDir = dirs::getGeodeLogDir();
+    auto logDir = dirs::getFreodLogDir();
 
     // on the first launch, this doesn't exist yet..
     if (!std::filesystem::exists(logDir)) {
@@ -258,7 +258,7 @@ void Logger::setup() {
 }
 
 void Logger::deleteOldLogs(size_t maxAgeHours) {
-    auto logDir = dirs::getGeodeLogDir();
+    auto logDir = dirs::getFreodLogDir();
 
     auto now = std::chrono::file_clock::now();
 
@@ -361,8 +361,8 @@ std::filesystem::path const& Logger::getLogPath() const {
 
 // Misc
 
-std::string geode::log::generateLogName() {
-    return fmt::format("Geode {:%F %H.%M.%S}.log", convertTime(log_clock::now()));
+std::string freod::log::generateLogName() {
+    return fmt::format("Freod {:%F %H.%M.%S}.log", convertTime(log_clock::now()));
 }
 
 void log::pushNest(Mod* mod) {

@@ -65,7 +65,7 @@
 #include "move.h"
 #include "ptr_traits.h"
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /**
@@ -702,8 +702,8 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   // The _Container parameter exists solely so that different containers
   // using this template can instantiate different types, even if the
   // _Iterator parameter is the same.
-  using geode::stl::iterator_traits;
-  using geode::stl::iterator;
+  using freod::stl::iterator_traits;
+  using freod::stl::iterator;
   template<typename _Iterator, typename _Container>
     class __normal_iterator
     {
@@ -924,7 +924,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 
 #if __cplusplus >= 201103L
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /**

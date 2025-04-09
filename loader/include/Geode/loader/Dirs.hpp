@@ -3,62 +3,62 @@
 #include <filesystem>
 #include "../DefaultInclude.hpp"
 
-namespace geode::dirs {
+namespace freod::dirs {
     /**
      * Directory where Geometry Dash is
      */
-    GEODE_DLL std::filesystem::path getGameDir();
+    FREOD_DLL std::filesystem::path getGameDir();
     /**
      * Directory where GD saves its files
      */
-    GEODE_DLL std::filesystem::path getSaveDir();
+    FREOD_DLL std::filesystem::path getSaveDir();
     /**
-     * Directory where Geode is
+     * Directory where Freod is
      */
-    GEODE_DLL std::filesystem::path getGeodeDir();
+    FREOD_DLL std::filesystem::path getFreodDir();
     /**
-     * Directory where Geode saves its files
+     * Directory where Freod saves its files
      */
-    GEODE_DLL std::filesystem::path getGeodeSaveDir();
+    FREOD_DLL std::filesystem::path getFreodSaveDir();
     /**
-     * Directory where Geode's resources are stored
+     * Directory where Freod's resources are stored
      */
-    GEODE_DLL std::filesystem::path getGeodeResourcesDir();
+    FREOD_DLL std::filesystem::path getFreodResourcesDir();
     /**
-     * Directory where Geode's resources are stored
+     * Directory where Freod's resources are stored
      */
-    GEODE_DLL std::filesystem::path getGeodeLogDir();
+    FREOD_DLL std::filesystem::path getFreodLogDir();
     /**
      * Directory to store temporary files
      */
-    GEODE_DLL std::filesystem::path getTempDir();
+    FREOD_DLL std::filesystem::path getTempDir();
     /**
      * Directory where mods are stored by default
      */
-    GEODE_DLL std::filesystem::path getModsDir();
+    FREOD_DLL std::filesystem::path getModsDir();
     /**
      * Directory where mods' save data is stored
      */
-    GEODE_DLL std::filesystem::path getModsSaveDir();
+    FREOD_DLL std::filesystem::path getModsSaveDir();
     /**
      * Directory where mods' unzipped packages are stored at runtime
      */
-    GEODE_DLL std::filesystem::path getModRuntimeDir();
+    FREOD_DLL std::filesystem::path getModRuntimeDir();
     /**
      * Directory where mods' config files lie
      */
-    GEODE_DLL std::filesystem::path getModConfigDir();
+    FREOD_DLL std::filesystem::path getModConfigDir();
     /**
-     * Directory where Geode stores the cached index
+     * Directory where Freod stores the cached index
      */
-    GEODE_DLL std::filesystem::path getIndexDir();
+    FREOD_DLL std::filesystem::path getIndexDir();
     /**
      * Directory where crashlogs are stored
      */
-    GEODE_DLL std::filesystem::path getCrashlogsDir();
+    FREOD_DLL std::filesystem::path getCrashlogsDir();
     /**
      * Directory where mods' persistent files lie
-     * This directory is not deleted even when Geode is uninstalled
+     * This directory is not deleted even when Freod is uninstalled
      */
-    GEODE_DLL std::filesystem::path getModPersistentDir();
+    FREOD_DLL std::filesystem::path getModPersistentDir();
 }

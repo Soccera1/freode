@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Geode/utils/cocos.hpp>
+#include <Freod/utils/cocos.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // NOTE: this has a generic name because we should have modtober info 
 

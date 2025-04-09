@@ -1,75 +1,75 @@
 #pragma once
 
-#include <Geode/Result.hpp>
+#include <Freod/Result.hpp>
 #include "general.hpp"
 #include "../loader/Event.hpp"
 #include "Task.hpp"
 
 #include <matjson.hpp>
-#include <Geode/DefaultInclude.hpp>
-#include <Geode/utils/string.hpp>
+#include <Freod/DefaultInclude.hpp>
+#include <Freod/utils/string.hpp>
 #include <filesystem>
 #include <string>
 #include <unordered_set>
 
 template <>
 struct matjson::Serialize<std::filesystem::path> {
-    static geode::Result<std::filesystem::path> fromJson(matjson::Value const& value) {
-        GEODE_UNWRAP_INTO(const std::string str, value.asString());
+    static freod::Result<std::filesystem::path> fromJson(matjson::Value const& value) {
+        FREOD_UNWRAP_INTO(const std::string str, value.asString());
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
         // On Windows, paths are stored as utf16, and matjson uses utf8 internally
         // This is not an issue until paths actually use unicode characters
         // So we do this conversion to make sure it stores the characters correctly
-        return geode::Ok(
-            std::filesystem::path(geode::utils::string::utf8ToWide(str)).make_preferred()
+        return freod::Ok(
+            std::filesystem::path(freod::utils::string::utf8ToWide(str)).make_preferred()
         );
 #else
-        return geode::Ok(std::filesystem::path(str).make_preferred());
+        return freod::Ok(std::filesystem::path(str).make_preferred());
 #endif
     }
 
     static matjson::Value toJson(std::filesystem::path const& value) {
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
         // On Windows, paths are stored as utf16, and matjson uses utf8 internally
         // This is not an issue until paths actually use unicode characters
         // So we do this conversion to make sure it stores the characters correctly
-        return matjson::Value(geode::utils::string::wideToUtf8(value.wstring()));
+        return matjson::Value(freod::utils::string::wideToUtf8(value.wstring()));
 #else
         return matjson::Value(value.string());
 #endif
     }
 };
 
-namespace geode::utils::file {
-    GEODE_DLL Result<std::string> readString(std::filesystem::path const& path);
-    GEODE_DLL Result<matjson::Value> readJson(std::filesystem::path const& path);
-    GEODE_DLL Result<ByteVector> readBinary(std::filesystem::path const& path);
+namespace freod::utils::file {
+    FREOD_DLL Result<std::string> readString(std::filesystem::path const& path);
+    FREOD_DLL Result<matjson::Value> readJson(std::filesystem::path const& path);
+    FREOD_DLL Result<ByteVector> readBinary(std::filesystem::path const& path);
 
     template <class T>
     Result<T> readFromJson(std::filesystem::path const& file) {
-        GEODE_UNWRAP_INTO(auto json, readJson(file));
+        FREOD_UNWRAP_INTO(auto json, readJson(file));
         return json.as<T>();
     }
 
-    GEODE_DLL Result<> writeString(std::filesystem::path const& path, std::string const& data);
-    GEODE_DLL Result<> writeBinary(std::filesystem::path const& path, ByteVector const& data);
+    FREOD_DLL Result<> writeString(std::filesystem::path const& path, std::string const& data);
+    FREOD_DLL Result<> writeBinary(std::filesystem::path const& path, ByteVector const& data);
 
     template <class T>
     Result<> writeToJson(std::filesystem::path const& path, T const& data) {
-        GEODE_UNWRAP(writeString(path, matjson::Value(data).dump()));
+        FREOD_UNWRAP(writeString(path, matjson::Value(data).dump()));
         return Ok();
     }
 
-    GEODE_DLL Result<> createDirectory(std::filesystem::path const& path);
-    GEODE_DLL Result<> createDirectoryAll(std::filesystem::path const& path);
-    GEODE_DLL Result<std::vector<std::filesystem::path>> readDirectory(
+    FREOD_DLL Result<> createDirectory(std::filesystem::path const& path);
+    FREOD_DLL Result<> createDirectoryAll(std::filesystem::path const& path);
+    FREOD_DLL Result<std::vector<std::filesystem::path>> readDirectory(
         std::filesystem::path const& path, bool recursive = false
     );
 
     class Unzip;
 
-    class GEODE_DLL Zip final {
+    class FREOD_DLL Zip final {
     public:
         using Path = std::filesystem::path;
 
@@ -144,7 +144,7 @@ namespace geode::utils::file {
         Result<> addFolder(Path const& entry);
     };
 
-    class GEODE_DLL Unzip final {
+    class FREOD_DLL Unzip final {
     private:
         using Impl = Zip::Impl;
         std::unique_ptr<Impl> m_impl;
@@ -238,7 +238,7 @@ namespace geode::utils::file {
      * Open a folder / file in the system's file explorer
      * @param path Folder / file to open
      */
-    GEODE_DLL bool openFolder(std::filesystem::path const& path);
+    FREOD_DLL bool openFolder(std::filesystem::path const& path);
 
     enum class PickMode {
         OpenFile,
@@ -271,15 +271,15 @@ namespace geode::utils::file {
      * @param mode Type of file selection prompt to show
      * @param options Picker options
      */
-    GEODE_DLL Task<Result<std::filesystem::path>> pick(PickMode mode, FilePickOptions const& options);
+    FREOD_DLL Task<Result<std::filesystem::path>> pick(PickMode mode, FilePickOptions const& options);
 
     /**
      * Prompt the user to pick a bunch of files for opening using the system's file system picker
      * @param options Picker options
      */
-    GEODE_DLL Task<Result<std::vector<std::filesystem::path>>> pickMany(FilePickOptions const& options);
+    FREOD_DLL Task<Result<std::vector<std::filesystem::path>>> pickMany(FilePickOptions const& options);
 
-    class GEODE_DLL FileWatchEvent final : public Event {
+    class FREOD_DLL FileWatchEvent final : public Event {
     protected:
         std::filesystem::path m_path;
     
@@ -288,7 +288,7 @@ namespace geode::utils::file {
         std::filesystem::path getPath() const;
     };
 
-    class GEODE_DLL FileWatchFilter final : public EventFilter<FileWatchEvent> {
+    class FREOD_DLL FileWatchFilter final : public EventFilter<FileWatchEvent> {
     protected:
         std::filesystem::path m_path;
     
@@ -308,10 +308,10 @@ namespace geode::utils::file {
      * so different paths that point to the same file will be considered the 
      * same
      */
-    GEODE_DLL Result<> watchFile(std::filesystem::path const& file);
+    FREOD_DLL Result<> watchFile(std::filesystem::path const& file);
     /**
      * Stop watching a file for changes
      * @param file The file to unwatch
      */
-    GEODE_DLL void unwatchFile(std::filesystem::path const& file);
+    FREOD_DLL void unwatchFile(std::filesystem::path const& file);
 }

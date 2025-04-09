@@ -40,7 +40,7 @@ NS_CC_BEGIN
  */
 class CC_DLL CCClippingNode : public CCNode
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
 
 
@@ -115,7 +115,7 @@ public:
     bool isInverted() const;
     void setInverted(bool bInverted);
     
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCClippingNode, CCNode);
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCClippingNode, CCNode);
 
 protected:
     CCClippingNode();

@@ -1,6 +1,6 @@
 #include "Server.hpp"
-#include <Geode/utils/JsonValidation.hpp>
-#include <Geode/utils/ranges.hpp>
+#include <Freod/utils/JsonValidation.hpp>
+#include <Freod/utils/ranges.hpp>
 #include <chrono>
 #include <date/date.h>
 #include <fmt/core.h>
@@ -8,11 +8,11 @@
 #include <fmt/chrono.h>
 #include <loader/LoaderImpl.hpp>
 #include "../internal/about.hpp"
-#include "Geode/loader/Loader.hpp"
+#include "Freod/loader/Loader.hpp"
 
 using namespace server;
 
-#define GEODE_GD_VERSION_STR GEODE_STR(GEODE_GD_VERSION)
+#define FREOD_GD_VERSION_STR FREOD_STR(FREOD_GD_VERSION)
 
 template <class K, class V>
     requires std::equality_comparable<K> && std::copy_constructible<K>
@@ -287,13 +287,13 @@ Result<ServerModVersion> ServerModVersion::parse(matjson::Value const& raw) {
 
     auto res = ServerModVersion();
 
-    res.metadata.setGeodeVersion(root.needs("geode").get<VersionInfo>());
+    res.metadata.setFreodVersion(root.needs("freod").get<VersionInfo>());
 
     // Verify target GD version
     auto gd_obj = root.needs("gd");
     std::string gd = "0.000";
-    if (gd_obj.hasNullable(GEODE_PLATFORM_SHORT_IDENTIFIER)) {
-        gd = gd_obj.hasNullable(GEODE_PLATFORM_SHORT_IDENTIFIER). get<std::string>();
+    if (gd_obj.hasNullable(FREOD_PLATFORM_SHORT_IDENTIFIER)) {
+        gd = gd_obj.hasNullable(FREOD_PLATFORM_SHORT_IDENTIFIER). get<std::string>();
     }
 
     if (gd != "*") {
@@ -318,7 +318,7 @@ Result<ServerModVersion> ServerModVersion::parse(matjson::Value const& raw) {
 
         bool onThisPlatform = !obj.hasNullable("platforms");
         for (auto& plat : obj.hasNullable("platforms").items()) {
-            if (PlatformID::coveredBy(plat.get<std::string>(), GEODE_PLATFORM_TARGET)) {
+            if (PlatformID::coveredBy(plat.get<std::string>(), FREOD_PLATFORM_TARGET)) {
                 onThisPlatform = true;
             }
         }
@@ -388,7 +388,7 @@ Result<ServerModUpdate> ServerModUpdate::parse(matjson::Value const& raw) {
     root.needs("id").into(res.id);
     root.needs("version").into(res.version);
     if (root.hasNullable("replacement")) {
-        GEODE_UNWRAP_INTO(res.replacement, ServerModReplacement::parse(root.hasNullable("replacement").json()));
+        FREOD_UNWRAP_INTO(res.replacement, ServerModReplacement::parse(root.hasNullable("replacement").json()));
     }
 
     return root.ok(res);
@@ -440,10 +440,10 @@ Result<ServerModMetadata> ServerModMetadata::parse(matjson::Value const& raw) {
     root.hasNullable("changelog").into(res.changelog);
     root.hasNullable("repository").into(res.repository);
     if (root.has("created_at")) {
-        GEODE_UNWRAP_INTO(res.createdAt, ServerDateTime::parse(root.has("created_at").get<std::string>()));
+        FREOD_UNWRAP_INTO(res.createdAt, ServerDateTime::parse(root.has("created_at").get<std::string>()));
     }
     if (root.has("updated_at")) {
-        GEODE_UNWRAP_INTO(res.updatedAt, ServerDateTime::parse(root.has("updated_at").get<std::string>()));
+        FREOD_UNWRAP_INTO(res.updatedAt, ServerDateTime::parse(root.has("updated_at").get<std::string>()));
     }
 
     std::vector<std::string> developerNames;
@@ -541,7 +541,7 @@ bool ServerModMetadata::hasUpdateForInstalledMod() const {
 }
 
 std::string server::getServerAPIBaseURL() {
-    return "https://api.geode-sdk.org/v1";
+    return "https://api.freod-sdk.org/v1";
 }
 
 template <class... Args>
@@ -553,10 +553,10 @@ std::string server::getServerUserAgent() {
     // no need to compute this more than once
     static const auto value = [] {
         // TODO: is this enough info? is it too much?
-        return fmt::format("Geode Loader (ver={};commit={};platform={};gd={})",
+        return fmt::format("Freod Loader (ver={};commit={};platform={};gd={})",
             Loader::get()->getVersion().toNonVString(),
             about::getLoaderCommitHash(),
-            GEODE_PLATFORM_SHORT_IDENTIFIER,
+            FREOD_PLATFORM_SHORT_IDENTIFIER,
             LoaderImpl::get()->getGameVersion()
         );
     }();
@@ -576,8 +576,8 @@ ServerRequest<ServerModsList> server::getMods(ModsQuery const& query, bool useCa
         req.param("query", *query.query);
     }
 
-    req.param("gd", GEODE_GD_VERSION_STR);
-    req.param("geode", Loader::get()->getVersion().toNonVString());
+    req.param("gd", FREOD_GD_VERSION_STR);
+    req.param("freod", Loader::get()->getVersion().toNonVString());
 
     if (query.platforms.size()) {
         std::string plats = "";
@@ -692,7 +692,7 @@ ServerRequest<ServerModVersion> server::getModVersion(std::string const& id, Mod
         },
     }, version);
 
-    return req.get(formatServerURL("/mods/{}/versions/{}?gd={}&platforms={}", id, versionURL, Loader::get()->getGameVersion(), GEODE_PLATFORM_SHORT_IDENTIFIER)).map(
+    return req.get(formatServerURL("/mods/{}/versions/{}?gd={}&platforms={}", id, versionURL, Loader::get()->getGameVersion(), FREOD_PLATFORM_SHORT_IDENTIFIER)).map(
         [](web::WebResponse* response) -> Result<ServerModVersion, ServerError> {
             if (response->ok()) {
                 // Parse payload
@@ -784,9 +784,9 @@ ServerRequest<std::optional<ServerModUpdate>> server::checkUpdates(Mod const* mo
 ServerRequest<std::vector<ServerModUpdate>> server::batchedCheckUpdates(std::vector<std::string> const& batch) {
     auto req = web::WebRequest();
     req.userAgent(getServerUserAgent());
-    req.param("platform", GEODE_PLATFORM_SHORT_IDENTIFIER);
-    req.param("gd", GEODE_GD_VERSION_STR);
-    req.param("geode", Loader::get()->getVersion().toNonVString());
+    req.param("platform", FREOD_PLATFORM_SHORT_IDENTIFIER);
+    req.param("gd", FREOD_GD_VERSION_STR);
+    req.param("freod", Loader::get()->getVersion().toNonVString());
 
     req.param("ids", ranges::join(batch, ";"));
     return req.get(formatServerURL("/mods/updates")).map(

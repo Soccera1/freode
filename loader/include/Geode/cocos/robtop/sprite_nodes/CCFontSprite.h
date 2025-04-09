@@ -19,7 +19,7 @@ public:
     , m_nShakeIndex(0)
     {}
     virtual ~CCFontSprite() {}
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCFontSprite, CCSpriteExtra);
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCFontSprite, CCSpriteExtra);
 
 public:
     bool m_bUseInstant;

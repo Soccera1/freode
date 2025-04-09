@@ -109,7 +109,7 @@ typedef struct _KerningHashElement
 */
 class CC_DLL CCBMFontConfiguration : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
     // XXX: Creating a public interface so that the bitmapFontArray[] is accessible
 public://@public
     // BMFont definitions
@@ -127,7 +127,7 @@ public://@public
     // Character Set defines the letters that actually exist in the font
     gd::set<unsigned int> *m_pCharacterSet;
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCBMFontConfiguration, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCBMFontConfiguration, CCObject)
     CCBMFontConfiguration();
     /**
      *  @js NA
@@ -193,13 +193,13 @@ http://www.angelcode.com/products/bmfont/ (Free, Windows only)
 
 class CC_DLL CCLabelBMFont : public CCSpriteBatchNode, public CCLabelProtocol, public CCRGBAProtocol
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCLabelBMFont();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLabelBMFont, CCSpriteBatchNode)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCLabelBMFont, CCSpriteBatchNode)
     /**
      *  @js NA
      *  @lua NA

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <cocos2d.h>
-#include <Geode/platform/platform.hpp>
+#include <Freod/platform/platform.hpp>
 #include <optional>
 #include <memory>
 
-namespace geode {
+namespace freod {
 
 #pragma warning(push)
 #pragma warning(disable: 4275)
@@ -13,11 +13,11 @@ namespace geode {
 /**
  * Layouts automatically handle the positioning of nodes. Use CCNode::setLayout 
  * to apply a layout to a node, and then use CCNode::updateLayout to apply 
- * the layout's positioning. Geode comes with a few default layouts like 
+ * the layout's positioning. Freod comes with a few default layouts like 
  * RowLayout, ColumnLayout, and GridLayout, but if you need a different kind 
  * of layout you can inherit from the Layout class.
  */
-class GEODE_DLL Layout : public cocos2d::CCObject {
+class FREOD_DLL Layout : public cocos2d::CCObject {
 protected:
     cocos2d::CCArray* getNodesToPosition(cocos2d::CCNode* forNode) const;
 
@@ -44,7 +44,7 @@ public:
     virtual ~Layout() = default;
 };
 
-class GEODE_DLL LayoutOptions : public cocos2d::CCObject {
+class FREOD_DLL LayoutOptions : public cocos2d::CCObject {
 public:
     virtual ~LayoutOptions() = default;
 };
@@ -92,7 +92,7 @@ constexpr int AXISLAYOUT_DEFAULT_PRIORITY = 0;
  * );
  * someNodeWithALayout->addChild(node);
  */
-class GEODE_DLL AxisLayoutOptions : public LayoutOptions {
+class FREOD_DLL AxisLayoutOptions : public LayoutOptions {
 protected:
     class Impl;
 
@@ -212,7 +212,7 @@ public:
  * menu->addChild(...);
  * menu->updateLayout();
  */
-class GEODE_DLL AxisLayout : public Layout {
+class FREOD_DLL AxisLayout : public Layout {
 protected:
     class Impl;
 
@@ -312,7 +312,7 @@ public:
 /**
  * Simple layout for arranging nodes in a row (horizontal line)
  */
-class GEODE_DLL RowLayout : public AxisLayout {
+class FREOD_DLL RowLayout : public AxisLayout {
 protected:
     RowLayout();
 
@@ -328,7 +328,7 @@ public:
 /**
  * Simple layout for arranging nodes in a column (vertical line)
  */
-class GEODE_DLL ColumnLayout : public AxisLayout {
+class FREOD_DLL ColumnLayout : public AxisLayout {
 protected:
     ColumnLayout();
 
@@ -359,7 +359,7 @@ enum class Anchor {
 /**
  * Options for customizing a node's position in an AnchorLayout
  */
-class GEODE_DLL AnchorLayoutOptions : public LayoutOptions {
+class FREOD_DLL AnchorLayoutOptions : public LayoutOptions {
 protected:
     Anchor m_anchor = Anchor::Center;
     cocos2d::CCPoint m_offset = cocos2d::CCPointZero;
@@ -380,7 +380,7 @@ public:
  * for example for popups, where a popup using `AnchorLayout` can be 
  * automatically resized without needing to manually shuffle nodes around
  */
-class GEODE_DLL AnchorLayout : public Layout {
+class FREOD_DLL AnchorLayout : public Layout {
 public:
     static AnchorLayout* create();
 
@@ -403,7 +403,7 @@ public:
  * Basically main use case is for FLAlertLayers (setting the size of the 
  * background and `m_buttonMenu` based on `m_mainLayer`)
  */
-class GEODE_DLL CopySizeLayout : public AnchorLayout {
+class FREOD_DLL CopySizeLayout : public AnchorLayout {
 protected:
     cocos2d::CCArray* m_targets;
 

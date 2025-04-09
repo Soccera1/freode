@@ -7,20 +7,20 @@
 #include "console.hpp"
 
 #include <hash/hash.hpp>
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/loader/Hook.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/loader/ModEvent.hpp>
-#include <Geode/utils/file.hpp>
-#include <Geode/utils/JsonValidation.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/loader/Hook.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/loader/ModEvent.hpp>
+#include <Freod/utils/file.hpp>
+#include <Freod/utils/JsonValidation.hpp>
 #include <optional>
 #include <string>
 #include <vector>
 #include <string_view>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 static constexpr const char* humanReadableDescForAction(ModRequestedAction action) {
     switch (action) {
@@ -52,7 +52,7 @@ Result<> Mod::Impl::setup() {
     (void) utils::file::createDirectoryAll(m_saveDirPath);
 
     // always create temp dir for all mods, even if disabled, so resources can be loaded
-    GEODE_UNWRAP(this->createTempDir().mapErr([](auto const& err) {
+    FREOD_UNWRAP(this->createTempDir().mapErr([](auto const& err) {
         return fmt::format("Unable to create temp dir: {}", err);
     }));
 
@@ -70,7 +70,7 @@ Result<> Mod::Impl::setup() {
         });
 
         // binaries on macos are merged, so make the platform binaries merged as well
-        auto const binaryPlatformId = PlatformID::toShortString(GEODE_PLATFORM_TARGET GEODE_MACOS(, true));
+        auto const binaryPlatformId = PlatformID::toShortString(FREOD_PLATFORM_TARGET FREOD_MACOS(, true));
 
         auto const binariesDir = searchPathRoot / m_metadata.getID() / "binaries" / binaryPlatformId;
         if (std::filesystem::exists(binariesDir))
@@ -112,7 +112,7 @@ ModMetadata Mod::Impl::getMetadata() const {
     return m_metadata;
 }
 
-#if defined(GEODE_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
+#if defined(FREOD_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
 void Mod::Impl::setMetadata(ModMetadata const& metadata) {
     m_metadata = metadata;
 }
@@ -146,7 +146,7 @@ bool Mod::Impl::isEnabled() const {
 }
 
 bool Mod::Impl::isInternal() const {
-    return m_metadata.getID() == "geode.loader";
+    return m_metadata.getID() == "freod.loader";
 }
 
 bool Mod::Impl::needsEarlyLoad() const {
@@ -180,7 +180,7 @@ Result<> Mod::Impl::loadData() {
     // Check if settings exist
     auto settingPath = m_saveDirPath / "settings.json";
     if (std::filesystem::exists(settingPath)) {
-        GEODE_UNWRAP_INTO(auto json, utils::file::readJson(settingPath));
+        FREOD_UNWRAP_INTO(auto json, utils::file::readJson(settingPath));
         auto load = m_settings->load(json);
         if (!load) {
             log::warn("Unable to load settings: {}", load.unwrapErr());
@@ -190,8 +190,8 @@ Result<> Mod::Impl::loadData() {
     // Saved values
     auto savedPath = m_saveDirPath / "saved.json";
     if (std::filesystem::exists(savedPath)) {
-        GEODE_UNWRAP_INTO(auto data, utils::file::readString(savedPath));
-        m_saved = GEODE_UNWRAP(matjson::parse(data).mapErr([](auto&& err) {
+        FREOD_UNWRAP_INTO(auto data, utils::file::readString(savedPath));
+        m_saved = FREOD_UNWRAP(matjson::parse(data).mapErr([](auto&& err) {
             return fmt::format("Unable to parse saved values: {}", err);
         }));
         if (!m_saved.isObject()) {
@@ -293,7 +293,7 @@ Result<> Mod::Impl::loadBinary() {
         return Err(
             fmt::format(
                 "Failed to load {}: No binary could be found for current platform.\n"
-                "This mod doesn't support this platform" GEODE_WINDOWS(" or something deleted it (like an antivirus)") ".",
+                "This mod doesn't support this platform" FREOD_WINDOWS(" or something deleted it (like an antivirus)") ".",
                 m_metadata.getID()
             )
         );
@@ -397,7 +397,7 @@ Result<> Mod::Impl::uninstall(bool deleteSaveData) {
     std::filesystem::remove(m_metadata.getPath(), ec);
     if (ec) {
         return Err(
-            "Unable to delete mod's .geode file: " + ec.message()
+            "Unable to delete mod's .freod file: " + ec.message()
         );
     }
 
@@ -576,13 +576,13 @@ Result<> Mod::Impl::createTempDir() {
         return Ok();
     }
 
-    // Create geode/temp
+    // Create freod/temp
     auto tempDir = dirs::getModRuntimeDir();
     if (!file::createDirectoryAll(tempDir)) {
         return Err("Unable to create mods' runtime directory");
     }
 
-    // Create geode/temp/mod.id
+    // Create freod/temp/mod.id
     auto tempPath = tempDir / m_metadata.getID();
     if (!file::createDirectoryAll(tempPath)) {
         return Err("Unable to create mod runtime directory");
@@ -594,8 +594,8 @@ Result<> Mod::Impl::createTempDir() {
     return Ok();
 }
 
-Result<> Mod::Impl::unzipGeodeFile(ModMetadata metadata) {
-    // Unzip .geode file into temp dir
+Result<> Mod::Impl::unzipFreodFile(ModMetadata metadata) {
+    // Unzip .freod file into temp dir
     auto tempDir = dirs::getModRuntimeDir() / metadata.getID();
 
     auto datePath = tempDir / "modified-at";
@@ -614,7 +614,7 @@ Result<> Mod::Impl::unzipGeodeFile(ModMetadata metadata) {
     std::filesystem::remove_all(tempDir, ec);
     if (ec) {
         auto message = ec.message();
-        #ifdef GEODE_IS_WINDOWS
+        #ifdef FREOD_IS_WINDOWS
             // Force the error message into English
             char* errorBuf = nullptr;
             FormatMessageA(
@@ -631,17 +631,17 @@ Result<> Mod::Impl::unzipGeodeFile(ModMetadata metadata) {
     (void)utils::file::createDirectoryAll(tempDir);
     auto res = file::writeString(datePath, modifiedHash);
     if (!res) {
-        log::warn("Failed to write modified date of geode zip: {}", res.unwrapErr());
+        log::warn("Failed to write modified date of freod zip: {}", res.unwrapErr());
     }
 
 
-    GEODE_UNWRAP_INTO(auto unzip, file::Unzip::create(metadata.getPath()));
+    FREOD_UNWRAP_INTO(auto unzip, file::Unzip::create(metadata.getPath()));
     if (!unzip.hasEntry(metadata.getBinaryName())) {
         return Err(
             fmt::format("Unable to find platform binary under the name \"{}\"", metadata.getBinaryName())
         );
     }
-    GEODE_UNWRAP(unzip.extractAllTo(tempDir));
+    FREOD_UNWRAP(unzip.extractAllTo(tempDir));
 
     return Ok();
 }
@@ -726,11 +726,11 @@ std::vector<LoadProblem> Mod::Impl::getProblems() const {
 }
 
 static Result<ModMetadata> getModImplInfo() {
-    auto json = GEODE_UNWRAP(matjson::parse(about::getLoaderModJson()).mapErr([](auto&& err) {
+    auto json = FREOD_UNWRAP(matjson::parse(about::getLoaderModJson()).mapErr([](auto&& err) {
         return fmt::format("Unable to parse mod.json: {}", err);
     }));
 
-    GEODE_UNWRAP_INTO(auto info, ModMetadata::create(json));
+    FREOD_UNWRAP_INTO(auto info, ModMetadata::create(json));
     return Ok(info);
 }
 
@@ -738,9 +738,9 @@ Mod* Loader::Impl::getInternalMod() {
     auto& mod = Mod::sharedMod<>;
     if (mod)
         return mod;
-    if (m_mods.contains("geode.loader")) {
+    if (m_mods.contains("freod.loader")) {
         log::warn("Something went wrong and Mod::sharedMod<> got unset after the internal mod was created! Setting sharedMod back...");
-        mod = m_mods["geode.loader"];
+        mod = m_mods["freod.loader"];
         return mod;
     }
     auto infoRes = getModImplInfo();
@@ -750,9 +750,9 @@ Mod* Loader::Impl::getInternalMod() {
             "Unable to create internal mod info: \"" + infoRes.unwrapErr() +
                 "\"\n"
                 "This is a fatal internal error in the loader, please "
-                "contact Geode developers immediately!"
+                "contact Freod developers immediately!"
         );
-        mod = new Mod(ModMetadata("geode.loader"));
+        mod = new Mod(ModMetadata("freod.loader"));
     }
     else {
         mod = new Mod(infoRes.unwrap());
@@ -763,8 +763,8 @@ Mod* Loader::Impl::getInternalMod() {
 }
 
 Result<> Loader::Impl::setupInternalMod() {
-    GEODE_UNWRAP(Mod::get()->m_impl->setup());
-    auto resourcesDir = dirs::getGeodeResourcesDir() / Mod::get()->getID();
-    GEODE_UNWRAP(ModMetadataImpl::getImpl(ModImpl::get()->m_metadata).addSpecialFiles(resourcesDir));
+    FREOD_UNWRAP(Mod::get()->m_impl->setup());
+    auto resourcesDir = dirs::getFreodResourcesDir() / Mod::get()->getID();
+    FREOD_UNWRAP(ModMetadataImpl::getImpl(ModImpl::get()->m_metadata).addSpecialFiles(resourcesDir));
     return Ok();
 }

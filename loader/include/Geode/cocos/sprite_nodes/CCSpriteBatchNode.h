@@ -62,13 +62,13 @@ class CCSprite;
 */
 class CC_DLL CCSpriteBatchNode : public CCNode, public CCTextureProtocol
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCSpriteBatchNode();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSpriteBatchNode, CCNode)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCSpriteBatchNode, CCNode)
     /**
      * @js NA
      * @lua NA

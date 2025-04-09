@@ -2,7 +2,7 @@
 
 #include "SettingV3.hpp"
 
-namespace geode {
+namespace freod {
     using Setting = SettingV3;
     using SettingGenerator = SettingGeneratorV3;
 

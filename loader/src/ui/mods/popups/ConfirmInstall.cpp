@@ -1,10 +1,10 @@
 #include "ConfirmInstall.hpp"
-#include <Geode/loader/Mod.hpp>
-#include <Geode/utils/ranges.hpp>
-#include <Geode/ui/Popup.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/utils/ranges.hpp>
+#include <Freod/ui/Popup.hpp>
 #include <server/DownloadManager.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 using namespace server;
 
 void askConfirmModInstalls() {

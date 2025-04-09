@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-namespace geode::utils {
+namespace freod::utils {
     template <typename T>
     struct is_chrono_duration {
         static constexpr bool value = false;
@@ -71,7 +71,7 @@ namespace geode::utils {
         std::string m_msg;
         Timer<Clock> m_timer;
 
-        // @geode-ignore(geode-alternative)
+        // @freod-ignore(freod-alternative)
         LogPerformance(std::string const& msg = "", std::ostream& out = std::cout) :
             m_msg(msg), m_output(out) {
             m_timer = Timer<Clock>();

@@ -3,22 +3,22 @@
 #include <loader/IPC.hpp>
 #include <loader/updater.hpp>
 
-#include <Geode/loader/IPC.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/utils/JsonValidation.hpp>
+#include <Freod/loader/IPC.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/utils/JsonValidation.hpp>
 #include <loader/LogImpl.hpp>
 
 #include <array>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 #include "load.hpp"
 
 $on_mod(Loaded) {
     ipc::listen("ipc-test", [](ipc::IPCEvent* event) -> matjson::Value {
-        return "Hello from Geode!";
+        return "Hello from Freod!";
     });
 
     ipc::listen("loader-info", [](ipc::IPCEvent* event) -> matjson::Value {
@@ -53,9 +53,9 @@ void tryLogForwardCompat() {
     if (!LoaderImpl::get()->isForwardCompatMode()) return;
     // TODO: change text later
     log::warn("+-----------------------------------------------------------------------------------------------+");
-    log::warn("| Geode is running in a newer version of GD than Geode targets.                                 |");
+    log::warn("| Freod is running in a newer version of GD than Freod targets.                                 |");
     log::warn("| UI is going to be disabled, platform console is forced on and crashes can be more common.     |");
-    log::warn("| However, if your game crashes, it is probably caused by an outdated mod and not Geode itself. |");
+    log::warn("| However, if your game crashes, it is probably caused by an outdated mod and not Freod itself. |");
     log::warn("+-----------------------------------------------------------------------------------------------+");
 }
 
@@ -69,9 +69,9 @@ void tryShowForwardCompat() {
     // TODO: change text later
     // console::messageBox(
     //     "Forward Compatibility Warning",
-    //     "Geode is running in a newer version of GD than Geode targets.\n"
+    //     "Freod is running in a newer version of GD than Freod targets.\n"
     //     "UI is going to be disabled, platform console is forced on and crashes can be more common.\n"
-    //     "However, if your game crashes, it is probably caused by an outdated mod and not Geode itself.",
+    //     "However, if your game crashes, it is probably caused by an outdated mod and not Freod itself.",
     //     Severity::Warning
     // );
 
@@ -81,7 +81,7 @@ void tryShowForwardCompat() {
     );
 }
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
 bool safeModeCheck() {
     // yes this is quite funny
     if (!(GetAsyncKeyState(VK_SHIFT) & (1 << 15))) {
@@ -91,13 +91,13 @@ bool safeModeCheck() {
     auto choice = MessageBoxA(
         NULL,
         "(This has been triggered because you were holding SHIFT)\n"
-        "Do you want to activate Geode Safe Mode? This disables loading any mods.",
+        "Do you want to activate Freod Safe Mode? This disables loading any mods.",
         "Attention",
         MB_YESNO | MB_ICONINFORMATION
     );
     return choice == IDYES;
 }
-#elif !defined(GEODE_IS_MACOS)
+#elif !defined(FREOD_IS_MACOS)
 // macos is defined in load.mm, this is for android
 // on android the launcher just adds the launch args to enable safe mode
 bool safeModeCheck() {
@@ -105,7 +105,7 @@ bool safeModeCheck() {
 }
 #endif
 
-int geodeEntry(void* platformData) {
+int freodEntry(void* platformData) {
     thread::setName("Main");
 
     console::setup();
@@ -123,12 +123,12 @@ int geodeEntry(void* platformData) {
 
     if (LoaderImpl::get()->getGameVersion().empty()) {
         log::info("Running {} {}{} on {}", Mod::get()->getName(), Mod::get()->getVersion(),
-            forwardCompatSuffix, PlatformID::toString(GEODE_PLATFORM_TARGET));
+            forwardCompatSuffix, PlatformID::toString(FREOD_PLATFORM_TARGET));
     }
     else {
         log::info("Running {} {} in Geometry Dash v{}{} on {}", Mod::get()->getName(),
             Mod::get()->getVersion(), LoaderImpl::get()->getGameVersion(), forwardCompatSuffix,
-            PlatformID::toString(GEODE_PLATFORM_TARGET));
+            PlatformID::toString(FREOD_PLATFORM_TARGET));
     }
 
     tryLogForwardCompat();
@@ -142,9 +142,9 @@ int geodeEntry(void* platformData) {
         auto internalSetupRes = LoaderImpl::get()->setupInternalMod();
         if (!internalSetupRes) {
             console::messageBox(
-                "Unable to Load Geode!",
+                "Unable to Load Freod!",
                 "There was a fatal error setting up "
-                "the internal mod and Geode can not be loaded: " + internalSetupRes.unwrapErr()
+                "the internal mod and Freod can not be loaded: " + internalSetupRes.unwrapErr()
             );
             LoaderImpl::get()->forceReset();
             return 1;
@@ -168,9 +168,9 @@ int geodeEntry(void* platformData) {
         auto setupRes = LoaderImpl::get()->setup();
         if (!setupRes) {
             console::messageBox(
-                "Unable to Load Geode!",
+                "Unable to Load Freod!",
                 "There was an unknown fatal error setting up "
-                "the loader and Geode can not be loaded. "
+                "the loader and Freod can not be loaded. "
                 "(" + setupRes.unwrapErr() + ")"
             );
             LoaderImpl::get()->forceReset();

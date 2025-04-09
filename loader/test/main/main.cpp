@@ -1,11 +1,11 @@
-#include <Geode/Loader.hpp>
-#include <Geode/loader/ModEvent.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/Loader.hpp>
+#include <Freod/loader/ModEvent.hpp>
+#include <Freod/utils/cocos.hpp>
 #include <chrono>
 #include "../dependency/main.hpp"
-#include "Geode/utils/general.hpp"
+#include "Freod/utils/general.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 auto test = []() {
     log::info("Static logged");
@@ -28,7 +28,7 @@ $execute {
 }
 
 // Coroutines
-#include <Geode/utils/async.hpp>
+#include <Freod/utils/async.hpp>
 auto advanceFrame() {
     auto [task, finish, progress, cancelled] = Task<void>::spawn();
     queueInMainThread(std::bind(finish, true));
@@ -60,7 +60,7 @@ $execute {
     }
 }
 
-#include <Geode/modify/MenuLayer.hpp>
+#include <Freod/modify/MenuLayer.hpp>
 struct $modify(MenuLayer) {
     bool init() {
         if (!MenuLayer::init())
@@ -95,7 +95,7 @@ struct $modify(MenuLayer) {
 
         log::debug("should run second!");
 
-        if (GEODE_UNWRAP_IF_OK(val, api::addNumbers(5, 6))) {
+        if (FREOD_UNWRAP_IF_OK(val, api::addNumbers(5, 6))) {
             log::info("5 + 6 = {}", val);
         }
         else {
@@ -103,7 +103,7 @@ struct $modify(MenuLayer) {
         }
 
         api::Test test;
-        if (GEODE_UNWRAP_IF_OK(val, test.addNumbers(5, 6))) {
+        if (FREOD_UNWRAP_IF_OK(val, test.addNumbers(5, 6))) {
             log::info("5 + 6 = {}", val);
         }
         else {
@@ -116,7 +116,7 @@ struct $modify(MenuLayer) {
 };
 
 // Modify
-#include <Geode/modify/GJGarageLayer.hpp>
+#include <Freod/modify/GJGarageLayer.hpp>
 
 struct GJGarageLayerTest : Modify<GJGarageLayerTest, GJGarageLayer> {
     struct Fields {
@@ -155,7 +155,7 @@ struct GJGarageLayerTest : Modify<GJGarageLayerTest, GJGarageLayer> {
         addChild(label2);
 
         // Dispatch system pt. 1
-        MyDispatchEvent("geode.test/test-garage-open", this).post();
+        MyDispatchEvent("freod.test/test-garage-open", this).post();
 
         if (s_recievedEvent.size() > 0) {
             auto label = CCLabelBMFont::create("Event works!", "bigFont.fnt");
@@ -170,7 +170,7 @@ struct GJGarageLayerTest : Modify<GJGarageLayerTest, GJGarageLayer> {
 };
 
 
-#include <Geode/modify/GJGarageLayer.hpp>
+#include <Freod/modify/GJGarageLayer.hpp>
 
 struct GJGarageLayerTest2 : Modify<GJGarageLayerTest2, GJGarageLayer> {
     struct Fields {

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 #include <cocos2d.h>
 
-namespace geode {
+namespace freod {
     enum WrappingMode {
         NO_WRAP,
         WORD_WRAP,
@@ -22,7 +22,7 @@ namespace geode {
      * 
      * Contact me on Discord (\@smjs) if you have any questions, suggestions or bugs.
     */
-    class GEODE_DLL SimpleTextArea : public cocos2d::CCNode {
+    class FREOD_DLL SimpleTextArea : public cocos2d::CCNode {
     public:
         static SimpleTextArea* create(const std::string& text, const std::string& font = "chatFont.fnt", float scale = 1.0f);
         static SimpleTextArea* create(const std::string& text, const std::string& font, float scale, float width);

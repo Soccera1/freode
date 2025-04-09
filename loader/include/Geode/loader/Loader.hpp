@@ -1,7 +1,7 @@
 #pragma once
 
 #include <filesystem>
-#include <Geode/Result.hpp>
+#include <Freod/Result.hpp>
 #include "Log.hpp"
 #include "ModEvent.hpp"
 #include "ModMetadata.hpp"
@@ -13,10 +13,10 @@
 #include <optional>
 #include <string_view>
 
-namespace geode {
+namespace freod {
     using ScheduledFunction = std::function<void()>;
 
-    struct InvalidGeodeFile {
+    struct InvalidFreodFile {
         std::filesystem::path path;
         std::string reason;
     };
@@ -37,8 +37,8 @@ namespace geode {
             PresentIncompatibility,
             UnzipFailed,
             UnsupportedVersion,
-            UnsupportedGeodeVersion,
-            NeedsNewerGeodeVersion,
+            UnsupportedFreodVersion,
+            NeedsNewerFreodVersion,
             DisabledDependency,
             OutdatedDependency,
             OutdatedIncompatibility,
@@ -55,8 +55,8 @@ namespace geode {
         bool isOutdated() const {
             return 
                 type == LoadProblem::Type::UnsupportedVersion ||
-                type == LoadProblem::Type::NeedsNewerGeodeVersion ||
-                type == LoadProblem::Type::UnsupportedGeodeVersion;
+                type == LoadProblem::Type::NeedsNewerFreodVersion ||
+                type == LoadProblem::Type::UnsupportedFreodVersion;
         }
         bool isProblem() const {
             return !isSuggestion() && !isOutdated();
@@ -65,7 +65,7 @@ namespace geode {
 
     class LoaderImpl;
 
-    class GEODE_DLL Loader final {
+    class FREOD_DLL Loader final {
     private:
         class Impl;
         std::unique_ptr<Impl> m_impl;
@@ -121,7 +121,7 @@ namespace geode {
         bool hasLaunchArgument(std::string_view name) const;
         /**
          * Get a launch argument. These are passed into the game as command-line arguments
-         * with the format `--geode:arg-name=value`.
+         * with the format `--freod:arg-name=value`.
          * @param name The argument name
          * @return The value, if present
          */
@@ -168,7 +168,7 @@ namespace geode {
      * 
      * @param func the function to queue
     */
-    inline GEODE_HIDDEN void queueInMainThread(ScheduledFunction&& func) {
+    inline FREOD_HIDDEN void queueInMainThread(ScheduledFunction&& func) {
         Loader::get()->queueInMainThread(std::forward<ScheduledFunction>(func));
     }
 
@@ -177,7 +177,7 @@ namespace geode {
      *
      * @return Mod* The next mod to load
     */
-    inline GEODE_HIDDEN Mod* takeNextLoaderMod() {
+    inline FREOD_HIDDEN Mod* takeNextLoaderMod() {
         return Loader::get()->takeNextMod();
     }
 }

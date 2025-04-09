@@ -7,9 +7,9 @@
 #include <string_view>
 #include <coroutine>
 
-namespace geode {
+namespace freod {
     struct TaskVoid {};
-    namespace geode_internal {
+    namespace freod_internal {
         template <class T, class P>
         struct TaskPromiseBase;
 
@@ -27,7 +27,7 @@ namespace geode {
      * Tasks are designed to provide a thread-safe general purpose abstraction 
      * for dealing with any asynchronous operations.
      * The `Task` class satisfies `EventFilter` and as such is listened 
-     * to using the Geode events system; tasks may have multiple listeners, and 
+     * to using the Freod events system; tasks may have multiple listeners, and 
      * even if a listener is attached after the Task has finished it will
      * receive the finished value. 
      * Tasks are a very cheap and tiny struct that just have a reference to 
@@ -176,10 +176,10 @@ namespace geode {
             friend class Task;
 
             template <class, class>
-            friend struct geode_internal::TaskPromiseBase;
+            friend struct freod_internal::TaskPromiseBase;
 
             template <class, class>
-            friend struct geode_internal::TaskAwaiter;
+            friend struct freod_internal::TaskAwaiter;
 
         public:
             Handle(PrivateMarker, std::string_view name) : m_name(name) {}
@@ -209,7 +209,7 @@ namespace geode {
          * is posted; the `Task` class itself is used as an event filter to 
          * catch the task events for that specific task
          */
-        class Event final : public geode::Event {
+        class Event final : public freod::Event {
         private:
             std::shared_ptr<Handle> m_handle;
             std::variant<Type*, P*, Cancel> m_value;
@@ -337,10 +337,10 @@ namespace geode {
         friend class Task;
 
         template <class, class>
-        friend struct geode_internal::TaskPromiseBase;
+        friend struct freod_internal::TaskPromiseBase;
 
         template <class, class>
-        friend struct geode_internal::TaskAwaiter;
+        friend struct freod_internal::TaskAwaiter;
 
     public:
         // Allow default-construction
@@ -993,8 +993,8 @@ namespace geode {
 // }
 // ```
 
-namespace geode {
-    namespace geode_internal {
+namespace freod {
+    namespace freod_internal {
         template <class T, class P>
         struct TaskPromiseBase {
             using MyTask = Task<T, P>;
@@ -1101,11 +1101,11 @@ namespace geode {
 }
 
 template <class T, class P>
-auto operator co_await(geode::Task<T, P> task) {
-    return geode::geode_internal::TaskAwaiter<T, P>{task};
+auto operator co_await(freod::Task<T, P> task) {
+    return freod::freod_internal::TaskAwaiter<T, P>{task};
 }
 
 template <class T, class P, class... Args>
-struct std::coroutine_traits<geode::Task<T, P>, Args...> {
-    using promise_type = geode::geode_internal::TaskPromise<T, P>;
+struct std::coroutine_traits<freod::Task<T, P>, Args...> {
+    using promise_type = freod::freod_internal::TaskPromise<T, P>;
 };

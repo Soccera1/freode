@@ -58,9 +58,9 @@ class CC_DLL CCProgressTimer : public CCNodeRGBA
 , public CCGLBufferedNode
 #endif // EMSCRIPTEN
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCProgressTimer, CCNodeRGBA)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCProgressTimer, CCNodeRGBA)
     /**
      * @js ctor
      */

@@ -3,7 +3,7 @@
 #include "Types.hpp"
 #include "../platform/cplatform.h"
 
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 #include <ccTypes.h>
 #include <chrono>
 #include <filesystem>
@@ -15,26 +15,26 @@
 // for std::optional
 #include <fmt/std.h>
 
-namespace geode {
+namespace freod {
     // these are here because theyre special :-)
-    GEODE_DLL std::string format_as(cocos2d::CCObject const*);
-    GEODE_DLL std::string format_as(cocos2d::CCArray*);
-    GEODE_DLL std::string format_as(cocos2d::CCNode*);
+    FREOD_DLL std::string format_as(cocos2d::CCObject const*);
+    FREOD_DLL std::string format_as(cocos2d::CCArray*);
+    FREOD_DLL std::string format_as(cocos2d::CCNode*);
     class Mod;
-    GEODE_DLL std::string format_as(Mod*);
+    FREOD_DLL std::string format_as(Mod*);
 }
 
-namespace geode::log::impl {
+namespace freod::log::impl {
     // What is this all for? well, fmtlib disallows writing custom formatters for non-void pointer types.
     // So instead, we just wrap everything and pass it a string instead.
 
     template <class T>
-    concept IsWrappedCocos = std::is_pointer_v<std::decay_t<T>> && requires(T ptr) { geode::format_as(ptr); };
+    concept IsWrappedCocos = std::is_pointer_v<std::decay_t<T>> && requires(T ptr) { freod::format_as(ptr); };
 
     template <class T>
-    GEODE_INLINE GEODE_HIDDEN decltype(auto) wrapCocosObj(T&& value) {
+    FREOD_INLINE FREOD_HIDDEN decltype(auto) wrapCocosObj(T&& value) {
         if constexpr (IsWrappedCocos<T>) {
-            return geode::format_as(value);
+            return freod::format_as(value);
         } else {
             return std::forward<T>(value);
         }
@@ -52,36 +52,36 @@ namespace geode::log::impl {
 }
 
 namespace cocos2d {
-    GEODE_DLL std::string format_as(cocos2d::ccColor3B const&);
-    GEODE_DLL std::string format_as(cocos2d::ccColor4B const&);
-    GEODE_DLL std::string format_as(cocos2d::ccColor4F const&);
-    GEODE_DLL std::string format_as(cocos2d::CCPoint const&);
-    GEODE_DLL std::string format_as(cocos2d::CCRect const&);
-    GEODE_DLL std::string format_as(cocos2d::CCSize const&);
+    FREOD_DLL std::string format_as(cocos2d::ccColor3B const&);
+    FREOD_DLL std::string format_as(cocos2d::ccColor4B const&);
+    FREOD_DLL std::string format_as(cocos2d::ccColor4F const&);
+    FREOD_DLL std::string format_as(cocos2d::CCPoint const&);
+    FREOD_DLL std::string format_as(cocos2d::CCRect const&);
+    FREOD_DLL std::string format_as(cocos2d::CCSize const&);
 }
 
 namespace gd {
-    GEODE_INLINE GEODE_HIDDEN std::string format_as(gd::string const& value) {
+    FREOD_INLINE FREOD_HIDDEN std::string format_as(gd::string const& value) {
         return value;
     }
 }
 
 namespace std::filesystem {
-    GEODE_INLINE GEODE_HIDDEN std::string format_as(std::filesystem::path const& value) {
+    FREOD_INLINE FREOD_HIDDEN std::string format_as(std::filesystem::path const& value) {
         return value.string();
     }
 }
 
-namespace geode {
+namespace freod {
 
     class Mod;
     Mod* getMod();
 
     namespace log {
         using log_clock = std::chrono::system_clock;
-        GEODE_DLL std::string generateLogName();
+        FREOD_DLL std::string generateLogName();
 
-        GEODE_DLL void vlogImpl(Severity, Mod*, fmt::string_view format, fmt::format_args args);
+        FREOD_DLL void vlogImpl(Severity, Mod*, fmt::string_view format, fmt::format_args args);
 
         template <typename... Args>
         inline void logImpl(Severity severity, Mod* mod, impl::FmtStr<Args...> str, Args&&... args) {
@@ -111,10 +111,10 @@ namespace geode {
         }
 
         /// Returns the path to the current log file
-        GEODE_DLL std::filesystem::path const& getCurrentLogPath();
+        FREOD_DLL std::filesystem::path const& getCurrentLogPath();
 
-        GEODE_DLL void pushNest(Mod* mod);
-        GEODE_DLL void popNest(Mod* mod);
+        FREOD_DLL void pushNest(Mod* mod);
+        FREOD_DLL void popNest(Mod* mod);
 
         inline void pushNest() {
             pushNest(getMod());
@@ -159,13 +159,13 @@ namespace geode {
         private:
             class Impl;
             std::shared_ptr<Nest::Impl> m_impl;
-            friend GEODE_DLL std::shared_ptr<Nest> saveNest();
-            friend GEODE_DLL void loadNest(std::shared_ptr<Nest> const& nest);
+            friend FREOD_DLL std::shared_ptr<Nest> saveNest();
+            friend FREOD_DLL void loadNest(std::shared_ptr<Nest> const& nest);
         public:
             explicit Nest(std::shared_ptr<Nest::Impl> impl);
         };
 
-        [[nodiscard]] GEODE_DLL std::shared_ptr<Nest> saveNest();
-        GEODE_DLL void loadNest(std::shared_ptr<Nest> const& nest);
+        [[nodiscard]] FREOD_DLL std::shared_ptr<Nest> saveNest();
+        FREOD_DLL void loadNest(std::shared_ptr<Nest> const& nest);
     }
 }

@@ -1,7 +1,7 @@
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Mod.hpp>
 
-namespace geode {
+namespace freod {
     /**
      * To bypass the need for cyclic dependencies,
      * this function does the exact same as Mod::get()
@@ -13,12 +13,12 @@ namespace geode {
     }
 }
 
-GEODE_API void geodeImplicitEntry() {
+FREOD_API void freodImplicitEntry() {
     // to make sure the instance is set into the sharedMod<> in load time
-    (void)geode::getMod();
+    (void)freod::getMod();
 }
 
-#if defined(_DEBUG) && defined(GEODE_IS_WINDOWS)
+#if defined(_DEBUG) && defined(FREOD_IS_WINDOWS)
 
 // This bypasses any of the heap validation measures that are injected when compiling in Debug.
 // Without these, the game will very likely crash when the mod tries to free memory allocated by the game (or another non-debug mod).

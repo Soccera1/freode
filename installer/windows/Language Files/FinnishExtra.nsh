@@ -7,10 +7,10 @@ ${LangFileString} MUI_UNTEXT_WELCOME_INFO_TEXT "Saat tarvittavia ohjeita sitä m
 
 ; installer
 
-${LangFileString} GEODE_TEXT_GD_MISSING "$\r$\n$\r$\nValitussa kansiossa ei ole Geometry Dash -peliä asennettuna."
-${LangFileString} GEODE_TEXT_GD_OLD "$\r$\n$\r$\nGeometry Dash -pelisi on vanhentunut, eikä ole yhteensopiva tämän Geode-version kanssa!"
-${LangFileString} GEODE_TEXT_MOD_LOADER_ALREADY_INSTALLED "Valitussa kansiossa on muita modeja asennettuna!$\r$\nGeode tulee poistamaan ne. (the dll trademark)"
+${LangFileString} FREOD_TEXT_GD_MISSING "$\r$\n$\r$\nValitussa kansiossa ei ole Geometry Dash -peliä asennettuna."
+${LangFileString} FREOD_TEXT_GD_OLD "$\r$\n$\r$\nGeometry Dash -pelisi on vanhentunut, eikä ole yhteensopiva tämän Freod-version kanssa!"
+${LangFileString} FREOD_TEXT_MOD_LOADER_ALREADY_INSTALLED "Valitussa kansiossa on muita modeja asennettuna!$\r$\nFreod tulee poistamaan ne. (the dll trademark)"
 
 ; uninstaller
 
-${LangFileString} GEODE_UNTEXT_GEODE_MISSING "Valitussa kansiossa ei ole Geode -modilataajaa asennettuna."
+${LangFileString} FREOD_UNTEXT_FREOD_MISSING "Valitussa kansiossa ei ole Freod -modilataajaa asennettuna."

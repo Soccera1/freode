@@ -30,7 +30,7 @@
 #pragma once
 #include "c++config.h"
 
-namespace geode::stl
+namespace freod::stl
 {
 _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 

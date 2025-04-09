@@ -38,7 +38,7 @@ NS_CC_BEGIN
  */
 class CC_DLL CCRGBAProtocol
 {
-    // GEODE_FRIEND_MODIFY
+    // FREOD_FRIEND_MODIFY
 public:
     /** 
      * Changes the color with R,G,B bytes
@@ -51,7 +51,7 @@ public:
      * Changes the color with R,G,B,A bytes
      *
      * @param color Example: ccc4(255,100,0,255) means R=255, G=100, B=0, A=255
-     * @note Geode addition
+     * @note Freod addition
     */
     inline void setColor(const ccColor4B& color) {
         this->setColor(ccColor3B{color.r, color.g, color.b});
@@ -62,7 +62,7 @@ public:
      * Changes the color with R,G,B,A floats
      *
      * @param color Example: ccc4f(1.0, 0.5, 0.25, 1.0) means R=255, G=127, B=63, A=255
-     * @note Geode addition
+     * @note Freod addition
     */
     inline void setColor(const ccColor4F& color) {
         this->setColor(ccc4BFromccc4F(color));
@@ -157,7 +157,7 @@ public:
  */
 class CC_DLL CCBlendProtocol
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      * Sets the source blending function.
@@ -188,7 +188,7 @@ public:
  */
 class CC_DLL CCTextureProtocol : public CCBlendProtocol
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      * Returns the currently used texture
@@ -214,7 +214,7 @@ public:
  */
 class CC_DLL CCLabelProtocol
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      * Sets a new label using an string
@@ -238,7 +238,7 @@ public:
  */
 class CC_DLL CCDirectorDelegate
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** 
      * Will be called by CCDirector when the projection is updated, and "custom" projection is used

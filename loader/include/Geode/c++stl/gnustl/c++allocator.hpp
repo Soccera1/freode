@@ -33,7 +33,7 @@
 #include "ext/new_allocator.h"
 
 #if __cplusplus >= 201103L
-namespace geode::stl {
+namespace freod::stl {
   /**
    *  @brief  An alias to the base class for std::allocator.
    *  @ingroup allocators

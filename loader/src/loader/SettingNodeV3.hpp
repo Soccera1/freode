@@ -1,12 +1,12 @@
 #pragma once
 
-#include <Geode/loader/Setting.hpp>
-#include <Geode/binding/CCMenuItemToggler.hpp>
-#include <Geode/binding/ColorChannelSprite.hpp>
-#include <Geode/binding/Slider.hpp>
-#include <Geode/ui/ColorPickPopup.hpp>
+#include <Freod/loader/Setting.hpp>
+#include <Freod/binding/CCMenuItemToggler.hpp>
+#include <Freod/binding/ColorChannelSprite.hpp>
+#include <Freod/binding/Slider.hpp>
+#include <Freod/ui/ColorPickPopup.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !! If these classes are ever exposed in a public header, make sure to pimpl EVERYTHING! !!

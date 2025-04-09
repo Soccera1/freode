@@ -65,7 +65,7 @@
 #include "concept_check.h"
 #include "predefined_ops.h"
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 #if __cplusplus < 201103L
@@ -990,7 +990,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
 	    typename iterator_traits<_ForwardIterator>::value_type, _Tp>)
       __glibcxx_requires_partitioned_lower(__first, __last, __val);
 
-      return geode::stl::__lower_bound(__first, __last, __val,
+      return freod::stl::__lower_bound(__first, __last, __val,
 				__gnu_cxx::__ops::__iter_less_val());
     }
 

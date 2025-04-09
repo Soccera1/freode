@@ -199,7 +199,7 @@ namespace __ops
   template<typename _Iterator1>
     struct _Iter_equals_iter
     {
-      typename geode::stl::iterator_traits<_Iterator1>::reference _M_ref;
+      typename freod::stl::iterator_traits<_Iterator1>::reference _M_ref;
 
       _Iter_equals_iter(_Iterator1 __it1)
 	: _M_ref(*__it1)
@@ -261,7 +261,7 @@ namespace __ops
     struct _Iter_comp_to_iter
     {
       _Compare _M_comp;
-      typename geode::stl::iterator_traits<_Iterator1>::reference _M_ref;
+      typename freod::stl::iterator_traits<_Iterator1>::reference _M_ref;
 
       _Iter_comp_to_iter(_Compare __comp, _Iterator1 __it1)
 	: _M_comp(__comp), _M_ref(*__it1)

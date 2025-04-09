@@ -36,7 +36,7 @@
 #include "type_traits.h"
 #include "ext/numeric_traits.h"
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   template<typename _Alloc, typename _Tp>

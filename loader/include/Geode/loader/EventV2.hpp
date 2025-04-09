@@ -2,7 +2,7 @@
 
 #include "Event.hpp"
 
-namespace geode::event::v2 {
+namespace freod::event::v2 {
 	template <is_event T>
 	struct WrapFilter : public EventFilter<T> {
 	    std::function<bool(T*)> m_filterFunc;

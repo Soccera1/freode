@@ -1,12 +1,12 @@
 ﻿#pragma once
 
-#include <Geode/loader/Hook.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Hook.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Mod.hpp>
 #include "ModImpl.hpp"
 #include "ModPatch.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 class Patch::Impl final : ModPatch {
 public:

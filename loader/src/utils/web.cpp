@@ -1,5 +1,5 @@
-#include <Geode/Result.hpp>
-#include <Geode/utils/general.hpp>
+#include <Freod/Result.hpp>
+#include <Freod/utils/general.hpp>
 #include <filesystem>
 #include <fmt/core.h>
 #include <fstream>
@@ -9,13 +9,13 @@
 #include <curl/curl.h>
 #include <ca_bundle.h>
 
-#include <Geode/utils/web.hpp>
-#include <Geode/utils/map.hpp>
-#include <Geode/utils/terminate.hpp>
+#include <Freod/utils/web.hpp>
+#include <Freod/utils/map.hpp>
+#include <Freod/utils/terminate.hpp>
 #include <sstream>
 
-using namespace geode::prelude;
-using namespace geode::utils::web;
+using namespace freod::prelude;
+using namespace freod::utils::web;
 
 static long unwrapProxyType(ProxyType type) {
     switch (type) {
@@ -130,7 +130,7 @@ Result<std::string> WebResponse::string() const {
     return Ok(std::string(m_impl->m_data.begin(), m_impl->m_data.end()));
 }
 Result<matjson::Value> WebResponse::json() const {
-    GEODE_UNWRAP_INTO(auto value, this->string());
+    FREOD_UNWRAP_INTO(auto value, this->string());
     return matjson::parse(value).mapErr([&](auto const& err) {
         return fmt::format("Error parsing JSON: {}", err);
     });

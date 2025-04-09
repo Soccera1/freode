@@ -1,16 +1,16 @@
-﻿#include <Geode/loader/IPC.hpp>
+﻿#include <Freod/loader/IPC.hpp>
 #include <loader/IPC.hpp>
 
 #include <thread>
 #include <optional>
 #include <string>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 static constexpr auto IPC_BUFFER_SIZE = 512;
 
 void ipcPipeThread(HANDLE pipe) {
-    thread::setName("Geode IPC Pipe");
+    thread::setName("Freod IPC Pipe");
 
     char buffer[IPC_BUFFER_SIZE * sizeof(TCHAR)];
     DWORD read;
@@ -37,7 +37,7 @@ void ipcPipeThread(HANDLE pipe) {
 
 void ipc::setup() {
     std::thread ipcThread([]() {
-        thread::setName("Geode Main IPC");
+        thread::setName("Freod Main IPC");
         while (true) {
             auto pipe = CreateNamedPipeA(
                 ipc::IPC_PIPE_NAME,

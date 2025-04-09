@@ -136,7 +136,7 @@ public:
      *  @js ctor
      */
     CCControl();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCControl, CCLayerRGBA)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCControl, CCLayerRGBA)
     
     virtual bool init(void);
     /**

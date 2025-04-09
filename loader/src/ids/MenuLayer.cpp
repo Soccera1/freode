@@ -1,14 +1,14 @@
-#include <Geode/modify/IDManager.hpp>
-#include <Geode/modify/MenuLayer.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/utils/NodeIDs.hpp>
-#include <Geode/ui/BasedButtonSprite.hpp>
-#include <Geode/ui/SimpleAxisLayout.hpp>
-#include <Geode/binding/GameManager.hpp>
-#include <Geode/binding/PlatformToolbox.hpp>
+#include <Freod/modify/IDManager.hpp>
+#include <Freod/modify/MenuLayer.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/utils/NodeIDs.hpp>
+#include <Freod/ui/BasedButtonSprite.hpp>
+#include <Freod/ui/SimpleAxisLayout.hpp>
+#include <Freod/binding/GameManager.hpp>
+#include <Freod/binding/PlatformToolbox.hpp>
 
-using namespace geode::prelude;
-using namespace geode::node_ids;
+using namespace freod::prelude;
+using namespace freod::node_ids;
 
 $register_ids(MenuLayer) {
     // set IDs to everything

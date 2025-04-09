@@ -60,7 +60,7 @@ class CC_DLL CCControlHuePicker : public CCControl
     CC_SYNTHESIZE_READONLY(CCPoint, m_startPos, StartPos);
 
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCControlHuePicker, CCControl)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCControlHuePicker, CCControl)
     CCControlHuePicker();
     virtual ~CCControlHuePicker();
     virtual bool initWithTargetAndPos(CCNode* target, CCPoint pos);

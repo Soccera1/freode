@@ -1,12 +1,12 @@
-#include <Geode/loader/IPC.hpp>
+#include <Freod/loader/IPC.hpp>
 #include <loader/LoaderImpl.hpp>
-#include <Geode/cocos/platform/android/jni/JniHelper.h>
+#include <Freod/cocos/platform/android/jni/JniHelper.h>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 std::string Loader::Impl::getGameVersion() {
     if (m_gdVersion.empty()) {
-        std::ifstream version_file("/data/data/com.geode.launcher/files/game_version.txt");
+        std::ifstream version_file("/data/data/com.freod.launcher/files/game_version.txt");
         if (!version_file) {
             // probably on an older launcher
             return m_gdVersion;
@@ -45,7 +45,7 @@ std::string Loader::Impl::getLaunchCommand() const {
     std::string launchArgs = "";
 
     JniMethodInfo t;
-    if (JniHelper::getStaticMethodInfo(t, "com/geode/launcher/utils/GeodeUtils", "getLaunchArguments", "()Ljava/lang/String;")) {
+    if (JniHelper::getStaticMethodInfo(t, "com/freod/launcher/utils/FreodUtils", "getLaunchArguments", "()Ljava/lang/String;")) {
         jstring str = reinterpret_cast<jstring>(t.env->CallStaticObjectMethod(t.classID, t.methodID));
         t.env->DeleteLocalRef(t.classID);
         launchArgs = JniHelper::jstring2string(str);

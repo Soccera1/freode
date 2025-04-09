@@ -2,6 +2,6 @@
 
 #include "modify/Modify.hpp"
 
-#include <Geode/GeneratedModify.hpp>
+#include <Freod/GeneratedModify.hpp>
 
-using namespace geode::modifier;
+using namespace freod::modifier;

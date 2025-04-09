@@ -49,7 +49,7 @@
 #include <type_traits>
 #endif
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /**

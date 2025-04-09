@@ -1,8 +1,8 @@
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/ui/MDPopup.hpp>
-#include <Geode/utils/string.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/ui/MDPopup.hpp>
+#include <Freod/utils/string.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 bool MDPopup::setup(
     std::string const& title, std::string const& info, char const* btn1Text, char const* btn2Text,

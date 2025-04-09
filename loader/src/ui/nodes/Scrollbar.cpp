@@ -1,9 +1,9 @@
-#include <Geode/ui/Scrollbar.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/binding/CCContentLayer.hpp>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/ui/Scrollbar.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/binding/CCContentLayer.hpp>
+#include <Freod/loader/Mod.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 bool Scrollbar::ccTouchBegan(CCTouch* touch, CCEvent* event) {
     // hitbox

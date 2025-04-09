@@ -1,15 +1,15 @@
-#include "Geode/utils/file.hpp"
-#include <Geode/DefaultInclude.hpp>
+#include "Freod/utils/file.hpp"
+#include <Freod/DefaultInclude.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-#include <Geode/loader/Dirs.hpp>
+#include <Freod/loader/Dirs.hpp>
 #import <AppKit/AppKit.h>
-#include <Geode/Utils.hpp>
-#include <Geode/binding/GameManager.hpp>
+#include <Freod/Utils.hpp>
+#include <Freod/binding/GameManager.hpp>
 #include <objc/runtime.h>
-#include <Geode/utils/web.hpp>
-#include <Geode/utils/Task.hpp>
+#include <Freod/utils/web.hpp>
+#include <Freod/utils/Task.hpp>
 
 #define CommentType CommentTypeDummy
 #import <Cocoa/Cocoa.h>
@@ -175,7 +175,7 @@ namespace {
 
 @end
 
-GEODE_DLL Task<Result<std::filesystem::path>> file::pick(file::PickMode mode, file::FilePickOptions const& options) {
+FREOD_DLL Task<Result<std::filesystem::path>> file::pick(file::PickMode mode, file::FilePickOptions const& options) {
     using RetTask = Task<Result<std::filesystem::path>>;
     return RetTask::runWithCallback([mode, options](auto resultCallback, auto progress, auto cancelled) {
         [FileDialog dispatchFilePickerWithMode:mode options:options multiple:false onCompletion: ^(FileResult&& result) {
@@ -193,7 +193,7 @@ GEODE_DLL Task<Result<std::filesystem::path>> file::pick(file::PickMode mode, fi
     });
 }
 
-GEODE_DLL Task<Result<std::vector<std::filesystem::path>>> file::pickMany(file::FilePickOptions const& options) {
+FREOD_DLL Task<Result<std::vector<std::filesystem::path>>> file::pickMany(file::FilePickOptions const& options) {
     using RetTask = Task<Result<std::vector<std::filesystem::path>>>;
     return RetTask::runWithCallback([options](auto resultCallback, auto progress, auto cancelled) {
         [FileDialog dispatchFilePickerWithMode: file::PickMode::OpenFile options:options multiple:true onCompletion: ^(FileResult&& result) {
@@ -243,10 +243,10 @@ std::filesystem::path dirs::getSaveDir() {
 }
 
 std::filesystem::path dirs::getModRuntimeDir() {
-    return dirs::getGeodeDir() / "unzipped";
+    return dirs::getFreodDir() / "unzipped";
 }
 
-void geode::utils::game::exit() {
+void freod::utils::game::exit() {
     if (CCApplication::sharedApplication() &&
         (GameManager::get()->m_playLayer || GameManager::get()->m_levelEditorLayer)) {
         log::error("Cannot exit in PlayLayer or LevelEditorLayer!");
@@ -270,7 +270,7 @@ void geode::utils::game::exit() {
     ), CCDirector::get()->getRunningScene(), false);
 }
 
-void geode::utils::game::restart() {
+void freod::utils::game::restart() {
     if (CCApplication::sharedApplication() &&
         (GameManager::get()->m_playLayer || GameManager::get()->m_levelEditorLayer)) {
         log::error("Cannot restart in PlayLayer or LevelEditorLayer!");
@@ -290,11 +290,11 @@ void geode::utils::game::restart() {
     exit();
 }
 
-void geode::utils::game::launchLoaderUninstaller(bool deleteSaveData) {
-    log::error("Launching Geode uninstaller is not supported on macOS");
+void freod::utils::game::launchLoaderUninstaller(bool deleteSaveData) {
+    log::error("Launching Freod uninstaller is not supported on macOS");
 }
 
-Result<> geode::hook::addObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
+Result<> freod::hook::addObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
     auto cls = objc_getClass(className.c_str());
     if (!cls)
         return Err("Class not found");
@@ -305,7 +305,7 @@ Result<> geode::hook::addObjcMethod(std::string const& className, std::string co
 
     return Ok();
 }
-Result<void*> geode::hook::getObjcMethodImp(std::string const& className, std::string const& selectorName) {
+Result<void*> freod::hook::getObjcMethodImp(std::string const& className, std::string const& selectorName) {
     auto cls = objc_getClass(className.c_str());
     if (!cls)
         return Err("Class not found");
@@ -319,7 +319,7 @@ Result<void*> geode::hook::getObjcMethodImp(std::string const& className, std::s
     return Ok((void*)method_getImplementation(method));
 }
 
-Result<void*> geode::hook::replaceObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
+Result<void*> freod::hook::replaceObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
     auto cls = objc_getClass(className.c_str());
     if (!cls)
         return Err("Class not found");
@@ -335,28 +335,28 @@ Result<void*> geode::hook::replaceObjcMethod(std::string const& className, std::
     return Ok((void*)oldImp);
 }
 
-bool geode::utils::permission::getPermissionStatus(Permission permission) {
+bool freod::utils::permission::getPermissionStatus(Permission permission) {
     return true; // unimplemented
 }
 
-void geode::utils::permission::requestPermission(Permission permission, std::function<void(bool)> callback) {
+void freod::utils::permission::requestPermission(Permission permission, std::function<void(bool)> callback) {
     callback(true); // unimplemented
 }
 
 #include "../../utils/thread.hpp"
 
-std::string geode::utils::thread::getDefaultName() {
+std::string freod::utils::thread::getDefaultName() {
     uint64_t tid = 0ul;
     pthread_threadid_np(nullptr, &tid);
 
     return fmt::format("Thread #{}", tid);
 }
 
-void geode::utils::thread::platformSetName(std::string const& name) {
+void freod::utils::thread::platformSetName(std::string const& name) {
     pthread_setname_np(name.c_str());
 }
 
-float geode::utils::getDisplayFactor() {
+float freod::utils::getDisplayFactor() {
     float displayScale = 1.f;
     if ([[NSScreen mainScreen] respondsToSelector:@selector(backingScaleFactor)]) {
         NSArray* screens = [NSScreen screens];
@@ -369,7 +369,7 @@ float geode::utils::getDisplayFactor() {
     return displayScale;
 }
 
-std::string geode::utils::getEnvironmentVariable(const char* name) {
+std::string freod::utils::getEnvironmentVariable(const char* name) {
     auto result = std::getenv(name);
     return result ? result : "";
 }

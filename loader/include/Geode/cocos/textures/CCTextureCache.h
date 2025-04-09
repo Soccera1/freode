@@ -55,7 +55,7 @@ class CCImage;
 */
 class CC_DLL CCTextureCache : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
 
 
@@ -67,7 +67,7 @@ private:
     /// todo: void addImageWithAsyncObject(CCAsyncObject* async);
     void addImageAsyncCallBack(float dt);
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTextureCache, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTextureCache, CCObject)
     /**
      *  @js ctor
      *  @lua NA
@@ -92,7 +92,7 @@ public:
      *  @js getInstance
      */
     static CCTextureCache * sharedTextureCache();
-    static GEODE_DLL CCTextureCache* get();
+    static FREOD_DLL CCTextureCache* get();
 
     /** purges the cache. It releases the retained instance.
     @since v0.99.0

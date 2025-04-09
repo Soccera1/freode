@@ -7,10 +7,10 @@ ${LangFileString} MUI_UNTEXT_WELCOME_INFO_TEXT "O instalador guiará você atrav
 
 ; installer
 
-${LangFileString} GEODE_TEXT_GD_MISSING "$\r$\n$\r$\nEsse caminho não tem Geometry Dash instalado!"
-${LangFileString} GEODE_TEXT_GD_OLD "$\r$\n$\r$\nSua versão do Geometry Dash é muito antiga para essa versão do Geode!"
-${LangFileString} GEODE_TEXT_MOD_LOADER_ALREADY_INSTALLED "Esse caminho já tem outros mods instalados!$\r$\nEles serão substituídos pelo Geode. (the dll trademark)"
+${LangFileString} FREOD_TEXT_GD_MISSING "$\r$\n$\r$\nEsse caminho não tem Geometry Dash instalado!"
+${LangFileString} FREOD_TEXT_GD_OLD "$\r$\n$\r$\nSua versão do Geometry Dash é muito antiga para essa versão do Freod!"
+${LangFileString} FREOD_TEXT_MOD_LOADER_ALREADY_INSTALLED "Esse caminho já tem outros mods instalados!$\r$\nEles serão substituídos pelo Freod. (the dll trademark)"
 
 ; uninstaller
 
-${LangFileString} GEODE_UNTEXT_GEODE_MISSING "Esse caminho não tem Geode instalado!"
+${LangFileString} FREOD_UNTEXT_FREOD_MISSING "Esse caminho não tem Freod instalado!"

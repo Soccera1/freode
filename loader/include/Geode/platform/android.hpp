@@ -4,13 +4,13 @@
 #include <type_traits>
 #include "ItaniumCast.hpp"
 
-namespace geode {
+namespace freod {
     struct PlatformInfo {
         void* m_so;
     };
 }
 
-namespace geode::base {
-    /*GEODE_NOINLINE inline*/ uintptr_t get();
+namespace freod::base {
+    /*FREOD_NOINLINE inline*/ uintptr_t get();
 }
 

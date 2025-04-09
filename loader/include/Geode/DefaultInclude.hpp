@@ -1,33 +1,33 @@
 #pragma once
 
-#include <Geode/Prelude.hpp>
-#include <Geode/c++stl/gdstdlib.hpp>
-#include <Geode/platform/platform.hpp>
+#include <Freod/Prelude.hpp>
+#include <Freod/c++stl/gdstdlib.hpp>
+#include <Freod/platform/platform.hpp>
 #include <variant>
 
-#if defined(GEODE_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
+#if defined(FREOD_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
     #if !defined(__clang__)
-        #error Geode Loader only compiles with Clang.
+        #error Freod Loader only compiles with Clang.
     #endif 
 #endif
 
-#if !defined(GEODE_CONCAT)
-    #define GEODE_WRAPPER_CONCAT(x, y) x##y
-    #define GEODE_CONCAT(x, y) GEODE_WRAPPER_CONCAT(x, y)
+#if !defined(FREOD_CONCAT)
+    #define FREOD_WRAPPER_CONCAT(x, y) x##y
+    #define FREOD_CONCAT(x, y) FREOD_WRAPPER_CONCAT(x, y)
 #endif
 
-#define GEODE_WRAPPER_STR(...) #__VA_ARGS__
-#define GEODE_STR(...) GEODE_WRAPPER_STR(__VA_ARGS__)
+#define FREOD_WRAPPER_STR(...) #__VA_ARGS__
+#define FREOD_STR(...) FREOD_WRAPPER_STR(__VA_ARGS__)
 
-#define GEODE_PAD(size) uint8_t GEODE_CONCAT(__pad, __LINE__)[size]
-#define GEODE_UNIMPLEMENTED_PAD private:
+#define FREOD_PAD(size) uint8_t FREOD_CONCAT(__pad, __LINE__)[size]
+#define FREOD_UNIMPLEMENTED_PAD private:
 
-#define GEODE_NONINHERITED_MEMBERS private:
+#define FREOD_NONINHERITED_MEMBERS private:
 
-#define GEODE_EXPAND(x) x
-#define GEODE_INVOKE(macro, ...) GEODE_EXPAND(macro(__VA_ARGS__))
+#define FREOD_EXPAND(x) x
+#define FREOD_INVOKE(macro, ...) FREOD_EXPAND(macro(__VA_ARGS__))
 
-namespace geode {
+namespace freod {
     struct ZeroConstructorType {};
 
     static constexpr auto ZeroConstructor = ZeroConstructorType();
@@ -37,80 +37,80 @@ namespace geode {
     static constexpr auto CutoffConstructor = CutoffConstructorType();
 }
 
-#define GEODE_CUSTOM_CONSTRUCTOR_BEGIN(Class_) \
-    GEODE_ZERO_CONSTRUCTOR_BEGIN(Class_)       \
-    GEODE_CUTOFF_CONSTRUCTOR_BEGIN(Class_)
+#define FREOD_CUSTOM_CONSTRUCTOR_BEGIN(Class_) \
+    FREOD_ZERO_CONSTRUCTOR_BEGIN(Class_)       \
+    FREOD_CUTOFF_CONSTRUCTOR_BEGIN(Class_)
 
-#define GEODE_CUSTOM_CONSTRUCTOR_COCOS(Class_, Base_) \
-    GEODE_ZERO_CONSTRUCTOR(Class_, Base_)             \
-    GEODE_CUTOFF_CONSTRUCTOR_COCOS(Class_, Base_)
+#define FREOD_CUSTOM_CONSTRUCTOR_COCOS(Class_, Base_) \
+    FREOD_ZERO_CONSTRUCTOR(Class_, Base_)             \
+    FREOD_CUTOFF_CONSTRUCTOR_COCOS(Class_, Base_)
 
-#define GEODE_CUSTOM_CONSTRUCTOR_GD(Class_, Base_) \
-    GEODE_ZERO_CONSTRUCTOR(Class_, Base_)          \
-    GEODE_CUTOFF_CONSTRUCTOR_GD(Class_, Base_)
+#define FREOD_CUSTOM_CONSTRUCTOR_GD(Class_, Base_) \
+    FREOD_ZERO_CONSTRUCTOR(Class_, Base_)          \
+    FREOD_CUTOFF_CONSTRUCTOR_GD(Class_, Base_)
 
-#define GEODE_CUSTOM_CONSTRUCTOR_CUTOFF(Class_, Base_) \
-    GEODE_ZERO_CONSTRUCTOR(Class_, Base_)              \
-    GEODE_CUTOFF_CONSTRUCTOR_CUTOFF(Class_, Base_)
+#define FREOD_CUSTOM_CONSTRUCTOR_CUTOFF(Class_, Base_) \
+    FREOD_ZERO_CONSTRUCTOR(Class_, Base_)              \
+    FREOD_CUTOFF_CONSTRUCTOR_CUTOFF(Class_, Base_)
 
-#define GEODE_ZERO_CONSTRUCTOR_BEGIN(Class_)                                              \
-    Class_(geode::ZeroConstructorType, void*) {}                                          \
-    Class_(geode::ZeroConstructorType, size_t fill) :                                     \
-        Class_(geode::ZeroConstructor, std::memset(static_cast<void*>(this), 0, fill)) {} \
-    Class_(geode::ZeroConstructorType) : Class_(geode::ZeroConstructor, nullptr) {}
+#define FREOD_ZERO_CONSTRUCTOR_BEGIN(Class_)                                              \
+    Class_(freod::ZeroConstructorType, void*) {}                                          \
+    Class_(freod::ZeroConstructorType, size_t fill) :                                     \
+        Class_(freod::ZeroConstructor, std::memset(static_cast<void*>(this), 0, fill)) {} \
+    Class_(freod::ZeroConstructorType) : Class_(freod::ZeroConstructor, nullptr) {}
 
-#define GEODE_ZERO_CONSTRUCTOR(Class_, Base_)                                                \
-    Class_(geode::ZeroConstructorType, size_t fill) : Base_(geode::ZeroConstructor, fill) {} \
-    Class_(geode::ZeroConstructorType) : Base_(geode::ZeroConstructor, sizeof(Class_)) {}
+#define FREOD_ZERO_CONSTRUCTOR(Class_, Base_)                                                \
+    Class_(freod::ZeroConstructorType, size_t fill) : Base_(freod::ZeroConstructor, fill) {} \
+    Class_(freod::ZeroConstructorType) : Base_(freod::ZeroConstructor, sizeof(Class_)) {}
 
-#define GEODE_FILL_CONSTRUCTOR(Class_, Offset_)                                          \
-    Class_(geode::CutoffConstructorType, size_t fill) :                                  \
+#define FREOD_FILL_CONSTRUCTOR(Class_, Offset_)                                          \
+    Class_(freod::CutoffConstructorType, size_t fill) :                                  \
         Class_(                                                                          \
-            geode::CutoffConstructor,                                                    \
+            freod::CutoffConstructor,                                                    \
             std::memset(reinterpret_cast<std::byte*>(this) + Offset_, 0, fill - Offset_) \
         ) {}                                                                             \
-    Class_(geode::CutoffConstructorType, void*)
+    Class_(freod::CutoffConstructorType, void*)
 
-#define GEODE_CUTOFF_CONSTRUCTOR_BEGIN(Class_)                      \
-    GEODE_MACOS(GEODE_FILL_CONSTRUCTOR(Class_, 0){})                \
-    GEODE_IOS(GEODE_FILL_CONSTRUCTOR(Class_, 0){})                  \
-    GEODE_WINDOWS(Class_(geode::CutoffConstructorType, size_t fill) \
+#define FREOD_CUTOFF_CONSTRUCTOR_BEGIN(Class_)                      \
+    FREOD_MACOS(FREOD_FILL_CONSTRUCTOR(Class_, 0){})                \
+    FREOD_IOS(FREOD_FILL_CONSTRUCTOR(Class_, 0){})                  \
+    FREOD_WINDOWS(Class_(freod::CutoffConstructorType, size_t fill) \
                   : Class_() {})                                    \
-    GEODE_ANDROID(GEODE_FILL_CONSTRUCTOR(Class_, 0){})
+    FREOD_ANDROID(FREOD_FILL_CONSTRUCTOR(Class_, 0){})
 
-#define GEODE_CUTOFF_CONSTRUCTOR_COCOS(Class_, Base_)               \
-    GEODE_MACOS(Class_(geode::CutoffConstructorType, size_t fill)   \
-                : Base_(geode::CutoffConstructor, fill){})          \
-    GEODE_IOS(Class_(geode::CutoffConstructorType, size_t fill)     \
-              : Base_(geode::CutoffConstructor, fill){})            \
-    GEODE_WINDOWS(Class_(geode::CutoffConstructorType, size_t fill) \
+#define FREOD_CUTOFF_CONSTRUCTOR_COCOS(Class_, Base_)               \
+    FREOD_MACOS(Class_(freod::CutoffConstructorType, size_t fill)   \
+                : Base_(freod::CutoffConstructor, fill){})          \
+    FREOD_IOS(Class_(freod::CutoffConstructorType, size_t fill)     \
+              : Base_(freod::CutoffConstructor, fill){})            \
+    FREOD_WINDOWS(Class_(freod::CutoffConstructorType, size_t fill) \
                   : Class_() {})                                    \
-    GEODE_ANDROID(Class_(geode::CutoffConstructorType, size_t fill)   \
-                : Base_(geode::CutoffConstructor, fill){})
+    FREOD_ANDROID(Class_(freod::CutoffConstructorType, size_t fill)   \
+                : Base_(freod::CutoffConstructor, fill){})
 
-#define GEODE_CUTOFF_CONSTRUCTOR_GD(Class_, Base_)                  \
-    GEODE_WINDOWS(Class_(geode::CutoffConstructorType, size_t fill) \
-                  : Base_(geode::CutoffConstructor, fill){})        \
-    GEODE_MACOS(Class_(geode::CutoffConstructorType, size_t fill)   \
-                : Base_(geode::CutoffConstructor, fill){})          \
-    GEODE_IOS(Class_(geode::CutoffConstructorType, size_t fill)     \
-              : Base_(geode::CutoffConstructor, fill){})            \
-    GEODE_ANDROID(Class_(geode::CutoffConstructorType, size_t fill) \
-              : Base_(geode::CutoffConstructor, fill){})
+#define FREOD_CUTOFF_CONSTRUCTOR_GD(Class_, Base_)                  \
+    FREOD_WINDOWS(Class_(freod::CutoffConstructorType, size_t fill) \
+                  : Base_(freod::CutoffConstructor, fill){})        \
+    FREOD_MACOS(Class_(freod::CutoffConstructorType, size_t fill)   \
+                : Base_(freod::CutoffConstructor, fill){})          \
+    FREOD_IOS(Class_(freod::CutoffConstructorType, size_t fill)     \
+              : Base_(freod::CutoffConstructor, fill){})            \
+    FREOD_ANDROID(Class_(freod::CutoffConstructorType, size_t fill) \
+              : Base_(freod::CutoffConstructor, fill){})
 
-#define GEODE_CUTOFF_CONSTRUCTOR_CUTOFF(Class_, Base_)                       \
-    GEODE_WINDOWS(GEODE_FILL_CONSTRUCTOR(Class_, sizeof(Base_)) : Base_(){}) \
-    GEODE_ANDROID(Class_(geode::CutoffConstructorType, size_t fill)          \
-                : Base_(geode::CutoffConstructor, fill){})                   \
-    GEODE_MACOS(Class_(geode::CutoffConstructorType, size_t fill)            \
-                : Base_(geode::CutoffConstructor, fill){})                   \
-    GEODE_IOS(Class_(geode::CutoffConstructorType, size_t fill)              \
-              : Base_(geode::CutoffConstructor, fill){})
+#define FREOD_CUTOFF_CONSTRUCTOR_CUTOFF(Class_, Base_)                       \
+    FREOD_WINDOWS(FREOD_FILL_CONSTRUCTOR(Class_, sizeof(Base_)) : Base_(){}) \
+    FREOD_ANDROID(Class_(freod::CutoffConstructorType, size_t fill)          \
+                : Base_(freod::CutoffConstructor, fill){})                   \
+    FREOD_MACOS(Class_(freod::CutoffConstructorType, size_t fill)            \
+                : Base_(freod::CutoffConstructor, fill){})                   \
+    FREOD_IOS(Class_(freod::CutoffConstructorType, size_t fill)              \
+              : Base_(freod::CutoffConstructor, fill){})
 
-#define GEODE_NUMBER_OF_ARGS(...) \
-    GEODE_EXPAND(GEODE_NUMBER_OF_ARGS_(__VA_ARGS__, GEODE_NUMBER_SEQUENCE(), ))
-#define GEODE_NUMBER_OF_ARGS_(...) GEODE_EXPAND(GEODE_NUMBER_OF_ARGS_N(__VA_ARGS__))
-#define GEODE_NUMBER_OF_ARGS_N( \
+#define FREOD_NUMBER_OF_ARGS(...) \
+    FREOD_EXPAND(FREOD_NUMBER_OF_ARGS_(__VA_ARGS__, FREOD_NUMBER_SEQUENCE(), ))
+#define FREOD_NUMBER_OF_ARGS_(...) FREOD_EXPAND(FREOD_NUMBER_OF_ARGS_N(__VA_ARGS__))
+#define FREOD_NUMBER_OF_ARGS_N( \
     _1,                         \
     _2,                         \
     _3,                         \
@@ -178,24 +178,24 @@ namespace geode {
     ...                         \
 )                               \
     N
-#define GEODE_NUMBER_SEQUENCE()                                                                 \
+#define FREOD_NUMBER_SEQUENCE()                                                                 \
     63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, \
         40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, \
         18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
 
 #define $execute                                                                                  \
     template <class>                                                                              \
-    void GEODE_CONCAT(geodeExecFunction, __LINE__)();                                             \
+    void FREOD_CONCAT(freodExecFunction, __LINE__)();                                             \
     namespace {                                                                                   \
-        struct GEODE_CONCAT(ExecFuncUnique, __LINE__) {};                                         \
+        struct FREOD_CONCAT(ExecFuncUnique, __LINE__) {};                                         \
     }                                                                                             \
-    static inline auto GEODE_CONCAT(Exec, __LINE__) =                                             \
-        (GEODE_CONCAT(geodeExecFunction, __LINE__) < GEODE_CONCAT(ExecFuncUnique, __LINE__) > (), \
+    static inline auto FREOD_CONCAT(Exec, __LINE__) =                                             \
+        (FREOD_CONCAT(freodExecFunction, __LINE__) < FREOD_CONCAT(ExecFuncUnique, __LINE__) > (), \
          0);                                                                                      \
     template <class>                                                                              \
-    void GEODE_CONCAT(geodeExecFunction, __LINE__)()
+    void FREOD_CONCAT(freodExecFunction, __LINE__)()
 
-#define GEODE_FORWARD_COMPAT_DISABLE_HOOKS_INNER(message) \
+#define FREOD_FORWARD_COMPAT_DISABLE_HOOKS_INNER(message) \
     if (Loader::get()->isForwardCompatMode()) {           \
         if (strlen(message)) {                            \
             log::warn("[Forward Compat] " message);       \
@@ -204,7 +204,7 @@ namespace geode {
             hook->setAutoEnable(false);                   \
         }                                                 \
     }
-#define GEODE_FORWARD_COMPAT_ENABLE_HOOKS_INNER(message)  \
+#define FREOD_FORWARD_COMPAT_ENABLE_HOOKS_INNER(message)  \
     if (!Loader::get()->isForwardCompatMode()) {          \
         if (strlen(message)) {                            \
             log::warn("[Forward Compat] " message);       \
@@ -213,90 +213,90 @@ namespace geode {
             hook->setAutoEnable(false);                   \
         }                                                 \
     }
-#define GEODE_FORWARD_COMPAT_DISABLE_HOOKS(message)       \
+#define FREOD_FORWARD_COMPAT_DISABLE_HOOKS(message)       \
     static void onModify(const auto& self) {              \
-        GEODE_FORWARD_COMPAT_DISABLE_HOOKS_INNER(message) \
+        FREOD_FORWARD_COMPAT_DISABLE_HOOKS_INNER(message) \
     }
-#define GEODE_FORWARD_COMPAT_ENABLE_HOOKS(message)        \
+#define FREOD_FORWARD_COMPAT_ENABLE_HOOKS(message)        \
     static void onModify(const auto& self) {              \
-        GEODE_FORWARD_COMPAT_ENABLE_HOOKS_INNER(message)  \
+        FREOD_FORWARD_COMPAT_ENABLE_HOOKS_INNER(message)  \
     }
 
-// #define GEODE_NEST1(macro, begin)           \
-// macro(GEODE_CONCAT(begin, 0)),                        \
-// macro(GEODE_CONCAT(begin, 1)),                        \
-// macro(GEODE_CONCAT(begin, 2)),                        \
-// macro(GEODE_CONCAT(begin, 3)),                        \
-// macro(GEODE_CONCAT(begin, 4)),                        \
-// macro(GEODE_CONCAT(begin, 5)),                        \
-// macro(GEODE_CONCAT(begin, 6)),                        \
-// macro(GEODE_CONCAT(begin, 7)),                        \
-// macro(GEODE_CONCAT(begin, 8)),                        \
-// macro(GEODE_CONCAT(begin, 9)),                        \
-// macro(GEODE_CONCAT(begin, a)),                        \
-// macro(GEODE_CONCAT(begin, b)),                        \
-// macro(GEODE_CONCAT(begin, c)),                        \
-// macro(GEODE_CONCAT(begin, d)),                        \
-// macro(GEODE_CONCAT(begin, e)),                        \
-// macro(GEODE_CONCAT(begin, f))
+// #define FREOD_NEST1(macro, begin)           \
+// macro(FREOD_CONCAT(begin, 0)),                        \
+// macro(FREOD_CONCAT(begin, 1)),                        \
+// macro(FREOD_CONCAT(begin, 2)),                        \
+// macro(FREOD_CONCAT(begin, 3)),                        \
+// macro(FREOD_CONCAT(begin, 4)),                        \
+// macro(FREOD_CONCAT(begin, 5)),                        \
+// macro(FREOD_CONCAT(begin, 6)),                        \
+// macro(FREOD_CONCAT(begin, 7)),                        \
+// macro(FREOD_CONCAT(begin, 8)),                        \
+// macro(FREOD_CONCAT(begin, 9)),                        \
+// macro(FREOD_CONCAT(begin, a)),                        \
+// macro(FREOD_CONCAT(begin, b)),                        \
+// macro(FREOD_CONCAT(begin, c)),                        \
+// macro(FREOD_CONCAT(begin, d)),                        \
+// macro(FREOD_CONCAT(begin, e)),                        \
+// macro(FREOD_CONCAT(begin, f))
 
-// #define GEODE_NEST2(macro, begin)           \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 0)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 1)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 2)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 3)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 4)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 5)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 6)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 7)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 8)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, 9)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, a)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, b)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, c)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, d)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, e)), \
-// GEODE_NEST1(macro, GEODE_CONCAT(begin, f))
+// #define FREOD_NEST2(macro, begin)           \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 0)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 1)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 2)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 3)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 4)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 5)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 6)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 7)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 8)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, 9)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, a)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, b)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, c)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, d)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, e)), \
+// FREOD_NEST1(macro, FREOD_CONCAT(begin, f))
 
-// #define GEODE_NEST3(macro, begin)           \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 0)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 1)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 2)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 3)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 4)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 5)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 6)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 7)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 8)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, 9)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, a)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, b)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, c)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, d)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, e)), \
-// GEODE_NEST2(macro, GEODE_CONCAT(begin, f))
+// #define FREOD_NEST3(macro, begin)           \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 0)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 1)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 2)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 3)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 4)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 5)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 6)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 7)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 8)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, 9)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, a)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, b)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, c)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, d)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, e)), \
+// FREOD_NEST2(macro, FREOD_CONCAT(begin, f))
 
-// #define GEODE_NEST4(macro, begin)           \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 0)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 1)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 2)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 3)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 4)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 5)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 6)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 7)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 8)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, 9)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, a)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, b)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, c)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, d)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, e)), \
-// GEODE_NEST3(macro, GEODE_CONCAT(begin, f))
+// #define FREOD_NEST4(macro, begin)           \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 0)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 1)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 2)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 3)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 4)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 5)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 6)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 7)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 8)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, 9)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, a)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, b)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, c)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, d)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, e)), \
+// FREOD_NEST3(macro, FREOD_CONCAT(begin, f))
 
-// #define GEODE_ENUM_OFFSETS_DEFINE(hex) GEODE_CONCAT($, hex)
-// #define GEODE_ENUM_OFFSETS_SET() GEODE_NEST4(GEODE_ENUM_OFFSETS_DEFINE, 0x)
+// #define FREOD_ENUM_OFFSETS_DEFINE(hex) FREOD_CONCAT($, hex)
+// #define FREOD_ENUM_OFFSETS_SET() FREOD_NEST4(FREOD_ENUM_OFFSETS_DEFINE, 0x)
 
 // enum class PrinterOffsets {
-//    GEODE_ENUM_OFFSETS_SET()
+//    FREOD_ENUM_OFFSETS_SET()
 // };

@@ -1,7 +1,7 @@
 #pragma once
 #include <type_traits>
 
-namespace geode::modifier {
+namespace freod::modifier {
     template <class FunctionType>
     struct MemberFunc {
         template <class Class>

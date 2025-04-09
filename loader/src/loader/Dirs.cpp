@@ -1,46 +1,46 @@
 
-#include <Geode/loader/Dirs.hpp>
+#include <Freod/loader/Dirs.hpp>
 #include <cocos2d.h>
 #include <crashlog.hpp>
 #include <filesystem>
 #include "LoaderImpl.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-std::filesystem::path dirs::getGeodeDir() {
-    return dirs::getGameDir() / "geode";
+std::filesystem::path dirs::getFreodDir() {
+    return dirs::getGameDir() / "freod";
 }
 
-std::filesystem::path dirs::getGeodeSaveDir() {
-    return dirs::getSaveDir() / "geode";
+std::filesystem::path dirs::getFreodSaveDir() {
+    return dirs::getSaveDir() / "freod";
 }
 
-std::filesystem::path dirs::getGeodeResourcesDir() {
-    return dirs::getGeodeDir() / "resources";
+std::filesystem::path dirs::getFreodResourcesDir() {
+    return dirs::getFreodDir() / "resources";
 }
 
-std::filesystem::path dirs::getGeodeLogDir() {
-    return dirs::getGeodeDir() / "logs";
+std::filesystem::path dirs::getFreodLogDir() {
+    return dirs::getFreodDir() / "logs";
 }
 
 std::filesystem::path dirs::getTempDir() {
-    return dirs::getGeodeDir() / "temp";
+    return dirs::getFreodDir() / "temp";
 }
 
 std::filesystem::path dirs::getModsDir() {
-    return dirs::getGeodeDir() / "mods";
+    return dirs::getFreodDir() / "mods";
 }
 
 std::filesystem::path dirs::getModsSaveDir() {
-    return dirs::getGeodeSaveDir() / "mods";
+    return dirs::getFreodSaveDir() / "mods";
 }
 
 std::filesystem::path dirs::getModConfigDir() {
-    return dirs::getGeodeDir() / "config";
+    return dirs::getFreodDir() / "config";
 }
 
 std::filesystem::path dirs::getIndexDir() {
-    return dirs::getGeodeDir() / "index";
+    return dirs::getFreodDir() / "index";
 }
 
 std::filesystem::path dirs::getCrashlogsDir() {
@@ -48,5 +48,5 @@ std::filesystem::path dirs::getCrashlogsDir() {
 }
 
 std::filesystem::path dirs::getModPersistentDir() {
-    return dirs::getSaveDir() / "geode-persistent";
+    return dirs::getSaveDir() / "freod-persistent";
 }

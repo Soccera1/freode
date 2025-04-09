@@ -41,11 +41,11 @@ NS_CC_BEGIN
 //! @brief  Helper class to handle file operations
 class CC_DLL CCFileUtilsWin32 : public CCFileUtils
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
     friend class CCFileUtils;
     CCFileUtilsWin32();
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCFileUtilsWin32, CCFileUtils)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCFileUtilsWin32, CCFileUtils)
     /* override funtions */
     bool init();
     virtual void addSearchPath(const char* path);

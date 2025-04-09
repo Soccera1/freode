@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Mod.hpp>
 #include <server/Server.hpp>
 #include <loader/LoaderImpl.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 struct ModSuggestion final {
     ModMetadata suggestion;

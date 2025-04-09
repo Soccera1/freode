@@ -1,9 +1,9 @@
-#include <Geode/utils/string.hpp>
+#include <Freod/utils/string.hpp>
 #include <algorithm>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
 
     #include <Windows.h>
     #include <cwctype>

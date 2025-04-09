@@ -1,8 +1,8 @@
-﻿#include <Geode/DefaultInclude.hpp>
+﻿#include <Freod/DefaultInclude.hpp>
 #include <loader/IPC.hpp>
-#include <Geode/loader/Log.hpp>
+#include <Freod/loader/Log.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 void ipc::setup() {
     log::debug("IPC is not supported on this platform!");

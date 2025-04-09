@@ -2,14 +2,14 @@
 
 #include "../utils/casts.hpp"
 
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 #include <type_traits>
 #include <mutex>
 #include <deque>
 #include <unordered_set>
 #include <atomic>
 
-namespace geode {
+namespace freod {
     class Mod;
     class Event;
     class EventListenerProtocol;
@@ -21,7 +21,7 @@ namespace geode {
         Stop
     };
 
-    struct GEODE_DLL EventListenerPool {
+    struct FREOD_DLL EventListenerPool {
         virtual bool add(EventListenerProtocol* listener) = 0;
         virtual void remove(EventListenerProtocol* listener) = 0;
         virtual ListenerResult handle(Event* event) = 0;
@@ -38,9 +38,9 @@ namespace geode {
     template <class... Args>
     class DispatchFilter;
     
-    class GEODE_DLL DefaultEventListenerPool : public EventListenerPool {
+    class FREOD_DLL DefaultEventListenerPool : public EventListenerPool {
     protected:
-        // fix this in Geode 4.0.0
+        // fix this in Freod 4.0.0
         struct Data {
             std::atomic_size_t m_locked = 0;
             std::mutex m_mutex;
@@ -67,7 +67,7 @@ namespace geode {
         friend class DispatchFilter;        
     };
 
-    class GEODE_DLL EventListenerProtocol {
+    class FREOD_DLL EventListenerProtocol {
     private:
         EventListenerPool* m_pool = nullptr;
 
@@ -221,7 +221,7 @@ namespace geode {
         T m_filter;
     };
 
-    class GEODE_DLL [[nodiscard]] Event {
+    class FREOD_DLL [[nodiscard]] Event {
     private:
         friend EventListenerProtocol;
 

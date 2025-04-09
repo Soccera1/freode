@@ -1,7 +1,7 @@
 #include "load.hpp"
-#include <Geode/platform/cplatform.h>
+#include <Freod/platform/cplatform.h>
 
-#ifdef GEODE_IS_MACOS
+#ifdef FREOD_IS_MACOS
 
 #include <AppKit/AppKit.h>
 #include <loader/LoaderImpl.hpp>

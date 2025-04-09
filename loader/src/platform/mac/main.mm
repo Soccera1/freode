@@ -1,4 +1,4 @@
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
 #import <Cocoa/Cocoa.h>
 #include <objc/runtime.h>
@@ -9,14 +9,14 @@
 #include <tulip/TulipHook.hpp>
 #include <array>
 #include <filesystem>
-#include <Geode/Loader.hpp>
+#include <Freod/Loader.hpp>
 #include "../../loader/console.hpp"
 #include "../../loader/LoaderImpl.hpp"
 #include <thread>
 #include <variant>
 #include <loader/updater.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 std::length_error::~length_error() _NOEXCEPT {} // do not ask...
 
@@ -26,51 +26,51 @@ std::length_error::~length_error() _NOEXCEPT {} // do not ask...
 
 void updateFiles() {
     auto frameworkDir = dirs::getGameDir() / "Frameworks";
-    auto updatesDir = dirs::getGeodeDir() / "update";
-    auto resourcesDir = dirs::getGeodeResourcesDir();
+    auto updatesDir = dirs::getFreodDir() / "update";
+    auto resourcesDir = dirs::getFreodResourcesDir();
 
     if (std::filesystem::exists(frameworkDir) && std::filesystem::exists(updatesDir)) {
         std::error_code error;
-        auto bootFile = "GeodeBootstrapper.dylib";
-        auto geodeFile = "Geode.dylib";
+        auto bootFile = "FreodBootstrapper.dylib";
+        auto freodFile = "Freod.dylib";
 
         if (std::filesystem::exists(updatesDir / bootFile)) {
             std::filesystem::remove(frameworkDir / bootFile, error);
             if (error) {
-                log::warn("Couldn't remove old GeodeBootstrapper.dylib: {}", error.message());
+                log::warn("Couldn't remove old FreodBootstrapper.dylib: {}", error.message());
             }
             else {
                 std::filesystem::rename(updatesDir / bootFile, frameworkDir / bootFile, error);
                 if (error) {
-                    log::warn("Couldn't move new GeodeBootstrapper.dylib: {}", error.message());
+                    log::warn("Couldn't move new FreodBootstrapper.dylib: {}", error.message());
                 }
                 else {
-                    log::info("Updated GeodeBootstrapper.dylib");
+                    log::info("Updated FreodBootstrapper.dylib");
                 }
             }
         }
-        if (std::filesystem::exists(updatesDir / geodeFile)) {
-            std::filesystem::remove(frameworkDir / geodeFile, error);
+        if (std::filesystem::exists(updatesDir / freodFile)) {
+            std::filesystem::remove(frameworkDir / freodFile, error);
             if (error) {
-                log::warn("Couldn't remove old Geode.dylib: {}", error.message());
+                log::warn("Couldn't remove old Freod.dylib: {}", error.message());
             }
             else {
-                std::filesystem::rename(updatesDir / geodeFile, frameworkDir / geodeFile, error);
+                std::filesystem::rename(updatesDir / freodFile, frameworkDir / freodFile, error);
                 if (error) {
-                    log::warn("Couldn't move new Geode.dylib: {}", error.message());
+                    log::warn("Couldn't move new Freod.dylib: {}", error.message());
                 }
                 else {
-                    log::info("Updated Geode.dylib");
+                    log::info("Updated Freod.dylib");
                 }
             }
         }
         if (std::filesystem::exists(updatesDir / "resources")) {
-            std::filesystem::remove_all(resourcesDir / "geode.loader", error);
+            std::filesystem::remove_all(resourcesDir / "freod.loader", error);
             if (error) {
                 log::warn("Couldn't remove old resources: {}", error.message());
             }
             else {
-                std::filesystem::rename(updatesDir / "resources", resourcesDir / "geode.loader", error);
+                std::filesystem::rename(updatesDir / "resources", resourcesDir / "freod.loader", error);
                 if (error) {
                     log::warn("Couldn't move new resources: {}", error.message());
                 }
@@ -87,7 +87,7 @@ void updateFiles() {
 }
 
 $execute {
-    using namespace geode::updater;
+    using namespace freod::updater;
     new EventListener(+[](LoaderUpdateEvent* event) {
         if (std::holds_alternative<UpdateFinished>(event->status)) {
             updateFiles();
@@ -96,9 +96,9 @@ $execute {
     }, LoaderUpdateFilter());
 };
 
-void updateGeode() {
-    std::filesystem::path oldSavePath = "/Users/Shared/Geode/geode";
-    auto newSavePath = dirs::getSaveDir() / "geode";
+void updateFreod() {
+    std::filesystem::path oldSavePath = "/Users/Shared/Freod/freod";
+    auto newSavePath = dirs::getSaveDir() / "freod";
     if (std::filesystem::exists(oldSavePath)) {
         std::error_code error;
 
@@ -116,9 +116,9 @@ extern "C" void fake() {}
 static void(*s_applicationDidFinishLaunchingOrig)(void*, SEL, NSNotification*);
 
 void applicationDidFinishLaunchingHook(void* self, SEL sel, NSNotification* notification) {
-    updateGeode();
+    updateFreod();
 
-    int exitCode = geodeEntry(nullptr);
+    int exitCode = freodEntry(nullptr);
     if (exitCode != 0)
         return;
 
@@ -126,15 +126,15 @@ void applicationDidFinishLaunchingHook(void* self, SEL sel, NSNotification* noti
 }
 
 
-bool loadGeode() {
-    if (GEODE_STR(GEODE_GD_VERSION) != LoaderImpl::get()->getGameVersion()) {
+bool loadFreod() {
+    if (FREOD_STR(FREOD_GD_VERSION) != LoaderImpl::get()->getGameVersion()) {
         console::messageBox(
-            "Unable to Load Geode!",
+            "Unable to Load Freod!",
             fmt::format(
-                "This version of Geode is made for Geometry Dash {} "
+                "This version of Freod is made for Geometry Dash {} "
                 "but you're trying to play with GD {}.\n"
                 "Please, update your game.",
-                GEODE_STR(GEODE_GD_VERSION),
+                FREOD_STR(FREOD_GD_VERSION),
                 LoaderImpl::get()->getGameVersion()
             )
         );
@@ -153,6 +153,6 @@ bool loadGeode() {
 }
 
 __attribute__((constructor)) void _entry() {
-    if (!loadGeode())
+    if (!loadFreod())
         return;
 }

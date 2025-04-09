@@ -4,7 +4,7 @@
 #include <matjson.hpp>
 #include <optional>
 
-namespace geode {
+namespace freod {
     class Mod;
     Mod* getMod();
 
@@ -17,7 +17,7 @@ namespace geode {
     /**
      * Event that is fired when a mod is loaded / unloaded / enabled / disabled
      */
-    class GEODE_DLL ModStateEvent final : public Event {
+    class FREOD_DLL ModStateEvent final : public Event {
     protected:
         ModEventType m_type;
         Mod* m_mod;
@@ -31,7 +31,7 @@ namespace geode {
     /**
      * Listener for mod load/enable/disable/unload/data save events
      */
-    class GEODE_DLL ModStateFilter final : public EventFilter<ModStateEvent> {
+    class FREOD_DLL ModStateFilter final : public EventFilter<ModStateEvent> {
     public:
         using Callback = void(ModStateEvent*);
 
@@ -55,7 +55,7 @@ namespace geode {
     /**
      * Event posted to a mod when another mod that depends on it is loaded
      */
-    class GEODE_DLL DependencyLoadedEvent final : public Event {
+    class FREOD_DLL DependencyLoadedEvent final : public Event {
     protected:
         class Impl;
         std::unique_ptr<Impl> m_impl;
@@ -72,7 +72,7 @@ namespace geode {
     /**
      * Listen for in a mod when a mod that depends on it is loaded
      */
-    class GEODE_DLL DependencyLoadedFilter final : public EventFilter<DependencyLoadedEvent> {
+    class FREOD_DLL DependencyLoadedFilter final : public EventFilter<DependencyLoadedEvent> {
     public:
         using Callback = void(DependencyLoadedEvent*);
 
@@ -83,7 +83,7 @@ namespace geode {
     public:
         ListenerResult handle(std::function<Callback> fn, DependencyLoadedEvent* event);
 
-        DependencyLoadedFilter(Mod* target = geode::getMod());
+        DependencyLoadedFilter(Mod* target = freod::getMod());
         DependencyLoadedFilter(DependencyLoadedFilter&&);
         DependencyLoadedFilter(DependencyLoadedFilter const&);
         DependencyLoadedFilter& operator=(DependencyLoadedFilter const&);
@@ -95,14 +95,14 @@ namespace geode {
 // clang-format off
 #define $on_mod(type) \
 template<class>                                                        \
-void GEODE_CONCAT(geodeExecFunction, __LINE__)(geode::ModStateEvent*); \
+void FREOD_CONCAT(freodExecFunction, __LINE__)(freod::ModStateEvent*); \
 namespace {                                                            \
-	struct GEODE_CONCAT(ExecFuncUnique, __LINE__) {};                  \
+	struct FREOD_CONCAT(ExecFuncUnique, __LINE__) {};                  \
 }                                                                      \
-static inline auto GEODE_CONCAT(Exec, __LINE__) = (new geode::EventListener(  \
-            &GEODE_CONCAT(geodeExecFunction, __LINE__)<GEODE_CONCAT(ExecFuncUnique, __LINE__)>, \
-            geode::ModStateFilter(geode::getMod(), geode::ModEventType::type) \
+static inline auto FREOD_CONCAT(Exec, __LINE__) = (new freod::EventListener(  \
+            &FREOD_CONCAT(freodExecFunction, __LINE__)<FREOD_CONCAT(ExecFuncUnique, __LINE__)>, \
+            freod::ModStateFilter(freod::getMod(), freod::ModEventType::type) \
         ), 0);                                                         \
 template<class>                                                        \
-void GEODE_CONCAT(geodeExecFunction, __LINE__)(geode::ModStateEvent*)
+void FREOD_CONCAT(freodExecFunction, __LINE__)(freod::ModStateEvent*)
 // clang-format on

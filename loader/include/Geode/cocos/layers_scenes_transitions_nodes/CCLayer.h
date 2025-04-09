@@ -67,13 +67,13 @@ All features from CCNode are valid, plus the following new features:
 */
 class CC_DLL CCLayer : public CCNode, public CCTouchDelegate, public CCAccelerometerDelegate, public CCKeypadDelegate, public CCKeyboardDelegate, public CCMouseDelegate
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCLayer();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLayer, CCNode)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCLayer, CCNode)
     /**
      *  @js NA
      *  @lua NA
@@ -233,14 +233,14 @@ private:
  */
 class CC_DLL CCLayerRGBA : public CCLayer, public CCRGBAProtocol
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     CREATE_FUNC(CCLayerRGBA);
     /**
      *  @js ctor
      */
     CCLayerRGBA();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLayerRGBA, CCLayer)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCLayerRGBA, CCLayer)
     /**
      *  @js NA
      *  @lua NA
@@ -285,7 +285,7 @@ class CC_DLL CCLayerColor : public CCLayerRGBA, public CCBlendProtocol
 , public CCGLBufferedNode
 #endif // EMSCRIPTEN
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 protected:
 
 
@@ -297,7 +297,7 @@ public:
      *  @js ctor
      */
     CCLayerColor();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLayerColor, CCLayerRGBA)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCLayerColor, CCLayerRGBA)
     /**
      *  @js NA
      *  @lua NA
@@ -367,9 +367,9 @@ If ' compressedInterpolation' is enabled (default mode) you will see both the st
 */
 class CC_DLL CCLayerGradient : public CCLayerColor
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLayerGradient, CCLayerColor)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCLayerGradient, CCLayerColor)
     CCLayerGradient() {}
 
 
@@ -423,14 +423,14 @@ Features:
 */
 class CC_DLL CCLayerMultiplex : public CCLayer
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 protected:
 
 
     unsigned int m_nEnabledLayer;
     CCArray*     m_pLayers;
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLayerMultiplex, CCLayer)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCLayerMultiplex, CCLayer)
     /**
      * @js ctor
      * @lua NA

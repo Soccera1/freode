@@ -4,10 +4,10 @@
 #include <string_view>
 #include <matjson.hpp>
 #include <tuple>
-#include <Geode/Result.hpp>
+#include <Freod/Result.hpp>
 #include <fmt/format.h>
 
-namespace geode {
+namespace freod {
     enum class VersionCompare {
         LessEq,
         Exact,
@@ -122,7 +122,7 @@ namespace geode {
      * identifiers are restricted to a few predefined ones, and only one 
      * identifier is allowed. See VersionTag for details
      */
-    class GEODE_DLL VersionInfo final {
+    class FREOD_DLL VersionInfo final {
     protected:
         size_t m_major = 1;
         size_t m_minor = 0;
@@ -190,10 +190,10 @@ namespace geode {
         std::string toVString(bool includeTag = true) const;
         std::string toNonVString(bool includeTag = true) const;
  
-        friend GEODE_DLL std::string format_as(VersionInfo const& version);
+        friend FREOD_DLL std::string format_as(VersionInfo const& version);
     };
 
-    class GEODE_DLL ComparableVersionInfo final {
+    class FREOD_DLL ComparableVersionInfo final {
     protected:
         VersionInfo m_version;
         VersionCompare m_compare = VersionCompare::Exact;
@@ -248,21 +248,21 @@ namespace geode {
         }
 
         std::string toString() const;
-        friend GEODE_DLL std::string format_as(ComparableVersionInfo const& version);
+        friend FREOD_DLL std::string format_as(ComparableVersionInfo const& version);
     };
 
-    bool GEODE_DLL semverCompare(VersionInfo const& current, VersionInfo const& target);
+    bool FREOD_DLL semverCompare(VersionInfo const& current, VersionInfo const& target);
 }
 
 template <class V>
-requires std::is_same_v<V, geode::VersionInfo> || std::is_same_v<V, geode::ComparableVersionInfo>
+requires std::is_same_v<V, freod::VersionInfo> || std::is_same_v<V, freod::ComparableVersionInfo>
 struct matjson::Serialize<V> {
-    static geode::Result<V, std::string> fromJson(Value const& value) {
-        GEODE_UNWRAP_INTO(auto str, value.asString());
-        GEODE_UNWRAP_INTO(auto version, V::parse(str).mapErr([](auto&& err) {
+    static freod::Result<V, std::string> fromJson(Value const& value) {
+        FREOD_UNWRAP_INTO(auto str, value.asString());
+        FREOD_UNWRAP_INTO(auto version, V::parse(str).mapErr([](auto&& err) {
             return fmt::format("Invalid version format: {}", err);
         }));
-        return geode::Ok(version);
+        return freod::Ok(version);
     }
 
     static Value toJson(V const& value) {

@@ -1,20 +1,20 @@
 #pragma once
 
-#include <Geode/Result.hpp>
+#include <Freod/Result.hpp>
 #include "../utils/VersionInfo.hpp"
 #include "Types.hpp"
 
 #include <matjson.hpp>
 #include <memory>
 
-namespace geode {
+namespace freod {
     namespace utils::file {
         class Unzip;
     }
 
     class ModMetadataImpl;
 
-    class GEODE_DLL ModMetadataLinks final {
+    class FREOD_DLL ModMetadataLinks final {
         class Impl;
         std::unique_ptr<Impl> m_impl;
 
@@ -41,7 +41,7 @@ namespace geode {
          */
         std::optional<std::string> getCommunityURL() const;
 
-#if defined(GEODE_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
+#if defined(FREOD_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
         Impl* getImpl();
 #endif
     };
@@ -50,7 +50,7 @@ namespace geode {
      * Represents all the data gather-able
      * from mod.json
      */
-    class GEODE_DLL ModMetadata final {
+    class FREOD_DLL ModMetadata final {
         class Impl;
         std::unique_ptr<Impl> m_impl;
 
@@ -64,7 +64,7 @@ namespace geode {
         ~ModMetadata();
 
         // todo in v5: pimpl this :sob:
-        struct GEODE_DLL Dependency {
+        struct FREOD_DLL Dependency {
             enum class Importance : uint8_t { Required, Recommended, Suggested };
             std::string id;
             ComparableVersionInfo version;
@@ -74,7 +74,7 @@ namespace geode {
         };
 
         // todo in v5: pimpl this :sob:
-        struct GEODE_DLL Incompatibility {
+        struct FREOD_DLL Incompatibility {
             enum class Importance : uint8_t {
                 Breaking,
                 Conflicting,
@@ -136,12 +136,12 @@ namespace geode {
         [[nodiscard]] std::optional<std::string> getDescription() const;
         /**
          * Detailed description of the mod, written in Markdown (see
-         * <Geode/ui/MDTextArea.hpp>) for more info
+         * <Freod/ui/MDTextArea.hpp>) for more info
          */
         [[nodiscard]] std::optional<std::string> getDetails() const;
         /**
          * Changelog for the mod, written in Markdown (see
-         * <Geode/ui/MDTextArea.hpp>) for more info
+         * <Freod/ui/MDTextArea.hpp>) for more info
          */
         [[nodiscard]] std::optional<std::string> getChangelog() const;
         /**
@@ -195,9 +195,9 @@ namespace geode {
         [[nodiscard]] std::optional<std::string> getGameVersion() const;
 
         /**
-         * Gets the target Geode version for the current platform.
+         * Gets the target Freod version for the current platform.
         */
-        [[nodiscard]] VersionInfo getGeodeVersion() const;
+        [[nodiscard]] VersionInfo getFreodVersion() const;
 
         /**
          * Checks if mod can be installed on the current GD version.
@@ -205,17 +205,17 @@ namespace geode {
         */
         Result<> checkGameVersion() const;
         /**
-         * Checks if mod can be installed on the current Geode version.
+         * Checks if mod can be installed on the current Freod version.
          * Returns Ok() if it can, Err explaining why not otherwise.
         */
-        Result<> checkGeodeVersion() const;
+        Result<> checkFreodVersion() const;
         /**
-         * Checks if mod can be installed on the current GD & Geode version.
+         * Checks if mod can be installed on the current GD & Freod version.
          * Returns Ok() if it can, Err explaining why not otherwise.
         */
         Result<> checkTargetVersions() const;
 
-#if defined(GEODE_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
+#if defined(FREOD_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
         void setPath(std::filesystem::path const& value);
         void setBinaryName(std::string const& value);
         void setVersion(VersionInfo const& value);
@@ -237,18 +237,18 @@ namespace geode {
         void setNeedsEarlyLoad(bool const& value);
         void setIsAPI(bool const& value);
         void setGameVersion(std::string const& value);
-        void setGeodeVersion(VersionInfo const& value);
+        void setFreodVersion(VersionInfo const& value);
         ModMetadataLinks& getLinksMut();
 #endif
 
         /**
-         * Create ModInfo from an unzipped .geode package
+         * Create ModInfo from an unzipped .freod package
          */
-        static Result<ModMetadata> createFromGeodeZip(utils::file::Unzip& zip);
+        static Result<ModMetadata> createFromFreodZip(utils::file::Unzip& zip);
         /**
-         * Create ModInfo from a .geode package
+         * Create ModInfo from a .freod package
          */
-        static Result<ModMetadata> createFromGeodeFile(std::filesystem::path const& path);
+        static Result<ModMetadata> createFromFreodFile(std::filesystem::path const& path);
         /**
          * Create ModInfo from a mod.json file
          */
@@ -302,8 +302,8 @@ namespace geode {
 }
 
 template <>
-struct matjson::Serialize<geode::ModMetadata> {
-    static Value toJson(geode::ModMetadata const& value)
+struct matjson::Serialize<freod::ModMetadata> {
+    static Value toJson(freod::ModMetadata const& value)
     {
         return Value(value.toJSON());
     }

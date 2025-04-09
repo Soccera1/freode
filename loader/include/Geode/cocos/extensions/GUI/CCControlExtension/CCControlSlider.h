@@ -69,7 +69,7 @@ class CC_DLL CCControlSlider: public CCControl
     CC_SYNTHESIZE_RETAIN(CCSprite*, m_backgroundSprite, BackgroundSprite);
 
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCControlSlider, CCControl)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCControlSlider, CCControl)
     CCControlSlider();
     virtual ~CCControlSlider();
 

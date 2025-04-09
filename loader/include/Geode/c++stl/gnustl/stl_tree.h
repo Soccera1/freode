@@ -65,7 +65,7 @@
 #include "ext/aligned_buffer.h"
 #include "exception_defines.h"
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_CONTAINER
 
   // Red-black tree class, designed for use in implementing STL

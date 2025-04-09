@@ -38,10 +38,10 @@ NS_CC_BEGIN
 
 class CC_DLL CCAutoreleasePool : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     CCArray*    m_pManagedObjectArray;    
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCAutoreleasePool, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCAutoreleasePool, CCObject)
 
     CCAutoreleasePool(void);
     ~CCAutoreleasePool(void);
@@ -58,13 +58,13 @@ public:
  */
 class CC_DLL CCPoolManager
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
     CCArray*    m_pReleasePoolStack;    
     CCAutoreleasePool*                    m_pCurReleasePool;
 
     CCAutoreleasePool* getCurReleasePool();
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCPoolManager)
+    FREOD_CUSTOM_CONSTRUCTOR_BEGIN(CCPoolManager)
 
     CCPoolManager();
     ~CCPoolManager();

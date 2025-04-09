@@ -1,8 +1,8 @@
-#include <Geode/loader/Loader.hpp> // a third great circular dependency fix
-#include <Geode/loader/Log.hpp>
-#include <Geode/utils/file.hpp>
-#include <Geode/utils/map.hpp>
-#include <Geode/utils/string.hpp>
+#include <Freod/loader/Loader.hpp> // a third great circular dependency fix
+#include <Freod/loader/Log.hpp>
+#include <Freod/utils/file.hpp>
+#include <Freod/utils/map.hpp>
+#include <Freod/utils/string.hpp>
 #include <matjson.hpp>
 #include <fstream>
 #include <mz.h>
@@ -12,13 +12,13 @@
 #include <mz_strm_mem.h>
 #include <mz_zip.h>
 #include <internal/FileWatcher.hpp>
-#include <Geode/utils/ranges.hpp>
+#include <Freod/utils/ranges.hpp>
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
 #include <filesystem>
 #endif
 
-#if defined(GEODE_IS_ANDROID) || defined(GEODE_IS_MACOS) || defined(GEODE_IS_IOS)
+#if defined(FREOD_IS_ANDROID) || defined(FREOD_IS_MACOS) || defined(FREOD_IS_IOS)
 struct path_hash_t {
     std::size_t operator()(std::filesystem::path const& path) const noexcept {
         return std::filesystem::hash_value(path);
@@ -28,8 +28,8 @@ struct path_hash_t {
 using path_hash_t = std::hash<std::filesystem::path>;
 #endif
 
-using namespace geode::prelude;
-using namespace geode::utils::file;
+using namespace freod::prelude;
+using namespace freod::utils::file;
 
 Result<std::string> utils::file::readString(std::filesystem::path const& path) {
     if (!std::filesystem::exists(path))
@@ -53,7 +53,7 @@ Result<std::string> utils::file::readString(std::filesystem::path const& path) {
 }
 
 Result<matjson::Value> utils::file::readJson(std::filesystem::path const& path) {
-    auto str = GEODE_UNWRAP(utils::file::readString(path));
+    auto str = FREOD_UNWRAP(utils::file::readString(path));
     return matjson::parse(str).mapErr([&](auto const& err) {
         return fmt::format("Unable to parse JSON: {}", err);
     });
@@ -110,7 +110,7 @@ Result<> utils::file::writeBinary(std::filesystem::path const& path, ByteVector 
 
 Result<> utils::file::createDirectory(std::filesystem::path const& path) {
     std::error_code ec;
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
     std::filesystem::create_directory(path.wstring(), ec);
 #else
     std::filesystem::create_directory(path, ec);
@@ -123,7 +123,7 @@ Result<> utils::file::createDirectory(std::filesystem::path const& path) {
 
 Result<> utils::file::createDirectoryAll(std::filesystem::path const& path) {
     std::error_code ec;
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
     std::filesystem::create_directories(path.wstring(), ec);
 #else
     std::filesystem::create_directories(path, ec);
@@ -271,7 +271,7 @@ public:
         auto ret = std::make_unique<Impl>();
         ret->m_mode = mode;
         ret->m_srcDest = path;
-        GEODE_UNWRAP(ret->init());
+        FREOD_UNWRAP(ret->init());
         return Ok(std::move(ret));
     }
 
@@ -279,7 +279,7 @@ public:
         auto ret = std::make_unique<Impl>();
         ret->m_mode = MZ_OPEN_MODE_READ;
         ret->m_srcDest = raw;
-        GEODE_UNWRAP(ret->init());
+        FREOD_UNWRAP(ret->init());
         return Ok(std::move(ret));
     }
 
@@ -287,7 +287,7 @@ public:
         auto ret = std::make_unique<Impl>();
         ret->m_mode = MZ_OPEN_MODE_CREATE;
         ret->m_srcDest = ByteVector();
-        GEODE_UNWRAP(ret->init());
+        FREOD_UNWRAP(ret->init());
         return Ok(std::move(ret));
     }
 
@@ -298,7 +298,7 @@ public:
     Result<> extractAt(Path const& dir, Path const& name) {
         auto entry = m_entries.at(name);
 
-        GEODE_UNWRAP(
+        FREOD_UNWRAP(
             mzTry(mz_zip_entry_read_open(m_handle, 0, nullptr))
             .mapErr([&](auto error) {
                 return fmt::format("Unable to open entry (code {})", error);
@@ -320,8 +320,8 @@ public:
 
         mz_zip_entry_close(m_handle);
 
-        GEODE_UNWRAP(file::createDirectoryAll((dir / name).parent_path()));
-        GEODE_UNWRAP(file::writeBinary(dir / name, res).mapErr([&](auto error) {
+        FREOD_UNWRAP(file::createDirectoryAll((dir / name).parent_path()));
+        FREOD_UNWRAP(file::writeBinary(dir / name, res).mapErr([&](auto error) {
             return fmt::format("Unable to write to {}: {}", dir / name, error);
         }));
 
@@ -329,9 +329,9 @@ public:
     }
 
     Result<> extractAllTo(Path const& dir) {
-        GEODE_UNWRAP(file::createDirectoryAll(dir));
+        FREOD_UNWRAP(file::createDirectoryAll(dir));
 
-        GEODE_UNWRAP(
+        FREOD_UNWRAP(
             mzTry(mz_zip_goto_first_entry(m_handle))
             .mapErr([&](auto error) {
                 return fmt::format("Unable to navigate to first entry (code {})", error);
@@ -340,7 +340,7 @@ public:
 
         uint64_t numEntries;
 
-        GEODE_UNWRAP(
+        FREOD_UNWRAP(
             mzTry(mz_zip_get_number_entry(m_handle, &numEntries))
             .mapErr([&](auto error) {
                 return fmt::format("Unable to get number of entries (code {})", error);
@@ -361,16 +361,16 @@ public:
 
             // make sure zip files like root/../../file.txt don't get extracted to 
             // avoid zip attacks
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
             if (!std::filesystem::relative((dir / filePath).wstring(), dir.wstring()).empty()) {
 #else
             if (!std::filesystem::relative(dir / filePath, dir).empty()) {
 #endif
                 if (m_entries.at(filePath).isDirectory) {
-                    GEODE_UNWRAP(file::createDirectoryAll(dir / filePath));
+                    FREOD_UNWRAP(file::createDirectoryAll(dir / filePath));
                 }
                 else {
-                    GEODE_UNWRAP(this->extractAt(dir, filePath));
+                    FREOD_UNWRAP(this->extractAt(dir, filePath));
                 }
                 if (m_progressCallback) {
                     m_progressCallback(currentEntry, numEntries);
@@ -397,14 +397,14 @@ public:
             return Err("Entry is directory");
         }
 
-        GEODE_UNWRAP(
+        FREOD_UNWRAP(
             mzTry(mz_zip_goto_first_entry(m_handle))
             .mapErr([&](auto error) {
                 return fmt::format("Unable to navigate to first entry (code {})", error);
             })
         );
 
-        GEODE_UNWRAP(
+        FREOD_UNWRAP(
             mzTry(mz_zip_locate_entry(
                 m_handle,
                 reinterpret_cast<const char*>(name.u8string().c_str()),
@@ -415,7 +415,7 @@ public:
             })
         );
 
-        GEODE_UNWRAP(
+        FREOD_UNWRAP(
             mzTry(mz_zip_entry_read_open(m_handle, 0, nullptr))
             .mapErr([&](auto error) {
                 return fmt::format("Unable to open entry (code {})", error);
@@ -451,13 +451,13 @@ public:
         info.filename = reinterpret_cast<const char*>(strPath.c_str());
         info.uncompressed_size = 0;
         info.flag = MZ_ZIP_FLAG_UTF8;
-    #ifdef GEODE_IS_WINDOWS
+    #ifdef FREOD_IS_WINDOWS
         info.external_fa = FILE_ATTRIBUTE_DIRECTORY;
     #endif
         info.aes_version = MZ_AES_VERSION;
 
 
-        GEODE_UNWRAP(
+        FREOD_UNWRAP(
             mzTry(mz_zip_entry_write_open(m_handle, &info, MZ_COMPRESS_LEVEL_DEFAULT, 0, nullptr))
             .mapErr([&](auto error) {
                 return fmt::format("Unable to open entry for writing (code {})", error);
@@ -476,7 +476,7 @@ public:
         info.uncompressed_size = data.size();
         info.aes_version = MZ_AES_VERSION;
 
-        GEODE_UNWRAP(
+        FREOD_UNWRAP(
             mzTry(mz_zip_entry_write_open(m_handle, &info, MZ_COMPRESS_LEVEL_DEFAULT, 0, nullptr))
             .mapErr([&](auto error) {
                 return fmt::format("Unable to open entry for writing (code {})", error);
@@ -537,12 +537,12 @@ Unzip::Unzip(Unzip&& other) : m_impl(std::move(other.m_impl)) {
 }
 
 Result<Unzip> Unzip::create(Path const& file) {
-    GEODE_UNWRAP_INTO(auto impl, Zip::Impl::inFile(file, MZ_OPEN_MODE_READ));
+    FREOD_UNWRAP_INTO(auto impl, Zip::Impl::inFile(file, MZ_OPEN_MODE_READ));
     return Ok(Unzip(std::move(impl)));
 }
 
 Result<Unzip> Unzip::create(ByteVector const& data) {
-    GEODE_UNWRAP_INTO(auto impl, Zip::Impl::fromMemory(data));
+    FREOD_UNWRAP_INTO(auto impl, Zip::Impl::fromMemory(data));
     return Ok(Unzip(std::move(impl)));
 }
 
@@ -571,14 +571,14 @@ Result<ByteVector> Unzip::extract(Path const& name) {
 }
 
 Result<> Unzip::extractTo(Path const& name, Path const& path) {
-    GEODE_UNWRAP_INTO(auto bytes, m_impl->extract(name).mapErr([&](auto error) {
+    FREOD_UNWRAP_INTO(auto bytes, m_impl->extract(name).mapErr([&](auto error) {
         return fmt::format("Unable to extract entry {}: {}", name.string(), error);
     }));
     // create containing directories for target path
     if (path.has_parent_path()) {
-        GEODE_UNWRAP(file::createDirectoryAll(path.parent_path()));
+        FREOD_UNWRAP(file::createDirectoryAll(path.parent_path()));
     }
-    GEODE_UNWRAP(file::writeBinary(path, bytes).mapErr([&](auto error) {
+    FREOD_UNWRAP(file::writeBinary(path, bytes).mapErr([&](auto error) {
         return fmt::format("Unable to write file {}: {}", path.string(), error);
     }));
     return Ok();
@@ -596,9 +596,9 @@ Result<> Unzip::intoDir(
     // scope to ensure the zip is closed after extracting so the zip can be 
     // removed
     {
-        GEODE_UNWRAP_INTO(auto unzip, Unzip::create(from));
+        FREOD_UNWRAP_INTO(auto unzip, Unzip::create(from));
         // TODO: this is quite slow lol, takes 30 seconds to extract index..
-        GEODE_UNWRAP(unzip.extractAllTo(to));
+        FREOD_UNWRAP(unzip.extractAllTo(to));
     }
     if (deleteZipAfter) {
         std::error_code ec;
@@ -613,9 +613,9 @@ Result<> Unzip::intoDir(
     Path const& to,
     bool deleteZipAfter
 ) {
-    GEODE_UNWRAP_INTO(auto unzip, Unzip::create(from));
+    FREOD_UNWRAP_INTO(auto unzip, Unzip::create(from));
     unzip.setProgressCallback(progressCallback);
-    GEODE_UNWRAP(unzip.extractAllTo(to));
+    FREOD_UNWRAP(unzip.extractAllTo(to));
     if (deleteZipAfter) {
         std::error_code ec;
         std::filesystem::remove(from, ec);
@@ -636,12 +636,12 @@ Zip::Zip(Zip&& other) : m_impl(std::move(other.m_impl)) {
 }
 
 Result<Zip> Zip::create(Path const& file) {
-    GEODE_UNWRAP_INTO(auto impl, Zip::Impl::inFile(file, MZ_OPEN_MODE_CREATE | MZ_OPEN_MODE_WRITE));
+    FREOD_UNWRAP_INTO(auto impl, Zip::Impl::inFile(file, MZ_OPEN_MODE_CREATE | MZ_OPEN_MODE_WRITE));
     return Ok(Zip(std::move(impl)));
 }
 
 Result<Zip> Zip::create() {
-    GEODE_UNWRAP_INTO(auto impl, Zip::Impl::intoMemory());
+    FREOD_UNWRAP_INTO(auto impl, Zip::Impl::intoMemory());
     return Ok(Zip(std::move(impl)));
 }
 
@@ -662,18 +662,18 @@ Result<> Zip::add(Path const& path, std::string const& data) {
 }
 
 Result<> Zip::addFrom(Path const& file, Path const& entryDir) {
-    GEODE_UNWRAP_INTO(auto data, file::readBinary(file));
+    FREOD_UNWRAP_INTO(auto data, file::readBinary(file));
     return this->add(entryDir / file.filename(), data);
 }
 
 Result<> Zip::addAllFromRecurse(Path const& dir, Path const& entry) {
-    GEODE_UNWRAP(this->addFolder(entry / dir.filename()));
+    FREOD_UNWRAP(this->addFolder(entry / dir.filename()));
     for (auto& file : std::filesystem::directory_iterator(dir)) {
         if (std::filesystem::is_directory(file)) {
-            GEODE_UNWRAP(this->addAllFromRecurse(file, entry / dir.filename()));
+            FREOD_UNWRAP(this->addAllFromRecurse(file, entry / dir.filename()));
         } else {
-            GEODE_UNWRAP_INTO(auto data, file::readBinary(file));
-            GEODE_UNWRAP(this->addFrom(file, entry / dir.filename()));
+            FREOD_UNWRAP_INTO(auto data, file::readBinary(file));
+            FREOD_UNWRAP(this->addFrom(file, entry / dir.filename()));
         }
     }
     return Ok();

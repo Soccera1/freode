@@ -34,7 +34,7 @@
 #include "exception_defines.h"
 #include "ext/aligned_buffer.h"
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   template<typename _Key, typename _Value, typename _Alloc,
@@ -2021,7 +2021,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 
 // dank: addition
 
-namespace geode::stl::__detail {
+namespace freod::stl::__detail {
 
   // The sentinel value is kept only for abi backward compatibility.
   inline const unsigned long __prime_list[] = // 256 + 1 or 256 + 48 + 1

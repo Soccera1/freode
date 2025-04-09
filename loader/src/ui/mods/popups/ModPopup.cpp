@@ -2,19 +2,19 @@
 
 #include <optional>
 
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/ui/MDTextArea.hpp>
-#include <Geode/ui/TextInput.hpp>
-#include <Geode/utils/web.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/ModSettingsManager.hpp>
-#include <Geode/ui/GeodeUI.hpp>
-#include <Geode/utils/ColorProvider.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/ui/MDTextArea.hpp>
+#include <Freod/ui/TextInput.hpp>
+#include <Freod/utils/web.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/ModSettingsManager.hpp>
+#include <Freod/ui/FreodUI.hpp>
+#include <Freod/utils/ColorProvider.hpp>
 #include <optional>
 #include "ConfirmUninstallPopup.hpp"
 #include "../settings/ModSettingsPopup.hpp"
 #include "../../../internal/about.hpp"
-#include "../../GeodeUIEvent.hpp"
+#include "../../FreodUIEvent.hpp"
 #include "server/DownloadManager.hpp"
 
 class FetchTextArea : public CCNode {
@@ -83,8 +83,8 @@ bool ModPopup::setup(ModSource&& src) {
 
     this->setID(std::string(Mod::get()->expandSpriteName(fmt::format("popup-{}", src.getID()))));
 
-    auto isGeode = src.asMod() == Mod::get();
-    if (isGeode) {
+    auto isFreod = src.asMod() == Mod::get();
+    if (isFreod) {
         // Display commit hashes
         auto loaderHash = about::getLoaderCommitHash();
         auto bindingsHash = about::getBindingsCommitHash();
@@ -343,10 +343,10 @@ bool ModPopup::setup(ModSource&& src) {
     m_installMenu->setContentSize(installContainer->getContentSize() - ccp(10, 10));
     m_installMenu->setAnchorPoint({ .5f, .5f });
 
-    auto updateModSpr = createGeodeButton(
+    auto updateModSpr = createFreodButton(
         CCSprite::createWithSpriteFrameName("update.png"_spr),
         "Update",
-        GeodeButtonSprite::Install,
+        FreodButtonSprite::Install,
         m_forceDisableTheme
     );
     updateModSpr->setScale(.5f);
@@ -355,17 +355,17 @@ bool ModPopup::setup(ModSource&& src) {
     );
     m_installMenu->addChild(m_updateBtn);
 
-    auto enableModOffSpr = createGeodeButton(
+    auto enableModOffSpr = createFreodButton(
         CCSprite::createWithSpriteFrameName("GJ_completesIcon_001.png"),
         "Enable",
-        GeodeButtonSprite::Enable,
+        FreodButtonSprite::Enable,
         m_forceDisableTheme
     );
     enableModOffSpr->setScale(.5f);
-    auto enableModOnSpr = createGeodeButton(
+    auto enableModOnSpr = createFreodButton(
         CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png"),
         "Disable",
-        GeodeButtonSprite::Delete,
+        FreodButtonSprite::Delete,
         m_forceDisableTheme
     );
     enableModOnSpr->setScale(.5f);
@@ -376,17 +376,17 @@ bool ModPopup::setup(ModSource&& src) {
     m_enableBtn->m_notClickable = true;
     m_installMenu->addChild(m_enableBtn);
 
-    auto reenableModOffSpr = createGeodeButton(
+    auto reenableModOffSpr = createFreodButton(
         CCSprite::createWithSpriteFrameName("reset.png"_spr),
         "Re-Enable",
-        GeodeButtonSprite::Default,
+        FreodButtonSprite::Default,
         m_forceDisableTheme
     );
     reenableModOffSpr->setScale(.5f);
-    auto reenableModOnSpr = createGeodeButton(
+    auto reenableModOnSpr = createFreodButton(
         CCSprite::createWithSpriteFrameName("reset.png"_spr),
         "Re-Disable",
-        GeodeButtonSprite::Default
+        FreodButtonSprite::Default
     );
     reenableModOnSpr->setScale(.5f);
     m_reenableBtn = CCMenuItemToggler::create(
@@ -396,10 +396,10 @@ bool ModPopup::setup(ModSource&& src) {
     m_reenableBtn->m_notClickable = true;
     m_installMenu->addChild(m_reenableBtn);
 
-    auto unavailableSpr = createGeodeButton(
+    auto unavailableSpr = createFreodButton(
         CCSprite::createWithSpriteFrameName("exclamation.png"_spr),
         "Unavailable",
-        GeodeButtonSprite::Gray,
+        FreodButtonSprite::Gray,
         m_forceDisableTheme
     );
     unavailableSpr->setColor({ 155, 155, 155 });
@@ -410,10 +410,10 @@ bool ModPopup::setup(ModSource&& src) {
     m_unavailableBtn->setEnabled(false);
     m_installMenu->addChild(m_unavailableBtn);
 
-    auto installModSpr = createGeodeButton(
+    auto installModSpr = createFreodButton(
         CCSprite::createWithSpriteFrameName("GJ_downloadsIcon_001.png"),
         "Install",
-        GeodeButtonSprite::Install,
+        FreodButtonSprite::Install,
         m_forceDisableTheme
     );
     installModSpr->setScale(.5f);
@@ -422,10 +422,10 @@ bool ModPopup::setup(ModSource&& src) {
     );
     m_installMenu->addChild(m_installBtn);
 
-    auto uninstallModSpr = createGeodeButton(
+    auto uninstallModSpr = createFreodButton(
         CCSprite::createWithSpriteFrameName("delete-white.png"_spr),
         "Uninstall",
-        GeodeButtonSprite::Default,
+        FreodButtonSprite::Default,
         m_forceDisableTheme
     );
     uninstallModSpr->setScale(.5f);
@@ -434,10 +434,10 @@ bool ModPopup::setup(ModSource&& src) {
     );
     m_installMenu->addChild(m_uninstallBtn);
 
-    auto cancelDownloadSpr = createGeodeButton(
+    auto cancelDownloadSpr = createFreodButton(
         CCSprite::createWithSpriteFrameName("GJ_deleteIcon_001.png"),
         "Cancel",
-        GeodeButtonSprite::Default,
+        FreodButtonSprite::Default,
         m_forceDisableTheme
     );
     cancelDownloadSpr->setScale(.5f);
@@ -563,7 +563,7 @@ bool ModPopup::setup(ModSource&& src) {
         { "changelog.png"_spr, "Changelog",   "changelog",   Tab::Changelog }
         // { "version.png"_spr,   "Versions",    Tab::Versions },
     }) {
-        auto spr = GeodeTabSprite::create(std::get<0>(mdTab), std::get<1>(mdTab), 140, m_source.asServer());
+        auto spr = FreodTabSprite::create(std::get<0>(mdTab), std::get<1>(mdTab), 140, m_source.asServer());
         auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(ModPopup::onTab));
         btn->setTag(static_cast<int>(std::get<3>(mdTab)));
         btn->setID(std::get<2>(mdTab));
@@ -572,7 +572,7 @@ bool ModPopup::setup(ModSource&& src) {
     }
 
     // placeholder external link until versions tab is implemented
-    auto modUrl = fmt::format("https://geode-sdk.org/mods/{}", m_source.getID());
+    auto modUrl = fmt::format("https://freod-sdk.org/mods/{}", m_source.getID());
     auto externalLinkSpr = CCSprite::createWithSpriteFrameName("external-link.png"_spr);
 
     externalLinkSpr->setScale(0.35f);
@@ -583,7 +583,7 @@ bool ModPopup::setup(ModSource&& src) {
     externalLinkBtn->setID("mod-online-page-button");
     m_buttonMenu->addChildAtPosition(externalLinkBtn, Anchor::TopRight, ccp(-14, -16));
 
-    if (isGeode) {
+    if (isFreod) {
         externalLinkBtn->setVisible(false);
     }
 
@@ -602,7 +602,7 @@ bool ModPopup::setup(ModSource&& src) {
     m_settingsBG->setContentSize(ccp(35, 30) / linksBG->getScale());
     m_buttonMenu->addChildAtPosition(m_settingsBG, Anchor::BottomLeft, ccp(28, 25));
 
-    auto settingsSpr = createGeodeCircleButton(CCSprite::createWithSpriteFrameName("settings.png"_spr), 1.f, CircleBaseSize::Medium, false, m_forceDisableTheme);
+    auto settingsSpr = createFreodCircleButton(CCSprite::createWithSpriteFrameName("settings.png"_spr), 1.f, CircleBaseSize::Medium, false, m_forceDisableTheme);
     settingsSpr->setScale(.6f);
     auto settingsBtn = CCMenuItemSpriteExtra::create(
         settingsSpr, this, menu_selector(ModPopup::onSettings)
@@ -729,7 +729,7 @@ void ModPopup::updateState() {
     if (asMod && asMod->isInternal()) {
         m_enableBtn->setVisible(false);
         // you can uninstall loader ingame just fine on windows
-        #if !defined(GEODE_IS_WINDOWS)
+        #if !defined(FREOD_IS_WINDOWS)
         m_uninstallBtn->setVisible(false);
         m_installStatusLabel->setString("N/A");
         m_installStatusLabel->setVisible(true);
@@ -922,7 +922,7 @@ void ModPopup::onLoadTags(typename server::ServerRequest<std::vector<server::Ser
         m_tags->removeAllChildren();
         
         for (auto& tag : data) {
-            m_tags->addChild(createGeodeTagLabel(tag));
+            m_tags->addChild(createFreodTagLabel(tag));
         }
         
         if (data.empty()) {
@@ -949,7 +949,7 @@ void ModPopup::onLoadTags(typename server::ServerRequest<std::vector<server::Ser
             label->setScale(.35f);
             menu->addChildAtPosition(label, Anchor::Left, ccp(10, 0), ccp(0, .5f));
 
-            auto aboutSpr = createGeodeButton("About", false, GeodeButtonSprite::Default, m_forceDisableTheme);
+            auto aboutSpr = createFreodButton("About", false, FreodButtonSprite::Default, m_forceDisableTheme);
             aboutSpr->setScale(.35f);
             auto aboutBtn = CCMenuItemSpriteExtra::create(
                 aboutSpr, this, menu_selector(ModPopup::onModtoberInfo)
@@ -1131,9 +1131,9 @@ void ModPopup::onModtoberInfo(CCObject*) {
 
 ModPopup* ModPopup::create(ModSource&& src) {
     auto ret = new ModPopup();
-    GeodePopupStyle style = GeodePopupStyle::Default;
+    FreodPopupStyle style = FreodPopupStyle::Default;
     if (src.asServer()) {
-        style = GeodePopupStyle::Alt;
+        style = FreodPopupStyle::Alt;
     }
     if (ret->init(440, 280, std::move(src), style)) {
         ret->autorelease();
@@ -1155,8 +1155,8 @@ bool ModPopup::availableForInstall() const {
 
         if (
             (gameVersion == "0.000") || 
-            (gameVersion && gameVersion != "*" && gameVersion != GEODE_STR(GEODE_GD_VERSION)) || 
-            (!Loader::get()->isModVersionSupported(version.getGeodeVersion()))) {
+            (gameVersion && gameVersion != "*" && gameVersion != FREOD_STR(FREOD_GD_VERSION)) || 
+            (!Loader::get()->isModVersionSupported(version.getFreodVersion()))) {
             return false;
         } 
         return true;

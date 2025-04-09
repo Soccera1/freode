@@ -1,7 +1,7 @@
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/Utils.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/Utils.hpp>
 #include "../load.hpp"
 #include "../../loader/LoaderImpl.hpp"
 #include <dlfcn.h>
@@ -10,14 +10,14 @@
 
 #include <thread>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 static bool(*s_applicationDidFinishLaunchingOrig)(void*, SEL, void*, void*);
 
 bool applicationDidFinishLaunchingHook(void* self, SEL sel, void* p1, void* p2) {
-    // updateGeode();
+    // updateFreod();
 
-    int exitCode = geodeEntry(nullptr);
+    int exitCode = freodEntry(nullptr);
     if (exitCode != 0)
         return false;
 
@@ -25,7 +25,7 @@ bool applicationDidFinishLaunchingHook(void* self, SEL sel, void* p1, void* p2) 
     if (!LoaderImpl::get()->isForwardCompatMode())
     {
         // Patches the depth format of gd to be GL_DEPTH24_STENCIL8_OES, fixing the CCClippingNode recreation
-        if (!LoaderImpl::get()->getInternalMod()->patch(reinterpret_cast<void*>(geode::base::get() + 0x268b38), { 0x03, 0x1e, 0x91, 0x52 }).isOk())
+        if (!LoaderImpl::get()->getInternalMod()->patch(reinterpret_cast<void*>(freod::base::get() + 0x268b38), { 0x03, 0x1e, 0x91, 0x52 }).isOk())
             return false;
     }
     
@@ -33,8 +33,8 @@ bool applicationDidFinishLaunchingHook(void* self, SEL sel, void* p1, void* p2) 
 }
 
 
-bool loadGeode() {
-    auto orig = geode::hook::replaceObjcMethod("AppController", "application:didFinishLaunchingWithOptions:", (void*)applicationDidFinishLaunchingHook);
+bool loadFreod() {
+    auto orig = freod::hook::replaceObjcMethod("AppController", "application:didFinishLaunchingWithOptions:", (void*)applicationDidFinishLaunchingHook);
     if (!orig)
         return false;
 
@@ -43,6 +43,6 @@ bool loadGeode() {
 }
 
 __attribute__((constructor)) void _entry() {
-    if (!loadGeode())
+    if (!loadFreod())
         return;
 }

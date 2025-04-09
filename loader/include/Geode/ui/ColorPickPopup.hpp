@@ -3,17 +3,17 @@
 #include "Popup.hpp"
 #include "TextInput.hpp"
 #include "../loader/Event.hpp"
-#include <Geode/binding/TextInputDelegate.hpp>
+#include <Freod/binding/TextInputDelegate.hpp>
 
-namespace geode {
+namespace freod {
     class ColorPickPopup;
 
-    class GEODE_DLL ColorPickPopupDelegate {
+    class FREOD_DLL ColorPickPopupDelegate {
     public:
         virtual void updateColor(cocos2d::ccColor4B const& color) {}
     };
 
-    class GEODE_DLL ColorPickPopup :
+    class FREOD_DLL ColorPickPopup :
         public Popup<cocos2d::ccColor4B const&, bool>,
         public cocos2d::extension::ColorPickerDelegate,
         public TextInputDelegate {

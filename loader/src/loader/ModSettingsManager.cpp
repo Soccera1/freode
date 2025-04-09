@@ -1,8 +1,8 @@
-#include <Geode/loader/ModSettingsManager.hpp>
-#include <Geode/utils/JsonValidation.hpp>
+#include <Freod/loader/ModSettingsManager.hpp>
+#include <Freod/utils/JsonValidation.hpp>
 #include "ModImpl.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // All setting type generators are put in a shared pool for two reasons:
 // #1 no need to duplicate the built-in settings between all mods
@@ -188,7 +188,7 @@ void ModSettingsManager::markRestartRequired() {
 }
 
 Result<> ModSettingsManager::registerCustomSettingType(std::string_view type, SettingGenerator generator) {
-    GEODE_UNWRAP(SharedSettingTypesPool::get().add(m_impl->modID, type, generator));
+    FREOD_UNWRAP(SharedSettingTypesPool::get().add(m_impl->modID, type, generator));
     m_impl->createSettings();
     return Ok();
 }

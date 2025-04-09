@@ -1,25 +1,25 @@
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-#include <Geode/loader/Dirs.hpp>
+#include <Freod/loader/Dirs.hpp>
 #include <UIKit/UIKit.h>
 #include <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 #include <AVFoundation/AVFoundation.h>
 #include <iostream>
 #include <sstream>
-#include <Geode/utils/web.hpp>
-#include <Geode/utils/permission.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/binding/GameManager.hpp>
-#include <Geode/binding/AppDelegate.hpp>
-#include <Geode/binding/MenuLayer.hpp>
-#include <Geode/binding/FLAlertLayer.hpp>
-#include <Geode/Utils.hpp>
+#include <Freod/utils/web.hpp>
+#include <Freod/utils/permission.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/binding/GameManager.hpp>
+#include <Freod/binding/AppDelegate.hpp>
+#include <Freod/binding/MenuLayer.hpp>
+#include <Freod/binding/FLAlertLayer.hpp>
+#include <Freod/Utils.hpp>
 #include <objc/runtime.h>
 #include <stdlib.h>
 
-using geode::utils::permission::Permission;
+using freod::utils::permission::Permission;
 
 bool utils::clipboard::write(std::string const& data) {
     [UIPasteboard generalPasteboard].string = [NSString stringWithUTF8String:data.c_str()];
@@ -81,7 +81,7 @@ UIViewController* getCurrentViewController() {
 }
 
 bool utils::file::openFolder(std::filesystem::path const& path) {
-    std::string newPath = fmt::format("{}://{}", getenv("GEODEINJECT_LOADED") ? "filza" : "shareddocuments", path);
+    std::string newPath = fmt::format("{}://{}", getenv("FREODINJECT_LOADED") ? "filza" : "shareddocuments", path);
     NSURL *url = [NSURL URLWithString:[NSString stringWithUTF8String:newPath.c_str()]];
     if ([[UIApplication sharedApplication] canOpenURL:url]) {
         [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
@@ -90,7 +90,7 @@ bool utils::file::openFolder(std::filesystem::path const& path) {
     return false;
 }
 
-GEODE_DLL Task<Result<std::filesystem::path>> file::pick(file::PickMode mode, file::FilePickOptions const& options) {
+FREOD_DLL Task<Result<std::filesystem::path>> file::pick(file::PickMode mode, file::FilePickOptions const& options) {
     using RetTask = Task<Result<std::filesystem::path>>;
     return RetTask::runWithCallback([mode, options](auto resultCallback, auto progress, auto cancelled) {
 
@@ -187,7 +187,7 @@ GEODE_DLL Task<Result<std::filesystem::path>> file::pick(file::PickMode mode, fi
     });
 }
 
-GEODE_DLL Task<Result<std::vector<std::filesystem::path>>> file::pickMany(file::FilePickOptions const& options) {
+FREOD_DLL Task<Result<std::vector<std::filesystem::path>>> file::pickMany(file::FilePickOptions const& options) {
     using RetTask = Task<Result<std::vector<std::filesystem::path>>>;
     return RetTask::runWithCallback([options](auto resultCallback, auto progress, auto cancelled) {
         NSMutableArray<NSString*> *documentTypes = [NSMutableArray array];
@@ -261,7 +261,7 @@ GEODE_DLL Task<Result<std::vector<std::filesystem::path>>> file::pickMany(file::
 }
 
 // TODO: copied those two from android but idk maybe shouldve copied from mac
-void geode::utils::game::exit() {
+void freod::utils::game::exit() {
     // TODO: yeah
     // if (CCApplication::sharedApplication() &&
     //     (GameManager::get()->m_playLayer || GameManager::get()->m_levelEditorLayer)) {
@@ -286,13 +286,13 @@ void geode::utils::game::exit() {
     ), CCDirector::get()->getRunningScene(), false);
 }
 
-void geode::utils::game::restart() {
+void freod::utils::game::restart() {
     AppDelegate::get()->trySaveGame(true);
 
     class Exit : public CCObject {
         public:
         void shutdown() {
-            NSURL* url = [NSURL URLWithString:@"geode://relaunch"];
+            NSURL* url = [NSURL URLWithString:@"freod://relaunch"];
             if ([[UIApplication sharedApplication] canOpenURL:url]) {
                 [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
             } else {
@@ -313,8 +313,8 @@ void geode::utils::game::restart() {
     ), CCDirector::get()->getRunningScene(), false);
 }
 
-void geode::utils::game::launchLoaderUninstaller(bool deleteSaveData) {
-    log::error("Launching Geode uninstaller is not supported on iOS");
+void freod::utils::game::launchLoaderUninstaller(bool deleteSaveData) {
+    log::error("Launching Freod uninstaller is not supported on iOS");
 }
 
 CCPoint cocos::getMousePos() {
@@ -344,14 +344,14 @@ std::filesystem::path dirs::getGameDir() {
 }
 
 std::filesystem::path dirs::getModRuntimeDir() {
-    return dirs::getGeodeDir() / "unzipped";
+    return dirs::getFreodDir() / "unzipped";
 }
 
 std::filesystem::path dirs::getSaveDir() {
     return getBaseDir() / "save";
 }
 
-bool geode::utils::permission::getPermissionStatus(Permission permission) {
+bool freod::utils::permission::getPermissionStatus(Permission permission) {
     switch (permission) {
         case Permission::RecordAudio: 
             return [[AVAudioSession sharedInstance] recordPermission] == AVAudioSessionRecordPermissionGranted;
@@ -360,7 +360,7 @@ bool geode::utils::permission::getPermissionStatus(Permission permission) {
     }
 }
 
-void geode::utils::permission::requestPermission(Permission permission, std::function<void(bool)> callback) {
+void freod::utils::permission::requestPermission(Permission permission, std::function<void(bool)> callback) {
     switch (permission) {
         case Permission::RecordAudio: 
             return [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
@@ -373,19 +373,19 @@ void geode::utils::permission::requestPermission(Permission permission, std::fun
 
 #include "../../utils/thread.hpp"
 
-std::string geode::utils::thread::getDefaultName() {
+std::string freod::utils::thread::getDefaultName() {
     uint64_t tid = 0ul;
     pthread_threadid_np(nullptr, &tid);
 
     return fmt::format("Thread #{}", tid);
 }
 
-void geode::utils::thread::platformSetName(std::string const& name) {
+void freod::utils::thread::platformSetName(std::string const& name) {
     pthread_setname_np(name.c_str());
 }
 
 
-Result<> geode::hook::addObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
+Result<> freod::hook::addObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
     auto cls = objc_getClass(className.c_str());
     if (!cls)
         return Err("Class not found");
@@ -396,7 +396,7 @@ Result<> geode::hook::addObjcMethod(std::string const& className, std::string co
 
     return Ok();
 }
-Result<void*> geode::hook::getObjcMethodImp(std::string const& className, std::string const& selectorName) {
+Result<void*> freod::hook::getObjcMethodImp(std::string const& className, std::string const& selectorName) {
     auto cls = objc_getClass(className.c_str());
     if (!cls)
         return Err("Class not found");
@@ -410,7 +410,7 @@ Result<void*> geode::hook::getObjcMethodImp(std::string const& className, std::s
     return Ok((void*)method_getImplementation(method));
 }
 
-Result<void*> geode::hook::replaceObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
+Result<void*> freod::hook::replaceObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
     auto cls = objc_getClass(className.c_str());
     if (!cls)
         return Err("Class not found");

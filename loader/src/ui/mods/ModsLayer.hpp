@@ -1,20 +1,20 @@
 #pragma once
 
-#include <Geode/ui/General.hpp>
-#include <Geode/ui/ScrollLayer.hpp>
-#include <Geode/ui/TextArea.hpp>
-#include <Geode/ui/IconButtonSprite.hpp>
-#include <Geode/binding/SetTextPopupDelegate.hpp>
-#include <Geode/binding/SetIDPopupDelegate.hpp>
-#include <Geode/cocos/cocoa/CCObject.h>
+#include <Freod/ui/General.hpp>
+#include <Freod/ui/ScrollLayer.hpp>
+#include <Freod/ui/TextArea.hpp>
+#include <Freod/ui/IconButtonSprite.hpp>
+#include <Freod/binding/SetTextPopupDelegate.hpp>
+#include <Freod/binding/SetIDPopupDelegate.hpp>
+#include <Freod/cocos/cocoa/CCObject.h>
 #include "list/ModItem.hpp"
 #include "list/ModList.hpp"
 #include "sources/ModListSource.hpp"
 #include "UpdateModListState.hpp"
 #include <server/DownloadManager.hpp>
-#include <Geode/loader/Setting.hpp>
+#include <Freod/loader/Setting.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 class ModsStatusNode : public CCNode {
 protected:

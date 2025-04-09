@@ -1,7 +1,7 @@
-#include <Geode/ui/BasedButton.hpp>
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
+#include <Freod/ui/BasedButton.hpp>
+#include <Freod/binding/CCMenuItemSpriteExtra.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 TabButton* TabButton::create(
     TabBaseColor unselected, TabBaseColor selected, char const* text, cocos2d::CCObject* target,

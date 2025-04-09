@@ -1,7 +1,7 @@
-#include <Geode/ui/LoadingSpinner.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/ui/LoadingSpinner.hpp>
+#include <Freod/utils/cocos.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 bool LoadingSpinner::init(float sideLength) {
     if (!CCNode::init())

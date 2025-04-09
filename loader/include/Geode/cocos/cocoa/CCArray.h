@@ -113,9 +113,9 @@ NS_CC_BEGIN
  */
 class CC_DLL CCArray : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCArray, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCArray, CCObject)
     /**
      * @lua NA
      */
@@ -185,9 +185,9 @@ public:
 
     /** 
      * Returns first element, or null if empty
-     * @note Geode addition
+     * @note Freod addition
      */
-    GEODE_DLL CCObject* firstObject();
+    FREOD_DLL CCObject* firstObject();
     /** Returns last element */
     CCObject* lastObject();
     /** Returns a random element */
@@ -214,9 +214,9 @@ public:
 
     /** 
      * Remove first object, or do nothing if array is empty
-     * @note Geode addition
+     * @note Freod addition
      */
-    GEODE_DLL void removeFirstObject(bool bReleaseObj = true);
+    FREOD_DLL void removeFirstObject(bool bReleaseObj = true);
     /** Remove last object */
     void removeLastObject(bool bReleaseObj = true);
     /** Remove a certain object */
@@ -269,7 +269,7 @@ public:
      * the array members and not the members themselves
      * @returns New array with same members
      */
-    GEODE_DLL CCArray* shallowCopy();
+    FREOD_DLL CCArray* shallowCopy();
 
     /* override functions */
     virtual void acceptVisitor(CCDataVisitor &visitor);

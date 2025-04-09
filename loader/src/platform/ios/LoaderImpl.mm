@@ -1,8 +1,8 @@
 #include <loader/LoaderImpl.hpp>
 
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Log.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Log.hpp>
 #include <loader/ModImpl.hpp>
 #include <loader/IPC.hpp>
 #include <loader/console.hpp>
@@ -14,7 +14,7 @@
 
 #include <loader/LogImpl.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 bool s_isOpen = false;
 
@@ -45,7 +45,7 @@ void console::openIfClosed() {
     if (s_isOpen) return;
 
     std::filesystem::path(getpwuid(getuid())->pw_dir);
-    freopen(std::filesystem::path(dirs::getGeodeDir() / "geode_log.txt").string().c_str(), "w", stdout);
+    freopen(std::filesystem::path(dirs::getFreodDir() / "freod_log.txt").string().c_str(), "w", stdout);
     s_isOpen = true;
 }
 
@@ -55,7 +55,7 @@ void console::setup() {}
 //     void* rawPipeHandle, std::string const& replyID, matjson::Value const& data
 // ) {}
 
-void geode::ipc::setup() {
+void freod::ipc::setup() {
     #warning "Set up pipes or smth for this platform"
     log::warn("IPC is not supported on this platform");
 }

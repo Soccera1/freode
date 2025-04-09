@@ -47,9 +47,9 @@ NS_CC_EXT_BEGIN
  */
 class CC_DLL CCHttpClient : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCHttpClient, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCHttpClient, CCObject)
 
     /** Return the shared instance **/
     static CCHttpClient *getInstance();

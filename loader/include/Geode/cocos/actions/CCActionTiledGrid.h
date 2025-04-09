@@ -37,7 +37,7 @@ NS_CC_BEGIN
 /** @brief CCShakyTiles3D action */
 class CC_DLL CCShakyTiles3D : public CCTiledGrid3DAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action with a range, whether or not to shake Z vertices, a grid size, and duration */
     virtual bool initWithDuration(float duration, const CCSize& gridSize, int nRange, bool bShakeZ);
@@ -61,7 +61,7 @@ public:
 /** @brief CCShatteredTiles3D action */
 class CC_DLL CCShatteredTiles3D : public CCTiledGrid3DAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action with a range, whether or not to shatter Z vertices, a grid size and duration */
     virtual bool initWithDuration(float duration, const CCSize& gridSize, int nRange, bool bShatterZ);
@@ -88,9 +88,9 @@ struct Tile;
  */
 class CC_DLL CCShuffleTiles : public CCTiledGrid3DAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCShuffleTiles, CCTiledGrid3DAction)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCShuffleTiles, CCTiledGrid3DAction)
     CCShuffleTiles() {}
     /**
      *  @js NA
@@ -126,7 +126,7 @@ public:
  */
 class CC_DLL CCFadeOutTRTiles : public CCTiledGrid3DAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual float testFunc(const CCSize& pos, float time);
     void turnOnTile(const CCPoint& pos);
@@ -145,7 +145,7 @@ public:
  */
 class CC_DLL CCFadeOutBLTiles : public CCFadeOutTRTiles
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual float testFunc(const CCSize& pos, float time);
 
@@ -160,7 +160,7 @@ public:
  */
 class CC_DLL CCFadeOutUpTiles : public CCFadeOutTRTiles
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual float testFunc(const CCSize& pos, float time);
     virtual void transformTile(const CCPoint& pos, float distance);
@@ -176,7 +176,7 @@ public:
  */
 class CC_DLL CCFadeOutDownTiles : public CCFadeOutUpTiles
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual float testFunc(const CCSize& pos, float time);
 
@@ -191,9 +191,9 @@ public:
  */
 class CC_DLL CCTurnOffTiles : public CCTiledGrid3DAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTurnOffTiles, CCTiledGrid3DAction)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTurnOffTiles, CCTiledGrid3DAction)
     CCTurnOffTiles() {}
     /**
      *  @js NA
@@ -229,7 +229,7 @@ public:
 /** @brief CCWavesTiles3D action. */
 class CC_DLL CCWavesTiles3D : public CCTiledGrid3DAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** waves amplitude */
     inline float getAmplitude(void) { return m_fAmplitude; }
@@ -262,7 +262,7 @@ public:
  */
 class CC_DLL CCJumpTiles3D : public CCTiledGrid3DAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** amplitude of the sin*/
     inline float getAmplitude(void) { return m_fAmplitude; }
@@ -294,7 +294,7 @@ public:
 /** @brief CCSplitRows action */
 class CC_DLL CCSplitRows : public CCTiledGrid3DAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public :
     /** initializes the action with the number of rows to split and the duration */
     virtual bool initWithDuration(float duration, unsigned int nRows);
@@ -318,7 +318,7 @@ public:
 /** @brief CCSplitCols action */
 class CC_DLL CCSplitCols : public CCTiledGrid3DAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action with the number of columns to split and the duration */
     virtual bool initWithDuration(float duration, unsigned int nCols);

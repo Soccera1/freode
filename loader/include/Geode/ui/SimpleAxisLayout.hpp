@@ -2,7 +2,7 @@
 
 #include "Layout.hpp"
 
-namespace geode {
+namespace freod {
 enum class AxisScaling {
     // Does not scale items
     None,
@@ -81,7 +81,7 @@ enum class AxisDirection {
     BackToFront = 1,
 };
 
-class GEODE_DLL SimpleAxisLayoutOptions : public LayoutOptions {
+class FREOD_DLL SimpleAxisLayoutOptions : public LayoutOptions {
 protected:
     class Impl;
 
@@ -116,7 +116,7 @@ public:
     ScalingPriority getScalingPriority() const;
 };
 
-class GEODE_DLL SimpleAxisLayout : public Layout {
+class FREOD_DLL SimpleAxisLayout : public Layout {
 protected:
     class Impl;
 
@@ -196,7 +196,7 @@ public:
     std::optional<float> getMaxRelativeScale() const;
 };
 
-class GEODE_DLL SimpleRowLayout : public SimpleAxisLayout {
+class FREOD_DLL SimpleRowLayout : public SimpleAxisLayout {
 protected:
     SimpleRowLayout();
 
@@ -206,7 +206,7 @@ public:
     virtual ~SimpleRowLayout();
 };
 
-class GEODE_DLL SimpleColumnLayout : public SimpleAxisLayout {
+class FREOD_DLL SimpleColumnLayout : public SimpleAxisLayout {
 protected:
     SimpleColumnLayout();
 
@@ -216,7 +216,7 @@ public:
     virtual ~SimpleColumnLayout();
 };
 
-class GEODE_DLL AxisGap : public cocos2d::CCNode {
+class FREOD_DLL AxisGap : public cocos2d::CCNode {
 protected:
     class Impl;
 

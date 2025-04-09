@@ -1,8 +1,8 @@
-#include <Geode/loader/Event.hpp>
-#include <Geode/utils/ranges.hpp>
+#include <Freod/loader/Event.hpp>
+#include <Freod/utils/ranges.hpp>
 #include <mutex>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 DefaultEventListenerPool::DefaultEventListenerPool() : m_data(new Data) {}
 

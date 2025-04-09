@@ -1,24 +1,24 @@
-#include <Geode/binding/ProfilePage.hpp>
-#include <Geode/binding/LevelTools.hpp>
-#include <Geode/binding/LevelInfoLayer.hpp>
-#include <Geode/binding/CCContentLayer.hpp>
-#include <Geode/binding/GJSearchObject.hpp>
-#include <Geode/binding/LevelBrowserLayer.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/ui/MDTextArea.hpp>
-#include <Geode/utils/casts.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/utils/web.hpp>
-#include <Geode/utils/ranges.hpp>
-#include <Geode/utils/string.hpp>
+#include <Freod/binding/ProfilePage.hpp>
+#include <Freod/binding/LevelTools.hpp>
+#include <Freod/binding/LevelInfoLayer.hpp>
+#include <Freod/binding/CCContentLayer.hpp>
+#include <Freod/binding/GJSearchObject.hpp>
+#include <Freod/binding/LevelBrowserLayer.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/ui/MDTextArea.hpp>
+#include <Freod/utils/casts.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/utils/web.hpp>
+#include <Freod/utils/ranges.hpp>
+#include <Freod/utils/string.hpp>
 #include <md4c.h>
 #include <charconv>
-#include <Geode/loader/Log.hpp>
-#include <Geode/ui/GeodeUI.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/ui/FreodUI.hpp>
 #include <server/Server.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 static constexpr float g_fontScale = .5f;
 static constexpr float g_paragraphPadding = 7.f;
@@ -228,7 +228,7 @@ void MDTextArea::onGDLevel(CCObject* pSender) {
     CCDirector::sharedDirector()->replaceScene(CCTransitionFade::create(0.5f, scene));
 }
 
-void MDTextArea::onGeodeMod(CCObject* sender) {
+void MDTextArea::onFreodMod(CCObject* sender) {
     auto href = as<CCString*>(as<CCNode*>(sender)->getUserObject());
     auto modID = std::string(href->getCString());
     (void)openInfoPopup(modID.substr(modID.find(":") + 1));
@@ -292,7 +292,7 @@ struct MDParser {
                                 : utils::string::startsWith(s_lastLink, "level:")
                                     ? menu_selector(MDTextArea::onGDLevel)
                                     : utils::string::startsWith(s_lastLink, "mod:")
-                                        ? menu_selector(MDTextArea::onGeodeMod)
+                                        ? menu_selector(MDTextArea::onFreodMod)
                                         : menu_selector(MDTextArea::onLink)
                         );
                         for (auto const& label : rendered) {
@@ -357,7 +357,7 @@ struct MDParser {
                         else {
                             spr = CCSprite::create(s_lastImage.c_str());
                         }
-                        if (spr && spr->getUserObject("geode.texture-loader/fallback") == nullptr) {
+                        if (spr && spr->getUserObject("freod.texture-loader/fallback") == nullptr) {
                             spr->setScale(spriteScale);
                             if (spriteWidth > 0.0f && spriteHeight <= 0.0f) {
                                 limitNodeWidth(spr, spriteWidth, 999.f, .1f);

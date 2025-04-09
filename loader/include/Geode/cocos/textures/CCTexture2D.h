@@ -111,13 +111,13 @@ class CC_DLL CCTexture2D : public CCObject
 , public CCGLBufferedNode
 #endif // EMSCRIPTEN
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      * @js ctor
      */
     CCTexture2D();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTexture2D, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTexture2D, CCObject)
     /**
      * @js NA
      * @lua NA

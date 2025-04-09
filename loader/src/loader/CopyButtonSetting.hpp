@@ -1,7 +1,7 @@
-#include <Geode/loader/SettingV3.hpp>
-#include <ui/mods/GeodeStyle.hpp>
+#include <Freod/loader/SettingV3.hpp>
+#include <ui/mods/FreodStyle.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 class CopyButtonSetting : public SettingV3 {
 public:
@@ -36,7 +36,7 @@ protected:
         if (!SettingNodeV3::init(setting, width))
             return false;
     
-        auto buttonSprite = createGeodeButton("Copy Mods");
+        auto buttonSprite = createFreodButton("Copy Mods");
         buttonSprite->setScale(.5f);
         auto button = CCMenuItemSpriteExtra::create(
             buttonSprite, this, menu_selector(CopyButtonSettingNode::onCopy)

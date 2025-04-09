@@ -1,31 +1,31 @@
-#include <Geode/modify/LoadingLayer.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/modify/LoadingLayer.hpp>
+#include <Freod/utils/cocos.hpp>
 #include <matjson.hpp>
 #include <charconv>
-#include <Geode/binding/CCTextInputNode.hpp>
-#include <Geode/binding/GameManager.hpp>
+#include <Freod/binding/CCTextInputNode.hpp>
+#include <Freod/binding/GameManager.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 Result<cocos2d::ccColor3B, std::string> matjson::Serialize<ccColor3B>::fromJson(matjson::Value const& value) {
     if (value.isArray()) {
-        auto arr = GEODE_UNWRAP(value.asArray());
+        auto arr = FREOD_UNWRAP(value.asArray());
         if (arr.size() == 3) {
-            auto r = GEODE_UNWRAP(arr[0].asInt());
-            auto g = GEODE_UNWRAP(arr[1].asInt());
-            auto b = GEODE_UNWRAP(arr[2].asInt());
+            auto r = FREOD_UNWRAP(arr[0].asInt());
+            auto g = FREOD_UNWRAP(arr[1].asInt());
+            auto b = FREOD_UNWRAP(arr[2].asInt());
             return Ok(cocos2d::ccc3(r, g, b));
         }
         return Err("Expected color array to have 3 items");
     }
     if (value.isObject()) {
-        auto r = GEODE_UNWRAP(GEODE_UNWRAP(value.get("r")).asInt());
-        auto g = GEODE_UNWRAP(GEODE_UNWRAP(value.get("g")).asInt());
-        auto b = GEODE_UNWRAP(GEODE_UNWRAP(value.get("b")).asInt());
+        auto r = FREOD_UNWRAP(FREOD_UNWRAP(value.get("r")).asInt());
+        auto g = FREOD_UNWRAP(FREOD_UNWRAP(value.get("g")).asInt());
+        auto b = FREOD_UNWRAP(FREOD_UNWRAP(value.get("b")).asInt());
         return Ok(cocos2d::ccc3(r, g, b));
     }
     if (value.isString()) {
-        auto hex = GEODE_UNWRAP(value.asString());
+        auto hex = FREOD_UNWRAP(value.asString());
         auto res = cc3bFromHexString(hex);
         if (!res) {
             return Err("Invalid hex color string: {}", res.unwrapErr());
@@ -44,25 +44,25 @@ matjson::Value matjson::Serialize<ccColor3B>::toJson(cocos2d::ccColor3B const& v
 
 Result<cocos2d::ccColor4B, std::string> matjson::Serialize<ccColor4B>::fromJson(matjson::Value const& value) {
     if (value.isArray()) {
-        auto arr = GEODE_UNWRAP(value.asArray());
+        auto arr = FREOD_UNWRAP(value.asArray());
         if (arr.size() == 4) {
-            auto r = GEODE_UNWRAP(arr[0].asInt());
-            auto g = GEODE_UNWRAP(arr[1].asInt());
-            auto b = GEODE_UNWRAP(arr[2].asInt());
-            auto a = GEODE_UNWRAP(arr[3].asInt());
+            auto r = FREOD_UNWRAP(arr[0].asInt());
+            auto g = FREOD_UNWRAP(arr[1].asInt());
+            auto b = FREOD_UNWRAP(arr[2].asInt());
+            auto a = FREOD_UNWRAP(arr[3].asInt());
             return Ok(cocos2d::ccc4(r, g, b, a));
         }
         return Err("Expected color array to have 4 items");
     }
     if (value.isObject()) {
-        auto r = GEODE_UNWRAP(GEODE_UNWRAP(value.get("r")).asInt());
-        auto g = GEODE_UNWRAP(GEODE_UNWRAP(value.get("g")).asInt());
-        auto b = GEODE_UNWRAP(GEODE_UNWRAP(value.get("b")).asInt());
-        auto a = GEODE_UNWRAP(GEODE_UNWRAP(value.get("a")).asInt());
+        auto r = FREOD_UNWRAP(FREOD_UNWRAP(value.get("r")).asInt());
+        auto g = FREOD_UNWRAP(FREOD_UNWRAP(value.get("g")).asInt());
+        auto b = FREOD_UNWRAP(FREOD_UNWRAP(value.get("b")).asInt());
+        auto a = FREOD_UNWRAP(FREOD_UNWRAP(value.get("a")).asInt());
         return Ok(cocos2d::ccc4(r, g, b, a));
     }
     if (value.isString()) {
-        auto hex = GEODE_UNWRAP(value.asString());
+        auto hex = FREOD_UNWRAP(value.asString());
         auto res = cc4bFromHexString(hex);
         if (!res) {
             return Err("Invalid hex color string: {}", res.unwrapErr());
@@ -81,7 +81,7 @@ matjson::Value matjson::Serialize<ccColor4B>::toJson(cocos2d::ccColor4B const& v
     });
 }
 
-Result<ccColor3B> geode::cocos::cc3bFromHexString(std::string const& rawHexValue, bool permissive) {
+Result<ccColor3B> freod::cocos::cc3bFromHexString(std::string const& rawHexValue, bool permissive) {
     if (permissive && rawHexValue.empty()) {
         return Ok(ccc3(255, 255, 255));
     }
@@ -139,7 +139,7 @@ Result<ccColor3B> geode::cocos::cc3bFromHexString(std::string const& rawHexValue
     }
 }
 
-Result<ccColor4B> geode::cocos::cc4bFromHexString(std::string const& rawHexValue, bool requireAlpha, bool permissive) {
+Result<ccColor4B> freod::cocos::cc4bFromHexString(std::string const& rawHexValue, bool requireAlpha, bool permissive) {
     if (permissive && rawHexValue.empty()) {
         return Ok(ccc4(255, 255, 255, 255));
     }
@@ -228,7 +228,7 @@ Result<ccColor4B> geode::cocos::cc4bFromHexString(std::string const& rawHexValue
     }
 }
 
-std::string geode::cocos::cc3bToHexString(ccColor3B const& color) {
+std::string freod::cocos::cc3bToHexString(ccColor3B const& color) {
     static constexpr auto digits = "0123456789ABCDEF";
     std::string output;
     output += digits[color.r >> 4 & 0xF];
@@ -240,7 +240,7 @@ std::string geode::cocos::cc3bToHexString(ccColor3B const& color) {
     return output;
 }
 
-std::string geode::cocos::cc4bToHexString(ccColor4B const& color) {
+std::string freod::cocos::cc4bToHexString(ccColor4B const& color) {
     static constexpr auto digits = "0123456789ABCDEF";
     std::string output;
     output += digits[color.r >> 4 & 0xF];
@@ -304,7 +304,7 @@ std::shared_ptr<WeakRefController> WeakRefPool::manage(CCObject* obj) {
     return m_pool.at(obj);
 }
 
-bool geode::cocos::isSpriteFrameName(CCNode* node, const char* name) {
+bool freod::cocos::isSpriteFrameName(CCNode* node, const char* name) {
     if (!node) return false;
 
     auto cache = CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(name);
@@ -328,7 +328,7 @@ bool geode::cocos::isSpriteFrameName(CCNode* node, const char* name) {
     return false;
 }
 
-CCNode* geode::cocos::getChildBySpriteFrameName(CCNode* parent, const char* name) {
+CCNode* freod::cocos::getChildBySpriteFrameName(CCNode* parent, const char* name) {
     for (auto child : CCArrayExt<CCNode*>(parent->getChildren())) {
         if (::isSpriteFrameName(static_cast<CCNode*>(child), name)) {
             return child;
@@ -337,7 +337,7 @@ CCNode* geode::cocos::getChildBySpriteFrameName(CCNode* parent, const char* name
     return nullptr;
 }
 
-bool geode::cocos::isSpriteName(CCNode* node, const char* name) {
+bool freod::cocos::isSpriteName(CCNode* node, const char* name) {
     if (!node) return false;
 
     auto texture = CCTextureCache::sharedTextureCache()->textureForKey(name);
@@ -359,7 +359,7 @@ bool geode::cocos::isSpriteName(CCNode* node, const char* name) {
     return false;
 }
 
-CCNode* geode::cocos::getChildBySpriteName(CCNode* parent, const char* name) {
+CCNode* freod::cocos::getChildBySpriteName(CCNode* parent, const char* name) {
     for (auto child : CCArrayExt<CCNode*>(parent->getChildren())) {
         if (::isSpriteName(static_cast<CCNode*>(child), name)) {
             return child;
@@ -368,7 +368,7 @@ CCNode* geode::cocos::getChildBySpriteName(CCNode* parent, const char* name) {
     return nullptr;
 }
 
-CCRect geode::cocos::calculateNodeCoverage(std::vector<CCNode*> const& nodes) {
+CCRect freod::cocos::calculateNodeCoverage(std::vector<CCNode*> const& nodes) {
     CCRect coverage;
     for (auto child : nodes) {
         auto pos = child->getPosition() - child->getScaledContentSize() * child->getAnchorPoint();
@@ -390,7 +390,7 @@ CCRect geode::cocos::calculateNodeCoverage(std::vector<CCNode*> const& nodes) {
     return coverage;
 }
 
-CCRect geode::cocos::calculateNodeCoverage(CCArray* nodes) {
+CCRect freod::cocos::calculateNodeCoverage(CCArray* nodes) {
     CCRect coverage;
     for (auto child : CCArrayExt<CCNode*>(nodes)) {
         auto pos = child->getPosition() - child->getScaledContentSize() * child->getAnchorPoint();
@@ -412,23 +412,23 @@ CCRect geode::cocos::calculateNodeCoverage(CCArray* nodes) {
     return coverage;
 }
 
-CCRect geode::cocos::calculateChildCoverage(CCNode* parent) {
+CCRect freod::cocos::calculateChildCoverage(CCNode* parent) {
     return calculateNodeCoverage(parent->getChildren());
 }
 
-void geode::cocos::limitNodeSize(CCNode* spr, CCSize const& size, float def, float min) {
+void freod::cocos::limitNodeSize(CCNode* spr, CCSize const& size, float def, float min) {
     spr->setScale(clamp(std::min(size.height / spr->getContentHeight(), size.width / spr->getContentWidth()), min, def));
 }
 
-void geode::cocos::limitNodeWidth(CCNode* spr, float width, float def, float min) {
+void freod::cocos::limitNodeWidth(CCNode* spr, float width, float def, float min) {
     spr->setScale(clamp(width / spr->getContentSize().width, min, def));
 }
 
-void geode::cocos::limitNodeHeight(CCNode* spr, float height, float def, float min) {
+void freod::cocos::limitNodeHeight(CCNode* spr, float height, float def, float min) {
     spr->setScale(clamp(height / spr->getContentSize().height, min, def));
 }
 
-bool geode::cocos::nodeIsVisible(CCNode* node) {
+bool freod::cocos::nodeIsVisible(CCNode* node) {
     if (!node->isVisible()) {
         return false;
     }
@@ -438,7 +438,7 @@ bool geode::cocos::nodeIsVisible(CCNode* node) {
     return true;
 }
 
-CCNode* geode::cocos::getChildByTagRecursive(cocos2d::CCNode* node, int tag) {
+CCNode* freod::cocos::getChildByTagRecursive(cocos2d::CCNode* node, int tag) {
     if (node->getTag() == tag) return node;
     auto children = node->getChildren();
     for (int i = 0; i < children->count(); ++i) {
@@ -449,12 +449,12 @@ CCNode* geode::cocos::getChildByTagRecursive(cocos2d::CCNode* node, int tag) {
     return nullptr;
 }
 
-bool geode::cocos::fileExistsInSearchPaths(char const* filename) {
+bool freod::cocos::fileExistsInSearchPaths(char const* filename) {
     auto utils = CCFileUtils::sharedFileUtils();
     return utils->isFileExist(utils->fullPathForFilename(filename, false));
 }
 
-CCScene* geode::cocos::switchToScene(CCLayer* layer) {
+CCScene* freod::cocos::switchToScene(CCLayer* layer) {
     auto scene = CCScene::create();
     scene->addChild(layer);
     CCDirector::get()->replaceScene(CCTransitionFade::create(.5f, scene));
@@ -463,12 +463,12 @@ CCScene* geode::cocos::switchToScene(CCLayer* layer) {
 
 static CreateLayerFunc LOADING_FINISHED_SCENE = nullptr;
 
-void geode::cocos::reloadTextures(CreateLayerFunc returnTo) {
+void freod::cocos::reloadTextures(CreateLayerFunc returnTo) {
     LOADING_FINISHED_SCENE = returnTo;
     GameManager::get()->reloadAll(false, false, true);
 }
 
-void GEODE_DLL geode::cocos::handleTouchPriorityWith(cocos2d::CCNode* node, int priority, bool force) {
+void FREOD_DLL freod::cocos::handleTouchPriorityWith(cocos2d::CCNode* node, int priority, bool force) {
     if (node == nullptr) return;
     if (node->getChildrenCount() == 0) return;
     
@@ -487,7 +487,7 @@ void GEODE_DLL geode::cocos::handleTouchPriorityWith(cocos2d::CCNode* node, int 
         handleTouchPriorityWith(child, priority, force);
     }
 }
-void GEODE_DLL geode::cocos::handleTouchPriority(cocos2d::CCNode* node, bool force) {
+void FREOD_DLL freod::cocos::handleTouchPriority(cocos2d::CCNode* node, bool force) {
     Loader::get()->queueInMainThread([node = Ref(node), force]() {
         if (auto delegate = typeinfo_cast<CCTouchDelegate*>(*node)) {
             if (auto handler = CCTouchDispatcher::get()->findHandler(delegate)) {
@@ -499,7 +499,7 @@ void GEODE_DLL geode::cocos::handleTouchPriority(cocos2d::CCNode* node, bool for
 }
 
 struct LoadingFinished : Modify<LoadingFinished, LoadingLayer> {
-    GEODE_FORWARD_COMPAT_DISABLE_HOOKS("geode::cocos::reloadTextures disabled")
+    FREOD_FORWARD_COMPAT_DISABLE_HOOKS("freod::cocos::reloadTextures disabled")
     void loadAssets() {
         // loadFinished is inlined on Macchew OS :sob:
 

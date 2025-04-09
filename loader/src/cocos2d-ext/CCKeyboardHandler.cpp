@@ -2,7 +2,7 @@
 
 using namespace cocos2d;
 
-#ifdef GEODE_IS_IOS
+#ifdef FREOD_IS_IOS
 
 CCKeyboardHandler::~CCKeyboardHandler() {}
 

@@ -6,7 +6,7 @@
 
 #include <string>
 
-namespace geode {
+namespace freod {
     /**
      * Describes the severity of the log
      * message.
@@ -86,7 +86,7 @@ namespace geode {
         }
     };
 
-    constexpr std::string_view GEODE_MOD_EXTENSION = ".geode";
+    constexpr std::string_view FREOD_MOD_EXTENSION = ".freod";
 
     class Mod;
     class Loader;
@@ -106,4 +106,4 @@ namespace geode {
 /**
  * The predeclaration of the implicit entry
  */
-GEODE_API void GEODE_CALL geode_implicit_load(geode::Mod*);
+FREOD_API void FREOD_CALL freod_implicit_load(freod::Mod*);

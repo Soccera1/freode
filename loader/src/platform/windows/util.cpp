@@ -1,22 +1,22 @@
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/binding/AppDelegate.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/binding/AppDelegate.hpp>
 #include "nfdwin.hpp"
 #include <Windows.h>
 #include <processthreadsapi.h>
 #include <ShlObj.h>
 #include <shlwapi.h>
 #include <shobjidl.h>
-#include <Geode/utils/web.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/loader/Log.hpp>
+#include <Freod/utils/web.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/loader/Log.hpp>
 #include <filesystem>
-#include <Geode/utils/permission.hpp>
-#include <Geode/utils/ObjcHook.hpp>
-#include <Geode/utils/string.hpp>
+#include <Freod/utils/permission.hpp>
+#include <Freod/utils/ObjcHook.hpp>
+#include <Freod/utils/string.hpp>
 
 bool utils::clipboard::write(std::string const& data) {
     if (!OpenClipboard(nullptr)) return false;
@@ -198,10 +198,10 @@ std::filesystem::path dirs::getSaveDir() {
 }
 
 std::filesystem::path dirs::getModRuntimeDir() {
-    return dirs::getGeodeDir() / "unzipped";
+    return dirs::getFreodDir() / "unzipped";
 }
 
-void geode::utils::game::exit() {
+void freod::utils::game::exit() {
     // TODO: mat
     #if 0
     if (CCApplication::sharedApplication() &&
@@ -218,7 +218,7 @@ void geode::utils::game::exit() {
     std::exit(0);
 }
 
-void geode::utils::game::restart() {
+void freod::utils::game::restart() {
     // TODO: mat
     // TODO: be VERY careful before enabling this again, this function is called in platform/windows/main.cpp,
     // before we even check if we are in forward compatibility mode or not.
@@ -237,16 +237,16 @@ void geode::utils::game::restart() {
     const auto gdName = fmt::format("\"{}\"", std::filesystem::path(buffer).filename().string());
 
     // launch updater
-    const auto updaterPath = (workingDir / "GeodeUpdater.exe").string();
+    const auto updaterPath = (workingDir / "FreodUpdater.exe").string();
     ShellExecuteA(nullptr, "open", updaterPath.c_str(), gdName.c_str(), workingDir.string().c_str(), false);
 
     exit();
 }
 
-void geode::utils::game::launchLoaderUninstaller(bool deleteSaveData) {
+void freod::utils::game::launchLoaderUninstaller(bool deleteSaveData) {
     const auto workingDir = dirs::getGameDir();
 
-    if (!exists((workingDir / "GeodeUninstaller.exe"))) {
+    if (!exists((workingDir / "FreodUninstaller.exe"))) {
         log::error("Uninstaller not found! Not launching.");
         return;
     }
@@ -257,28 +257,28 @@ void geode::utils::game::launchLoaderUninstaller(bool deleteSaveData) {
     }
 
     // launch uninstaller
-    const auto uninstallerPath = (workingDir / "GeodeUninstaller.exe").string();
+    const auto uninstallerPath = (workingDir / "FreodUninstaller.exe").string();
     ShellExecuteA(nullptr, "open", uninstallerPath.c_str(), params.c_str(), workingDir.string().c_str(), false);
 }
 
-Result<> geode::hook::addObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
+Result<> freod::hook::addObjcMethod(std::string const& className, std::string const& selectorName, void* imp) {
     return Err("Wrong platform");
 }
-Result<void*> geode::hook::getObjcMethodImp(std::string const& className, std::string const& selectorName) {
+Result<void*> freod::hook::getObjcMethodImp(std::string const& className, std::string const& selectorName) {
     return Err("Wrong platform");
 }
 
-bool geode::utils::permission::getPermissionStatus(Permission permission) {
+bool freod::utils::permission::getPermissionStatus(Permission permission) {
     return true; // unimplemented
 }
 
-void geode::utils::permission::requestPermission(Permission permission, std::function<void(bool)> callback) {
+void freod::utils::permission::requestPermission(Permission permission, std::function<void(bool)> callback) {
     callback(true); // unimplemented
 }
 
 #include "../../utils/thread.hpp"
 
-std::string geode::utils::thread::getDefaultName() {
+std::string freod::utils::thread::getDefaultName() {
     return fmt::format("Thread #{}", GetCurrentThreadId());
 }
 
@@ -310,7 +310,7 @@ void obliterate(std::string const& name) {
     __except (EXCEPTION_EXECUTE_HANDLER) { }
 #pragma warning(pop)
 }
-void geode::utils::thread::platformSetName(std::string const& name) {
+void freod::utils::thread::platformSetName(std::string const& name) {
     // SetThreadDescription
     if (setThreadDesc) {
         auto res = setThreadDesc(GetCurrentThread(), string::utf8ToWide(name).c_str());
@@ -320,7 +320,7 @@ void geode::utils::thread::platformSetName(std::string const& name) {
     obliterate(name);
 }
 
-std::string geode::utils::getEnvironmentVariable(const char* name) {
+std::string freod::utils::getEnvironmentVariable(const char* name) {
     char buffer[1024];
     size_t count = 0;
     if (0 == getenv_s(&count, buffer, name) && count != 0) {

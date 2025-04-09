@@ -1,22 +1,22 @@
 #pragma once
 
-#include <Geode/binding/CCContentLayer.hpp>
-#include <Geode/binding/CCScrollLayerExt.hpp>
+#include <Freod/binding/CCContentLayer.hpp>
+#include <Freod/binding/CCScrollLayerExt.hpp>
 
-namespace geode {
+namespace freod {
     /**
      * CCContentLayer expects all of its children
      * to be TableViewCells, which is not ideal for
      * a generic content layer
      */
-    class GEODE_DLL GenericContentLayer : public CCContentLayer {
+    class FREOD_DLL GenericContentLayer : public CCContentLayer {
     public:
         static GenericContentLayer* create(float width, float height);
 
         void setPosition(cocos2d::CCPoint const& pos) override;
     };
 
-    class GEODE_DLL ScrollLayer : public CCScrollLayerExt {
+    class FREOD_DLL ScrollLayer : public CCScrollLayerExt {
     protected:
         bool m_scrollWheelEnabled;
 
