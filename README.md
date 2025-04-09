@@ -11,15 +11,15 @@ Freode's goal is to solve **mod incompatibility** - to ensure that mods work tog
 Here's a **Hello World** mod in Freode:
 
 ```cpp
-#include <Freode/Bindings.hpp>
-#include <Freode/modify/MenuLayer.hpp>
+#include <Freod/Bindings.hpp>
+#include <Freod/modify/MenuLayer.hpp>
 
-using namespace freode::prelude;
+using namespace freod::prelude;
 
 class $modify(MenuLayer) {
 	void onMoreGames(CCObject*) {
 		FLAlertLayer::create(
-			"Freode",
+			"Freod",
 			"Hello World from my Custom Mod!",
 			"OK"
 		)->show();
