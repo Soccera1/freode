@@ -7,10 +7,10 @@ ${LangFileString} MUI_UNTEXT_WELCOME_INFO_TEXT "このセットアップは$(^Na
 
 ; installer
 
-${LangFileString} GEODE_TEXT_GD_MISSING "$\r$\n$\r$\nこのパスにはGeometry Dashがインストールされていません！"
-${LangFileString} GEODE_TEXT_GD_OLD "$\r$\n$\r$\nGeometry DashのバージョンはこのGeodeのバージョンには古すぎます!"
-${LangFileString} GEODE_TEXT_MOD_LOADER_ALREADY_INSTALLED "このパスには他のモッドがインストールされています！$\r$\nそれらはGeodeによって上書きされます。（the dll trademark）"
+${LangFileString} FREOD_TEXT_GD_MISSING "$\r$\n$\r$\nこのパスにはGeometry Dashがインストールされていません！"
+${LangFileString} FREOD_TEXT_GD_OLD "$\r$\n$\r$\nGeometry DashのバージョンはこのFreodのバージョンには古すぎます!"
+${LangFileString} FREOD_TEXT_MOD_LOADER_ALREADY_INSTALLED "このパスには他のモッドがインストールされています！$\r$\nそれらはFreodによって上書きされます。（the dll trademark）"
 
 ; uninstaller
 
-${LangFileString} GEODE_UNTEXT_GEODE_MISSING "このパスにはGeodeがインストールされていません！"
+${LangFileString} FREOD_UNTEXT_FREOD_MISSING "このパスにはFreodがインストールされていません！"

@@ -1,25 +1,25 @@
 #include "ModProblemItem.hpp"
 
-#include <Geode/cocos/base_nodes/CCNode.h>
-#include <Geode/ui/Layout.hpp>
-#include <Geode/cocos/cocoa/CCGeometry.h>
-#include <Geode/cocos/label_nodes/CCLabelBMFont.h>
-#include <Geode/cocos/platform/CCPlatformMacros.h>
-#include <Geode/cocos/sprite_nodes/CCSprite.h>
-#include <Geode/binding/FLAlertLayer.hpp>
-#include <Geode/DefaultInclude.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/ui/GeodeUI.hpp>
-#include <Geode/ui/TextArea.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/utils/ColorProvider.hpp>
+#include <Freod/cocos/base_nodes/CCNode.h>
+#include <Freod/ui/Layout.hpp>
+#include <Freod/cocos/cocoa/CCGeometry.h>
+#include <Freod/cocos/label_nodes/CCLabelBMFont.h>
+#include <Freod/cocos/platform/CCPlatformMacros.h>
+#include <Freod/cocos/sprite_nodes/CCSprite.h>
+#include <Freod/binding/FLAlertLayer.hpp>
+#include <Freod/DefaultInclude.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/ui/FreodUI.hpp>
+#include <Freod/ui/TextArea.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/utils/ColorProvider.hpp>
 #include <GUI/CCControlExtension/CCScale9Sprite.h>
 #include <ccTypes.h>
 #include <fmt/core.h>
 #include <sstream>
-#include "../GeodeStyle.hpp"
+#include "../FreodStyle.hpp"
 
 bool ModProblemItem::init(Mod* source, LoadProblem problem, CCSize const& size) {
     if (!CCNode::init()) {
@@ -72,7 +72,7 @@ bool ModProblemItem::init(Mod* source, LoadProblem problem, CCSize const& size) 
         helpMenu->setAnchorPoint({ 1.0f, 0.5f });
 
         if (this->showInfoButton()) {
-            auto infoSpr = createGeodeButton("More");
+            auto infoSpr = createFreodButton("More");
             infoSpr->setScale(0.6f);
 
             auto infoBtn = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(ModProblemItem::onInfo));
@@ -225,7 +225,7 @@ std::string ModProblemItem::createProblemMessage() {
             return ss.str();
         }
         case LoadProblem::Type::InvalidFile: {
-            ss << "has an invalid .geode file.";
+            ss << "has an invalid .freod file.";
             return ss.str();
         }
         case LoadProblem::Type::Duplicate: {
@@ -252,11 +252,11 @@ std::string ModProblemItem::createProblemMessage() {
         case LoadProblem::Type::UnsupportedVersion: {
             return m_problem.message;
         }
-        case LoadProblem::Type::NeedsNewerGeodeVersion:
-        case LoadProblem::Type::UnsupportedGeodeVersion: {
+        case LoadProblem::Type::NeedsNewerFreodVersion:
+        case LoadProblem::Type::UnsupportedFreodVersion: {
             ss << fmt::format(
-                "requires Geode {} to run (installed: {})",
-                m_source->getMetadata().getGeodeVersion(),
+                "requires Freod {} to run (installed: {})",
+                m_source->getMetadata().getFreodVersion(),
                 Loader::get()->getVersion().toNonVString()
             );
             return ss.str();

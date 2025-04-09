@@ -1,10 +1,10 @@
-#include <Geode/Geode.hpp>
+#include <Freod/Freod.hpp>
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
 
 #include <loader/LoaderImpl.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // https://github.com/cocos2d/cocos2d-x/blob/5a25fe75cb8b26b61b14b070e757ec3b17ff7791/cocos2dx/platform/win32/CCImage.cpp#L96
 // stop setFont from caching fonts on Windows
@@ -26,7 +26,7 @@ int __stdcall RemoveFontResourceWHook(LPCWSTR p0) {
  */
 static void patchCall(uintptr_t addr, uintptr_t newCall) {
     ByteVector patch = { 0xE8 }; // CALL near & relative
-    addr += (uintptr_t)geode::base::getCocos();
+    addr += (uintptr_t)freod::base::getCocos();
     uintptr_t callAddr = newCall - (addr + 5);
     for (auto i = 0; i < sizeof(int); ++i)
         patch.push_back(callAddr >> (8 * i));
@@ -37,7 +37,7 @@ static void patchCall(uintptr_t addr, uintptr_t newCall) {
 $execute {
     if (LoaderImpl::get()->isForwardCompatMode()) return;
     
-#if GEODE_COMP_GD_VERSION == 22040
+#if FREOD_COMP_GD_VERSION == 22040
     // BitmapDC::~BitmapDC
     patchCall(0xC9A56, (uintptr_t)&RemoveFontResourceWHook);
 

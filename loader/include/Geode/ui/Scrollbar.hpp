@@ -2,10 +2,10 @@
 
 #include <cocos2d.h>
 #include <cocos-ext.h>
-#include <Geode/binding/CCScrollLayerExt.hpp>
+#include <Freod/binding/CCScrollLayerExt.hpp>
 
-namespace geode {
-    class GEODE_DLL Scrollbar : public cocos2d::CCLayer {
+namespace freod {
+    class FREOD_DLL Scrollbar : public cocos2d::CCLayer {
     protected:
         CCScrollLayerExt* m_target = nullptr;
         cocos2d::extension::CCScale9Sprite* m_track;

@@ -2,7 +2,7 @@
 
 using namespace cocos2d;
 
-#ifdef GEODE_IS_IOS
+#ifdef FREOD_IS_IOS
 
 #pragma warning(push)
 #pragma warning(disable : 4273)
@@ -244,13 +244,13 @@ void CCClippingNode::visit()
     
     // enable alpha test only if the alpha threshold < 1,
     // indeed if alpha threshold == 1, every pixel will be drawn anyways
-#ifdef GEODE_IS_DESKTOP
+#ifdef FREOD_IS_DESKTOP
     GLboolean currentAlphaTestEnabled = GL_FALSE;
     GLenum currentAlphaTestFunc = GL_ALWAYS;
     GLclampf currentAlphaTestRef = 1;
 #endif
     if (m_fAlphaThreshold < 1) {
-#ifdef GEODE_IS_DESKTOP
+#ifdef FREOD_IS_DESKTOP
         // manually save the alpha test state
         currentAlphaTestEnabled = glIsEnabled(GL_ALPHA_TEST);
         glGetIntegerv(GL_ALPHA_TEST_FUNC, (GLint *)&currentAlphaTestFunc);
@@ -286,7 +286,7 @@ void CCClippingNode::visit()
     // restore alpha test state
     if (m_fAlphaThreshold < 1)
     {
-#ifdef GEODE_IS_DESKTOP
+#ifdef FREOD_IS_DESKTOP
         // manually restore the alpha test state
         glAlphaFunc(currentAlphaTestFunc, currentAlphaTestRef);
         if (!currentAlphaTestEnabled)

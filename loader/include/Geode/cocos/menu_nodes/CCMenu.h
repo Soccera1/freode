@@ -55,7 +55,7 @@ enum {
 */
 class CC_DLL CCMenu : public CCLayerRGBA
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** whether or not the menu will receive events */
     bool m_bEnabled;
@@ -65,7 +65,7 @@ public:
      *  @js ctor
      */
     CCMenu() : m_pSelectedItem(NULL) {}
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCMenu, CCLayerRGBA)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCMenu, CCLayerRGBA)
     /**
      *  @js NA
      *  @lua NA

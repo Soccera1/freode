@@ -1,8 +1,8 @@
-#include <Geode/loader/Dispatch.hpp>
+#include <Freod/loader/Dispatch.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-std::unordered_map<std::string, EventListenerPool*>& geode::dispatchPools() {
+std::unordered_map<std::string, EventListenerPool*>& freod::dispatchPools() {
     static std::unordered_map<std::string, EventListenerPool*> pools;
     return pools;
 }

@@ -2,9 +2,9 @@
 
 #include <string>
 #include <matjson.hpp>
-#include <Geode/loader/Event.hpp>
+#include <Freod/loader/Event.hpp>
 
-namespace geode::updater {
+namespace freod::updater {
     using UpdateFinished = std::monostate;
     using UpdateProgress = std::pair<uint8_t, std::string>;
     using UpdateFailed = std::string;

@@ -6,102 +6,102 @@
 #include <memory>
 
 #if !defined(__PRETTY_FUNCTION__) && !defined(__GNUC__)
-    #define GEODE_PRETTY_FUNCTION std::string(__FUNCSIG__)
+    #define FREOD_PRETTY_FUNCTION std::string(__FUNCSIG__)
 #else
-    #define GEODE_PRETTY_FUNCTION std::string(__PRETTY_FUNCTION__)
+    #define FREOD_PRETTY_FUNCTION std::string(__PRETTY_FUNCTION__)
 #endif
 
 // Windows
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
 
-    #define GEODE_HIDDEN
-    #define GEODE_INLINE __forceinline
-    #define GEODE_VIRTUAL_CONSTEXPR
-    #define GEODE_NOINLINE __declspec(noinline)
+    #define FREOD_HIDDEN
+    #define FREOD_INLINE __forceinline
+    #define FREOD_VIRTUAL_CONSTEXPR
+    #define FREOD_NOINLINE __declspec(noinline)
 
-    #ifdef GEODE_EXPORTING
-        #define GEODE_DLL __declspec(dllexport)
+    #ifdef FREOD_EXPORTING
+        #define FREOD_DLL __declspec(dllexport)
     #else
-        #define GEODE_DLL __declspec(dllimport)
+        #define FREOD_DLL __declspec(dllimport)
     #endif
 
-    #define GEODE_API extern "C" __declspec(dllexport)
-    #define GEODE_EXPORT __declspec(dllexport)
+    #define FREOD_API extern "C" __declspec(dllexport)
+    #define FREOD_EXPORT __declspec(dllexport)
 
-    #if defined(GEODE_IS_WINDOWS64)
-        #define GEODE_IS_X64
-        #define GEODE_CDECL_CALL
+    #if defined(FREOD_IS_WINDOWS64)
+        #define FREOD_IS_X64
+        #define FREOD_CDECL_CALL
     #else 
-        #define GEODE_IS_X86
-        #define GEODE_CDECL_CALL __cdecl
+        #define FREOD_IS_X86
+        #define FREOD_CDECL_CALL __cdecl
 	#endif
 
     #include "windows.hpp"
 
-#elif defined(GEODE_IS_MACOS)
+#elif defined(FREOD_IS_MACOS)
 
-    #define GEODE_HIDDEN __attribute__((visibility("hidden")))
-    #define GEODE_INLINE inline __attribute__((always_inline))
-    #define GEODE_VIRTUAL_CONSTEXPR constexpr
-    #define GEODE_NOINLINE __attribute__((noinline))
+    #define FREOD_HIDDEN __attribute__((visibility("hidden")))
+    #define FREOD_INLINE inline __attribute__((always_inline))
+    #define FREOD_VIRTUAL_CONSTEXPR constexpr
+    #define FREOD_NOINLINE __attribute__((noinline))
 
-    #ifdef GEODE_EXPORTING
-        #define GEODE_DLL __attribute__((visibility("default")))
+    #ifdef FREOD_EXPORTING
+        #define FREOD_DLL __attribute__((visibility("default")))
     #else
-        #define GEODE_DLL
+        #define FREOD_DLL
     #endif
 
-    #define GEODE_API extern "C" __attribute__((visibility("default")))
-    #define GEODE_EXPORT __attribute__((visibility("default")))
+    #define FREOD_API extern "C" __attribute__((visibility("default")))
+    #define FREOD_EXPORT __attribute__((visibility("default")))
 
-    #define GEODE_IS_X64
-    #define GEODE_CDECL_CALL
+    #define FREOD_IS_X64
+    #define FREOD_CDECL_CALL
 
     #include "macos.hpp"
 
-#elif defined(GEODE_IS_IOS)
+#elif defined(FREOD_IS_IOS)
 
-    #define GEODE_HIDDEN __attribute__((visibility("hidden")))
-    #define GEODE_INLINE inline __attribute__((always_inline))
-    #define GEODE_VIRTUAL_CONSTEXPR constexpr
-    #define GEODE_NOINLINE __attribute__((noinline))
+    #define FREOD_HIDDEN __attribute__((visibility("hidden")))
+    #define FREOD_INLINE inline __attribute__((always_inline))
+    #define FREOD_VIRTUAL_CONSTEXPR constexpr
+    #define FREOD_NOINLINE __attribute__((noinline))
 
-    #ifdef GEODE_EXPORTING
-        #define GEODE_DLL __attribute__((visibility("default")))
+    #ifdef FREOD_EXPORTING
+        #define FREOD_DLL __attribute__((visibility("default")))
     #else
-        #define GEODE_DLL
+        #define FREOD_DLL
     #endif
 
-    #define GEODE_API extern "C" __attribute__((visibility("default")))
-    #define GEODE_EXPORT __attribute__((visibility("default")))
+    #define FREOD_API extern "C" __attribute__((visibility("default")))
+    #define FREOD_EXPORT __attribute__((visibility("default")))
 
-    #define GEODE_IS_X64
-    #define GEODE_CDECL_CALL
+    #define FREOD_IS_X64
+    #define FREOD_CDECL_CALL
 
     #include "ios.hpp"
 
-#elif defined(GEODE_IS_ANDROID)
+#elif defined(FREOD_IS_ANDROID)
 
-    #define GEODE_HIDDEN __attribute__((visibility("hidden")))
-    #define GEODE_INLINE inline __attribute__((always_inline))
-    #define GEODE_VIRTUAL_CONSTEXPR constexpr
-    #define GEODE_NOINLINE __attribute__((noinline))
+    #define FREOD_HIDDEN __attribute__((visibility("hidden")))
+    #define FREOD_INLINE inline __attribute__((always_inline))
+    #define FREOD_VIRTUAL_CONSTEXPR constexpr
+    #define FREOD_NOINLINE __attribute__((noinline))
 
-    #ifdef GEODE_EXPORTING
-        #define GEODE_DLL __attribute__((visibility("default")))
+    #ifdef FREOD_EXPORTING
+        #define FREOD_DLL __attribute__((visibility("default")))
     #else
-        #define GEODE_DLL
+        #define FREOD_DLL
     #endif
 
-    #define GEODE_API extern "C" __attribute__((visibility("default")))
-    #define GEODE_EXPORT __attribute__((visibility("default")))
+    #define FREOD_API extern "C" __attribute__((visibility("default")))
+    #define FREOD_EXPORT __attribute__((visibility("default")))
 
-    #if defined(GEODE_IS_ANDROID64)
-        #define GEODE_IS_X64
+    #if defined(FREOD_IS_ANDROID64)
+        #define FREOD_IS_X64
     #else 
-        #define GEODE_IS_X86
+        #define FREOD_IS_X86
     #endif
-    #define GEODE_CDECL_CALL
+    #define FREOD_CDECL_CALL
 
     #include "android.hpp"
 
@@ -111,7 +111,7 @@
 
 #endif
 
-namespace geode {
+namespace freod {
     class PlatformID {
     public:
         enum {
@@ -170,22 +170,22 @@ namespace geode {
          * Parse string into PlatformID. String should be all-lowercase, for 
          * example "windows" or "linux"
          */
-        static GEODE_DLL PlatformID from(const char* str);
-        static GEODE_DLL PlatformID from(std::string const& str);
+        static FREOD_DLL PlatformID from(const char* str);
+        static FREOD_DLL PlatformID from(std::string const& str);
 
         /**
          * Determines if a given platform string "covers" the given platform.
          * For example, "android" is covered by Platform::Android32 and Platform::Android64.
          * Input string must follow the format in PlatformID::toShortString.
          */
-        static GEODE_DLL bool coveredBy(const char* str, PlatformID t);
-        static GEODE_DLL bool coveredBy(std::string const& str, PlatformID t);
+        static FREOD_DLL bool coveredBy(const char* str, PlatformID t);
+        static FREOD_DLL bool coveredBy(std::string const& str, PlatformID t);
         /**
          * Returns the list of platforms covered by this string name. For 
          * example, "android" would return both Android32 and Android64
          * todo in v5: deprecate this as the flagged version deals with this
          */
-        static GEODE_DLL std::vector<PlatformID> getCovered(std::string_view str);
+        static FREOD_DLL std::vector<PlatformID> getCovered(std::string_view str);
 
         // todo in v5: this does not need to be constexpr in the header. dllexport it
         static constexpr char const* toString(Type lp) {
@@ -237,29 +237,29 @@ namespace geode {
 
 namespace std {
     template <>
-    struct hash<geode::PlatformID> {
-        inline std::size_t operator()(geode::PlatformID const& id) const {
-            return std::hash<geode::PlatformID::Type>()(id.m_value);
+    struct hash<freod::PlatformID> {
+        inline std::size_t operator()(freod::PlatformID const& id) const {
+            return std::hash<freod::PlatformID::Type>()(id.m_value);
         }
     };
 }
 
-#ifdef GEODE_IS_WINDOWS
-    #define GEODE_PLATFORM_TARGET PlatformID::Windows
-#elif defined(GEODE_IS_ARM_MAC)
-    #define GEODE_PLATFORM_TARGET PlatformID::MacArm
-#elif defined(GEODE_IS_INTEL_MAC)
-    #define GEODE_PLATFORM_TARGET PlatformID::MacIntel
-#elif defined(GEODE_IS_IOS)
-    #define GEODE_PLATFORM_TARGET PlatformID::iOS
-#elif defined(GEODE_IS_ANDROID32)
-    #define GEODE_PLATFORM_TARGET PlatformID::Android32
-#elif defined(GEODE_IS_ANDROID64)
-    #define GEODE_PLATFORM_TARGET PlatformID::Android64
+#ifdef FREOD_IS_WINDOWS
+    #define FREOD_PLATFORM_TARGET PlatformID::Windows
+#elif defined(FREOD_IS_ARM_MAC)
+    #define FREOD_PLATFORM_TARGET PlatformID::MacArm
+#elif defined(FREOD_IS_INTEL_MAC)
+    #define FREOD_PLATFORM_TARGET PlatformID::MacIntel
+#elif defined(FREOD_IS_IOS)
+    #define FREOD_PLATFORM_TARGET PlatformID::iOS
+#elif defined(FREOD_IS_ANDROID32)
+    #define FREOD_PLATFORM_TARGET PlatformID::Android32
+#elif defined(FREOD_IS_ANDROID64)
+    #define FREOD_PLATFORM_TARGET PlatformID::Android64
 #endif
 
 // this is cross-platform so not duplicating it across the typeinfo_cast definitions
-namespace geode::cast {
+namespace freod::cast {
     template<class T, class U>
     std::shared_ptr<T> typeinfo_pointer_cast(std::shared_ptr<U> const& r) noexcept {
         // https://en.cppreference.com/w/cpp/memory/shared_ptr/pointer_cast

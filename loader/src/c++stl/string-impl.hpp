@@ -1,7 +1,7 @@
 #pragma once
-#include <Geode/c++stl/gdstdlib.hpp>
+#include <Freod/c++stl/gdstdlib.hpp>
 
-namespace geode::stl {
+namespace freod::stl {
     struct StringImpl {
         StringData& data;
 

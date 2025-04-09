@@ -1,13 +1,13 @@
 #include "ModProblemList.hpp"
 
-#include <Geode/cocos/base_nodes/CCNode.h>
-#include <Geode/ui/Layout.hpp>
-#include <Geode/cocos/cocoa/CCGeometry.h>
-#include <Geode/cocos/platform/CCPlatformMacros.h>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/ui/ScrollLayer.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/cocos/base_nodes/CCNode.h>
+#include <Freod/ui/Layout.hpp>
+#include <Freod/cocos/cocoa/CCGeometry.h>
+#include <Freod/cocos/platform/CCPlatformMacros.h>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/ui/ScrollLayer.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Mod.hpp>
 #include <GUI/CCControlExtension/CCScale9Sprite.h>
 
 #include "ui/mods/list/ModProblemItem.hpp"

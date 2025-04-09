@@ -51,9 +51,9 @@ class CCSet;
 //
 class CC_DLL CCTimer : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTimer, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTimer, CCObject)
     /**
      *  @js  ctor
      *  @lua NA
@@ -139,10 +139,10 @@ The 'custom selectors' should be avoided when possible. It is faster, and consum
 */
 class CC_DLL CCScheduler : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     CCScheduler();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCScheduler, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCScheduler, CCObject)
     /**
      *  @js NA
      *  @lua NA
@@ -288,9 +288,9 @@ public:
 
     /**
      * Get the shared scheduler from CCDirector
-     * @note Geode addition
+     * @note Freod addition
      */
-    static GEODE_DLL CCScheduler* get();
+    static FREOD_DLL CCScheduler* get();
 
 private:
     void removeHashElement(struct _hashSelectorEntry *pElement);

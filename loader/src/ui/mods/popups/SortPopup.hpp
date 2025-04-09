@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Geode/ui/Popup.hpp>
+#include <Freod/ui/Popup.hpp>
 #include "../sources/ModListSource.hpp"
-#include "../GeodeStyle.hpp"
+#include "../FreodStyle.hpp"
 #include <server/Server.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-class SortPopup : public GeodePopup<ModListSource*> {
+class SortPopup : public FreodPopup<ModListSource*> {
 protected:
     ModListSource* m_source;
     std::vector<CCMenuItemToggler*> m_options;

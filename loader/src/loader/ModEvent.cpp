@@ -1,7 +1,7 @@
-#include <Geode/loader/ModEvent.hpp>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/ModEvent.hpp>
+#include <Freod/loader/Mod.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 ModStateEvent::ModStateEvent(Mod* mod, ModEventType type) : m_mod(mod), m_type(type) {}
 

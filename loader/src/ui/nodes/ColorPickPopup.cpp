@@ -1,14 +1,14 @@
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/binding/CCTextInputNode.hpp>
-#include <Geode/binding/Slider.hpp>
-#include <Geode/binding/SliderThumb.hpp>
-#include <Geode/ui/ColorPickPopup.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/binding/CCTextInputNode.hpp>
+#include <Freod/binding/Slider.hpp>
+#include <Freod/binding/SliderThumb.hpp>
+#include <Freod/ui/ColorPickPopup.hpp>
+#include <Freod/utils/cocos.hpp>
 #include <charconv>
 #include <clocale>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Mod.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 class ColorPickPopup::Impl final {
 public:

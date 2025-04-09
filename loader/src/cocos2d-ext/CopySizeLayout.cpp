@@ -1,11 +1,11 @@
 #include <cocos2d.h>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/utils/ranges.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
-#include <Geode/binding/CCMenuItemToggler.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/utils/ranges.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/binding/CCMenuItemSpriteExtra.hpp>
+#include <Freod/binding/CCMenuItemToggler.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 CopySizeLayout* CopySizeLayout::create() {
     auto ret = new CopySizeLayout();

@@ -1,24 +1,24 @@
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
-#include <Geode/cocos/robtop/keyboard_dispatcher/CCKeyboardDispatcher.h>
-#include <Geode/cocos/robtop/keyboard_dispatcher/CCKeyboardDelegate.h>
+#include <Freod/cocos/robtop/keyboard_dispatcher/CCKeyboardDispatcher.h>
+#include <Freod/cocos/robtop/keyboard_dispatcher/CCKeyboardDelegate.h>
 
-#ifdef GEODE_IS_MACOS
+#ifdef FREOD_IS_MACOS
 #include <Carbon/Carbon.h>
 #import <Cocoa/Cocoa.h>
 
-#import <Geode/cocos/platform/mac/EAGLView.h>
-#include <Geode/cocos/text_input_node/CCIMEDispatcher.h>
-#include <Geode/modify/Modify.hpp>
-#include <Geode/modify/CCKeyboardDispatcher.hpp>
+#import <Freod/cocos/platform/mac/EAGLView.h>
+#include <Freod/cocos/text_input_node/CCIMEDispatcher.h>
+#include <Freod/modify/Modify.hpp>
+#include <Freod/modify/CCKeyboardDispatcher.hpp>
 #else
 #include <UIKit/UIKit.h>
 #endif
 #include <objc/runtime.h>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-#ifdef GEODE_IS_MACOS
+#ifdef FREOD_IS_MACOS
 
 // https://github.com/SpaghettDev/BetterInputs/blob/44f249cd94f4cc19fca4de570dfab28f4efa3db8/src/platform/macos.mm#L121
 // we use this instead of [event keyCode] because the returned value of keyCode for letters is keyboard locale-specific
@@ -155,7 +155,7 @@ void keyDownExecHook(EAGLView* self, SEL sel, NSEvent* event) {
             return;
         }
 
-        GEODE_MACOS([self performSelector:sel withObject:event]);
+        FREOD_MACOS([self performSelector:sel withObject:event]);
         return;
     }
     if (CCIMEDispatcher::sharedDispatcher()->hasDelegate()) {
@@ -164,7 +164,7 @@ void keyDownExecHook(EAGLView* self, SEL sel, NSEvent* event) {
             return;
         }
 
-        GEODE_MACOS([self performSelector:sel withObject:event]);
+        FREOD_MACOS([self performSelector:sel withObject:event]);
         return;
     }
 
@@ -182,11 +182,11 @@ void keyUpExecHook(EAGLView* self, SEL sel, NSEvent* event) {
     bool extraKey = isExtraKey(event);
     bool numpad = isKeyNumpad(event);
     if (!extraKey && !numpad) {
-        GEODE_MACOS([self performSelector:sel withObject:event]);
+        FREOD_MACOS([self performSelector:sel withObject:event]);
         return;
     }
     if (CCIMEDispatcher::sharedDispatcher()->hasDelegate()) {
-        GEODE_MACOS([self performSelector:sel withObject:event]);
+        FREOD_MACOS([self performSelector:sel withObject:event]);
         return;
     }
 
@@ -202,7 +202,7 @@ void keyUpExecHook(EAGLView* self, SEL sel, NSEvent* event) {
 
 void mouseDownExecHook(EAGLView* self, SEL sel, NSEvent* event) {
     if (!isExtraMouseButton(event)) {
-        GEODE_MACOS([self performSelector:sel withObject:event]);
+        FREOD_MACOS([self performSelector:sel withObject:event]);
         return;
     }
 
@@ -212,7 +212,7 @@ void mouseDownExecHook(EAGLView* self, SEL sel, NSEvent* event) {
 
 void mouseUpExecHook(EAGLView* self, SEL sel, NSEvent* event) {
     if (!isExtraMouseButton(event)) {
-        GEODE_MACOS([self performSelector:sel withObject:event]);
+        FREOD_MACOS([self performSelector:sel withObject:event]);
         return;
     }
 
@@ -222,7 +222,7 @@ void mouseUpExecHook(EAGLView* self, SEL sel, NSEvent* event) {
 
 
 class $modify(CCKeyboardDispatcher) {
-    GEODE_FORWARD_COMPAT_DISABLE_HOOKS("CCKeyboardDispatcher new keys")
+    FREOD_FORWARD_COMPAT_DISABLE_HOOKS("CCKeyboardDispatcher new keys")
 
     const char* keyToString(enumKeyCodes key) {
         if (key < 0x1000) {
@@ -422,7 +422,7 @@ void pressesEnded(id self, SEL _cmd, NSSet<UIPress*>* presses, UIPressesEvent* e
     static_cast<void>(Mod::get()->hook(reinterpret_cast<void*>(method_getImplementation(methodName##Addr)), &methodName##Hook, #klass " " #methodName));
 
 __attribute__((constructor)) void initialize_newKeyboardMSGKeysHooks() {
-#if defined(GEODE_IS_MACOS)
+#if defined(FREOD_IS_MACOS)
     auto eaglView = objc_getClass("EAGLView");
 
     HOOK_OBJC_METHOD(eaglView, keyDownExec);

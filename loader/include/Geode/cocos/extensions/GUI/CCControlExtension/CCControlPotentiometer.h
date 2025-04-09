@@ -42,7 +42,7 @@ NS_CC_EXT_BEGIN
 class CC_DLL CCControlPotentiometer : public CCControl
 {
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCControlPotentiometer, CCControl)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCControlPotentiometer, CCControl)
     CCControlPotentiometer();
     virtual ~CCControlPotentiometer();
     /** 

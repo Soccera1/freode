@@ -41,21 +41,21 @@ class CCEGL;
 // @note RobTop Addition: added CCObject inheritance
 class CC_DLL CCEGLView : public CCEGLViewProtocol, public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 protected:
     virtual ~CCEGLView();
 public:
     CCEGLView();
 
-    CCEGLView(geode::ZeroConstructorType, size_t fill) :
-        CCEGLViewProtocol(geode::ZeroConstructor, fill),
-        CCObject(geode::ZeroConstructor, fill - sizeof(CCEGLViewProtocol)) {}
+    CCEGLView(freod::ZeroConstructorType, size_t fill) :
+        CCEGLViewProtocol(freod::ZeroConstructor, fill),
+        CCObject(freod::ZeroConstructor, fill - sizeof(CCEGLViewProtocol)) {}
 
-    CCEGLView(geode::ZeroConstructorType) :
-        CCEGLViewProtocol(geode::ZeroConstructor, sizeof(CCEGLView)),
-        CCObject(geode::ZeroConstructor, sizeof(CCEGLView) - sizeof(CCEGLViewProtocol)) {}
+    CCEGLView(freod::ZeroConstructorType) :
+        CCEGLViewProtocol(freod::ZeroConstructor, sizeof(CCEGLView)),
+        CCObject(freod::ZeroConstructor, sizeof(CCEGLView) - sizeof(CCEGLViewProtocol)) {}
 
-    CCEGLView(geode::CutoffConstructorType, size_t fill) : CCEGLView() {}
+    CCEGLView(freod::CutoffConstructorType, size_t fill) : CCEGLView() {}
 
     /* override functions */
     virtual bool isOpenGLReady();
@@ -121,9 +121,9 @@ public:
     static CCEGLView* sharedOpenGLView();
 
     /**
-     * @note Geode addition
+     * @note Freod addition
      */
-    static GEODE_DLL CCEGLView* get();
+    static FREOD_DLL CCEGLView* get();
 
     /**
      * @note RobTop addition
@@ -135,7 +135,7 @@ public:
 	static cocos2d::CCEGLView* createWithRect(gd::string const&, cocos2d::CCRect, float);
 
     /**
-     * @note Geode addition
+     * @note Freod addition
      */
     inline CCPoint getMousePosition() { return { m_fMouseX, m_fMouseY }; }
 

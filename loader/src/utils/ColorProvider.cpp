@@ -1,7 +1,7 @@
-#include <Geode/utils/ColorProvider.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/utils/ColorProvider.hpp>
+#include <Freod/utils/cocos.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 ColorProvidedEvent::ColorProvidedEvent(std::string const& id, cocos2d::ccColor4B const& color)
   : id(id), color(color) {}

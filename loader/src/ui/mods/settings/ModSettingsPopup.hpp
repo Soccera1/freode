@@ -1,16 +1,16 @@
 #pragma once
 
-#include <Geode/loader/Setting.hpp>
-#include <Geode/ui/Popup.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/ui/ScrollLayer.hpp>
-#include <Geode/ui/TextInput.hpp>
+#include <Freod/loader/Setting.hpp>
+#include <Freod/ui/Popup.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/ui/ScrollLayer.hpp>
+#include <Freod/ui/TextInput.hpp>
 
-#include "../GeodeStyle.hpp"
+#include "../FreodStyle.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-class ModSettingsPopup : public GeodePopup<Mod*> {
+class ModSettingsPopup : public FreodPopup<Mod*> {
 protected:
     Mod* m_mod;
     ScrollLayer* m_list;

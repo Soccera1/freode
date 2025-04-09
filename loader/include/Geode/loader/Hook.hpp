@@ -8,11 +8,11 @@
 #include <string_view>
 #include <tulip/TulipHook.hpp>
 
-namespace geode {
+namespace freod {
     class Mod;
     class Loader;
 
-    class GEODE_DLL Hook final {
+    class FREOD_DLL Hook final {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -57,7 +57,7 @@ namespace geode {
             tulip::hook::HookMetadata const& hookMetadata = tulip::hook::HookMetadata()
         ) {
             auto handlerMetadata = tulip::hook::HandlerMetadata{
-                .m_convention = geode::hook::createConvention(convention),
+                .m_convention = freod::hook::createConvention(convention),
                 .m_abstract = tulip::hook::AbstractFunction::from(detour)
             };
             return Hook::create(
@@ -143,7 +143,7 @@ namespace geode {
         void setPriority(int32_t priority);
     };
 
-    class GEODE_DLL Patch final {
+    class FREOD_DLL Patch final {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;

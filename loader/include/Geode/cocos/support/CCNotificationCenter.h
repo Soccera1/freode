@@ -34,9 +34,9 @@ NS_CC_BEGIN
  */
 class CC_DLL CCNotificationCenter : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCNotificationCenter, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCNotificationCenter, CCObject)
 
     /** CCNotificationCenter constructor */
     CCNotificationCenter();
@@ -123,9 +123,9 @@ public:
  */
 class CC_DLL CCNotificationObserver : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCNotificationObserver, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCNotificationObserver, CCObject)
     CCNotificationObserver() {}
 
     /** @brief CCNotificationObserver constructor

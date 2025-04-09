@@ -92,7 +92,7 @@ enum {
 class CCTexturePVR : public CCObject
 {
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTexturePVR, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTexturePVR, CCObject)
     CCTexturePVR();
     virtual ~CCTexturePVR();
 

@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/utils/JsonValidation.hpp>
-#include <Geode/utils/VersionInfo.hpp>
-#include <Geode/loader/Setting.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/utils/JsonValidation.hpp>
+#include <Freod/utils/VersionInfo.hpp>
+#include <Freod/loader/Setting.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-namespace geode {
+namespace freod {
     class ModMetadataLinks::Impl final {
     public:
         std::optional<std::string> m_homepage;
@@ -27,7 +27,7 @@ namespace geode {
         // TODO: remove once #895 is fixed
         std::optional<std::string> m_softInvalidReason;
         std::string m_gdVersion;
-        VersionInfo m_geodeVersion;
+        VersionInfo m_freodVersion;
         std::optional<std::string> m_description;
         std::optional<std::string> m_details;
         std::optional<std::string> m_changelog;
@@ -46,8 +46,8 @@ namespace geode {
 
         ModJson m_rawJSON;
 
-        static Result<ModMetadata> createFromGeodeZip(utils::file::Unzip& zip);
-        static Result<ModMetadata> createFromGeodeFile(std::filesystem::path const& path);
+        static Result<ModMetadata> createFromFreodZip(utils::file::Unzip& zip);
+        static Result<ModMetadata> createFromFreodFile(std::filesystem::path const& path);
         static Result<ModMetadata> createFromFile(std::filesystem::path const& path);
         static Result<ModMetadata> create(ModJson const& json);
 
@@ -75,44 +75,44 @@ namespace geode {
 }
 
 template <>
-struct matjson::Serialize<geode::ModMetadata::Dependency::Importance> {
-    static geode::Result<geode::ModMetadata::Dependency::Importance, std::string> fromJson(Value const& value)
+struct matjson::Serialize<freod::ModMetadata::Dependency::Importance> {
+    static freod::Result<freod::ModMetadata::Dependency::Importance, std::string> fromJson(Value const& value)
     {
-        auto str = GEODE_UNWRAP(value.asString());
-        if (str == "required") return geode::Ok(geode::ModMetadata::Dependency::Importance::Required);
-        if (str == "recommended") return geode::Ok(geode::ModMetadata::Dependency::Importance::Recommended);
-        if (str == "suggested") return geode::Ok(geode::ModMetadata::Dependency::Importance::Suggested);
-        return geode::Err("Invalid importance");
+        auto str = FREOD_UNWRAP(value.asString());
+        if (str == "required") return freod::Ok(freod::ModMetadata::Dependency::Importance::Required);
+        if (str == "recommended") return freod::Ok(freod::ModMetadata::Dependency::Importance::Recommended);
+        if (str == "suggested") return freod::Ok(freod::ModMetadata::Dependency::Importance::Suggested);
+        return freod::Err("Invalid importance");
     }
 
-    static Value toJson(geode::ModMetadata::Dependency::Importance const& value)
+    static Value toJson(freod::ModMetadata::Dependency::Importance const& value)
     {
         switch (value) {
-            case geode::ModMetadata::Dependency::Importance::Required: return "required";
-            case geode::ModMetadata::Dependency::Importance::Recommended: return "recommended";
-            case geode::ModMetadata::Dependency::Importance::Suggested: return "suggested";
+            case freod::ModMetadata::Dependency::Importance::Required: return "required";
+            case freod::ModMetadata::Dependency::Importance::Recommended: return "recommended";
+            case freod::ModMetadata::Dependency::Importance::Suggested: return "suggested";
         }
         return "unknown";
     }
 };
 
 template <>
-struct matjson::Serialize<geode::ModMetadata::Incompatibility::Importance> {
-    static geode::Result<geode::ModMetadata::Incompatibility::Importance, std::string> fromJson(Value const& value)
+struct matjson::Serialize<freod::ModMetadata::Incompatibility::Importance> {
+    static freod::Result<freod::ModMetadata::Incompatibility::Importance, std::string> fromJson(Value const& value)
     {
-        auto str = GEODE_UNWRAP(value.asString());
-        if (str == "breaking") return geode::Ok(geode::ModMetadata::Incompatibility::Importance::Breaking);
-        if (str == "conflicting") return geode::Ok(geode::ModMetadata::Incompatibility::Importance::Conflicting);
-        if (str == "superseded") return geode::Ok(geode::ModMetadata::Incompatibility::Importance::Superseded);
-        return geode::Err("Invalid importance");
+        auto str = FREOD_UNWRAP(value.asString());
+        if (str == "breaking") return freod::Ok(freod::ModMetadata::Incompatibility::Importance::Breaking);
+        if (str == "conflicting") return freod::Ok(freod::ModMetadata::Incompatibility::Importance::Conflicting);
+        if (str == "superseded") return freod::Ok(freod::ModMetadata::Incompatibility::Importance::Superseded);
+        return freod::Err("Invalid importance");
     }
 
-    static Value toJson(geode::ModMetadata::Incompatibility::Importance const& value)
+    static Value toJson(freod::ModMetadata::Incompatibility::Importance const& value)
     {
         switch (value) {
-            case geode::ModMetadata::Incompatibility::Importance::Breaking: return "breaking";
-            case geode::ModMetadata::Incompatibility::Importance::Conflicting: return "conflicting";
-            case geode::ModMetadata::Incompatibility::Importance::Superseded: return "superseded";
+            case freod::ModMetadata::Incompatibility::Importance::Breaking: return "breaking";
+            case freod::ModMetadata::Incompatibility::Importance::Conflicting: return "conflicting";
+            case freod::ModMetadata::Incompatibility::Importance::Superseded: return "superseded";
         }
         return "unknown";
     }

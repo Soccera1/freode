@@ -1,14 +1,14 @@
 #include "mods/ModsLayer.hpp"
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/ui/GeodeUI.hpp>
-#include <Geode/ui/MDPopup.hpp>
-#include <Geode/ui/LoadingSpinner.hpp>
-#include <Geode/utils/web.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/ui/FreodUI.hpp>
+#include <Freod/ui/MDPopup.hpp>
+#include <Freod/ui/LoadingSpinner.hpp>
+#include <Freod/utils/web.hpp>
 #include <server/Server.hpp>
-#include "mods/GeodeStyle.hpp"
+#include "mods/FreodStyle.hpp"
 #include "mods/settings/ModSettingsPopup.hpp"
 #include "mods/popups/ModPopup.hpp"
-#include "GeodeUIEvent.hpp"
+#include "FreodUIEvent.hpp"
 
 class LoadServerModLayer : public Popup<std::string const&> {
 protected:
@@ -104,11 +104,11 @@ public:
     }
 };
 
-void geode::openModsList() {
+void freod::openModsList() {
     ModsLayer::scene();
 }
 
-void geode::openIssueReportPopup(Mod* mod) {
+void freod::openIssueReportPopup(Mod* mod) {
     if (mod->getMetadata().getIssues()) {
         MDPopup::create(
             "Issue Report",
@@ -136,7 +136,7 @@ void geode::openIssueReportPopup(Mod* mod) {
             "Issue Report",
             "Please report your issue on the "
             "[#support](https://discord.com/channels/911701438269386882/979352389985390603) "
-            "channnel in the [Geode Discord Server](https://discord.gg/9e43WMKzhp)\n\n"
+            "channnel in the [Freod Discord Server](https://discord.gg/9e43WMKzhp)\n\n"
             "If your issue relates to a <cr>game crash</c>, <cb>please include</c> the "
             "latest crash log(s) from `" +
                 dirs::getCrashlogsDir().string() + "`",
@@ -145,11 +145,11 @@ void geode::openIssueReportPopup(Mod* mod) {
     }
 }
 
-void geode::openSupportPopup(Mod* mod) {
+void freod::openSupportPopup(Mod* mod) {
     openSupportPopup(mod->getMetadata());
 }
 
-void geode::openSupportPopup(ModMetadata const& metadata) {
+void freod::openSupportPopup(ModMetadata const& metadata) {
     MDPopup::create(
         "Support " + metadata.getName(),
         metadata.getSupportInfo().value_or(
@@ -161,10 +161,10 @@ void geode::openSupportPopup(ModMetadata const& metadata) {
     )->show();
 }
 
-void geode::openInfoPopup(Mod* mod) {
+void freod::openInfoPopup(Mod* mod) {
     ModPopup::create(mod)->show();
 }
-Task<bool> geode::openInfoPopup(std::string const& modID) {
+Task<bool> freod::openInfoPopup(std::string const& modID) {
     if (auto mod = Loader::get()->getInstalledMod(modID)) {
         openInfoPopup(mod);
         return Task<bool>::immediate(true);
@@ -177,18 +177,18 @@ Task<bool> geode::openInfoPopup(std::string const& modID) {
     }
 }
 
-void geode::openChangelogPopup(Mod* mod) {
+void freod::openChangelogPopup(Mod* mod) {
     auto popup = ModPopup::create(mod);
     popup->loadTab(ModPopup::Tab::Changelog);
     popup->show();
 }
 
-void geode::openSettingsPopup(Mod* mod) {
+void freod::openSettingsPopup(Mod* mod) {
     openSettingsPopup(mod, true);
 }
-Popup<Mod*>* geode::openSettingsPopup(Mod* mod, bool disableGeodeTheme) {
+Popup<Mod*>* freod::openSettingsPopup(Mod* mod, bool disableFreodTheme) {
     if (mod->hasSettings()) {
-        auto popup = ModSettingsPopup::create(mod, disableGeodeTheme);
+        auto popup = ModSettingsPopup::create(mod, disableFreodTheme);
         popup->show();
         return popup;
     }
@@ -218,7 +218,7 @@ protected:
 
                 // Load from Resources
                 this->setSprite(mod->isInternal() ? 
-                    CCSprite::createWithSpriteFrameName("geode-logo.png"_spr) : 
+                    CCSprite::createWithSpriteFrameName("freod-logo.png"_spr) : 
                     CCSprite::create(fmt::format("{}/logo.png", mod->getID()).c_str()),
                     false
                 );
@@ -254,7 +254,7 @@ protected:
             m_sprite->removeFromParent();
         }
         // Fallback to default logo if the sprite is null
-        if (!sprite || sprite->getUserObject("geode.texture-loader/fallback")) {
+        if (!sprite || sprite->getUserObject("freod.texture-loader/fallback")) {
             sprite = CCLabelBMFont::create("N/A", "bigFont.fnt");
             static_cast<CCLabelBMFont*>(sprite)->setOpacity(90);
         }
@@ -304,18 +304,18 @@ public:
     }
 };
 
-CCNode* geode::createDefaultLogo() {
+CCNode* freod::createDefaultLogo() {
     return ModLogoSprite::create(ModLogoSrc(nullptr));
 }
 
-CCNode* geode::createModLogo(Mod* mod) {
+CCNode* freod::createModLogo(Mod* mod) {
     return ModLogoSprite::create(ModLogoSrc(mod));
 }
 
-CCNode* geode::createModLogo(std::filesystem::path const& geodePackage) {
-    return ModLogoSprite::create(ModLogoSrc(geodePackage));
+CCNode* freod::createModLogo(std::filesystem::path const& freodPackage) {
+    return ModLogoSprite::create(ModLogoSrc(freodPackage));
 }
 
-CCNode* geode::createServerModLogo(std::string const& id) {
+CCNode* freod::createServerModLogo(std::string const& id) {
     return ModLogoSprite::create(ModLogoSrc(id));
 }

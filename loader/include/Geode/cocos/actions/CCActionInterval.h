@@ -60,9 +60,9 @@ CCAction *pingPongAction = CCSequence::actions(action, action->reverse(), NULL);
 */
 class CC_DLL CCActionInterval : public CCFiniteTimeAction
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCActionInterval, CCFiniteTimeAction)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCActionInterval, CCFiniteTimeAction)
     CCActionInterval() {}
 
     /** how many seconds had elapsed since the actions started to run. */
@@ -105,9 +105,9 @@ public:
  */
 class CC_DLL CCSequence : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSequence, CCActionInterval)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCSequence, CCActionInterval)
     CCSequence() {}
 
     /**
@@ -179,9 +179,9 @@ public:
  */
 class CC_DLL CCRepeat : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCRepeat, CCActionInterval)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCRepeat, CCActionInterval)
     CCRepeat() {}
 
     /**
@@ -237,9 +237,9 @@ To repeat the an action for a limited number of times use the Repeat action.
 */
 class CC_DLL CCRepeatForever : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCRepeatForever, CCActionInterval)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCRepeatForever, CCActionInterval)
     /**
      *  @js ctor
      */
@@ -292,9 +292,9 @@ public:
  */
 class CC_DLL CCSpawn : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSpawn, CCActionInterval)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCSpawn, CCActionInterval)
     CCSpawn() {}
 
     /**
@@ -360,7 +360,7 @@ public:
 */ 
 class CC_DLL CCRotateTo : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** creates the action */
     static CCRotateTo* create(float fDuration, float fDeltaAngle);
@@ -392,7 +392,7 @@ public:
 */
 class CC_DLL CCRotateBy : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** creates the action */
     static CCRotateBy* create(float fDuration, float fDeltaAngle);
@@ -425,7 +425,7 @@ public:
  */
 class CC_DLL CCMoveBy : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action */
     bool initWithDuration(float duration, const CCPoint& deltaPosition);
@@ -454,7 +454,7 @@ public:
  */
 class CC_DLL CCMoveTo : public CCMoveBy
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action */
     bool initWithDuration(float duration, const CCPoint& position);
@@ -477,9 +477,9 @@ public:
 */
 class CC_DLL CCSkewTo : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSkewTo, CCActionInterval)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCSkewTo, CCActionInterval)
     /**
      *  @js ctor
      */
@@ -513,7 +513,7 @@ public:
 */
 class CC_DLL CCSkewBy : public CCSkewTo
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual bool initWithDuration(float t, float sx, float sy);
     virtual void startWithTarget(CCNode *pTarget);
@@ -529,7 +529,7 @@ public:
 */
 class CC_DLL CCJumpBy : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action */
     bool initWithDuration(float duration, const CCPoint& position, float height, unsigned int jumps);
@@ -557,7 +557,7 @@ public:
 */ 
 class CC_DLL CCJumpTo : public CCJumpBy
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual void startWithTarget(CCNode *pTarget);
     /**
@@ -586,7 +586,7 @@ typedef struct _ccBezierConfig {
  */
 class CC_DLL CCBezierBy : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action with a duration and a bezier configuration 
      *  @lua NA
@@ -626,7 +626,7 @@ public:
  */
 class CC_DLL CCBezierTo : public CCBezierBy
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      *  @lua NA
@@ -661,7 +661,7 @@ public:
  */
 class CC_DLL CCScaleTo : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action with the same scale factor for X and Y */
     bool initWithDuration(float duration, float s);
@@ -698,7 +698,7 @@ public:
 */
 class CC_DLL CCScaleBy : public CCScaleTo
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual void startWithTarget(CCNode *pTarget);
     virtual CCActionInterval* reverse(void);
@@ -721,7 +721,7 @@ public:
 */
 class CC_DLL CCBlink : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action */
     bool initWithDuration(float duration, unsigned int uBlinks);
@@ -751,7 +751,7 @@ public:
  */
 class CC_DLL CCFadeIn : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual void update(float time);
     virtual CCActionInterval* reverse(void);
@@ -771,7 +771,7 @@ public:
 */
 class CC_DLL CCFadeOut : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual void update(float time);
     virtual CCActionInterval* reverse(void);
@@ -792,7 +792,7 @@ public:
  */
 class CC_DLL CCFadeTo : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action with duration and opacity */
     bool initWithDuration(float duration, GLubyte opacity);
@@ -818,7 +818,7 @@ public:
 */
 class CC_DLL CCTintTo : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action with duration and color */
     bool initWithDuration(float duration, GLubyte red, GLubyte green, GLubyte blue);
@@ -843,7 +843,7 @@ public:
  */
 class CC_DLL CCTintBy : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** initializes the action with duration and color */
     bool initWithDuration(float duration, GLshort deltaRed, GLshort deltaGreen, GLshort deltaBlue);
@@ -873,7 +873,7 @@ public:
 */
 class CC_DLL CCDelayTime : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     virtual void update(float time);
     virtual CCActionInterval* reverse(void);
@@ -898,9 +898,9 @@ public:
 */
 class CC_DLL CCReverseTime : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCReverseTime, CCActionInterval)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCReverseTime, CCActionInterval)
     /**
      *  @js ctor
      */
@@ -934,9 +934,9 @@ class CCTexture2D;
 /** @brief Animates a sprite given the name of an Animation */
 class CC_DLL CCAnimate : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCAnimate, CCActionInterval)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCAnimate, CCActionInterval)
     /**
      *  @js ctor
      */
@@ -982,9 +982,9 @@ public:
  */
 class CC_DLL CCTargetedAction : public CCActionInterval
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTargetedAction, CCActionInterval)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTargetedAction, CCActionInterval)
     /**
      *  @js ctor
      */

@@ -1,8 +1,8 @@
-#include <Geode/ui/SceneManager.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/utils/ranges.hpp>
+#include <Freod/ui/SceneManager.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/utils/ranges.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 SceneManager* SceneManager::get() {
     static SceneManager* inst = nullptr;

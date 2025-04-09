@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Geode/platform/platform.hpp>
+#include <Freod/platform/platform.hpp>
 #include <tulip/TulipHook.hpp>
 #include "../Prelude.hpp"
 
-namespace geode::hook {
+namespace freod::hook {
     /**
      * Create a calling convention wrapper for a function.
      */
-    GEODE_DLL Result<void*> createWrapper(
+    FREOD_DLL Result<void*> createWrapper(
         void* address,
         tulip::hook::WrapperMetadata const& metadata
     ) noexcept;
@@ -16,7 +16,7 @@ namespace geode::hook {
     /**
      * Create an abstract calling convention handler for TulipHook
      */
-    GEODE_DLL std::shared_ptr<tulip::hook::CallingConvention> createConvention(
+    FREOD_DLL std::shared_ptr<tulip::hook::CallingConvention> createConvention(
         tulip::hook::TulipConvention convention
     ) noexcept;
 }

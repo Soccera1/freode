@@ -1,7 +1,7 @@
 #pragma once
 #include "Traits.hpp"
 
-namespace geode::modifier {
+namespace freod::modifier {
     struct compare {
         template <class, class, class, class = void>
         struct constructor {
@@ -29,6 +29,6 @@ namespace geode::modifier {
             constexpr static inline bool value = true;
         };
 
-#include <Geode/GeneratedCompare.hpp>
+#include <Freod/GeneratedCompare.hpp>
     };
 }

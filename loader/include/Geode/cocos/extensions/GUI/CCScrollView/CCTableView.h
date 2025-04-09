@@ -140,7 +140,7 @@ public:
 class CC_DLL CCTableView : public CCScrollView, public CCScrollViewDelegate
 {
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTableView, CCScrollView)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTableView, CCScrollView)
     /**
      *  @js ctor
      */

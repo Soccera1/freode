@@ -198,7 +198,7 @@ typedef enum
     CONTROLLER_RTHUMBSTICK_LEFT = 0x411,
     CONTROLLER_RTHUMBSTICK_RIGHT = 0x413,
 
-    // Geode additions
+    // Freod additions
     KEY_GraveAccent = 0x1000,
     KEY_OEMEqual = 0x1001,
     KEY_LeftBracket = 0x1002,
@@ -236,7 +236,7 @@ public:
 class CC_DLL CCKeyboardHandler : public CCObject
 {
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCKeyboardHandler, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCKeyboardHandler, CCObject)
     inline CCKeyboardHandler() = default;
     
     virtual ~CCKeyboardHandler();

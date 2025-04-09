@@ -12,14 +12,14 @@
 
 class ModSettingsPopup;
 
-namespace geode {
+namespace freod {
     class ModSettingsManager;
     class SettingNodeV3;
 
-    class GEODE_DLL SettingV3 : public std::enable_shared_from_this<SettingV3> {
+    class FREOD_DLL SettingV3 : public std::enable_shared_from_this<SettingV3> {
     private:
-        class GeodeImpl;
-        std::shared_ptr<GeodeImpl> m_impl;
+        class FreodImpl;
+        std::shared_ptr<FreodImpl> m_impl;
     
     protected:
         /**
@@ -33,7 +33,7 @@ namespace geode {
          * @param modID The ID of the mod this settings is being parsed for 
          * @param json The current JSON checking instance being used. This 
          * should be the JSON object that defines the setting. If you aren't 
-         * using Geode's JSON checking utilities, you can use the other 
+         * using Freod's JSON checking utilities, you can use the other 
          * overload of `init`
          */
         void init(std::string const& key, std::string const& modID, JsonExpectedValue& json);
@@ -46,7 +46,7 @@ namespace geode {
          * functions
          * @param key The setting's key as defined in `mod.json`
          * @param modID The ID of the mod this settings is being parsed for 
-         * @note If you are using Geode's JSON checking utilities 
+         * @note If you are using Freod's JSON checking utilities 
          * (`checkJson` / `JsonExpectedValue`), you should be using the other 
          * overload that takes a `JsonExpectedValue&`!
          */
@@ -94,7 +94,7 @@ namespace geode {
          * @param key The setting's key as defined in `mod.json`
          * @param modID The ID of the mod this settings is being parsed for 
          * @param json The current JSON checking instance being used. If you 
-         * aren't using Geode's JSON checking utilities, use the other overload 
+         * aren't using Freod's JSON checking utilities, use the other overload 
          * of this function
          * @note If you don't want to parse some of the base properties, such as 
          * `"requires-restart"` (because you're doing a cosmetic setting), then 
@@ -106,7 +106,7 @@ namespace geode {
          * for this setting
          * @param key The setting's key as defined in `mod.json`
          * @param modID The ID of the mod this settings is being parsed for 
-         * @param json The JSON value. If you are using Geode's JSON checking 
+         * @param json The JSON value. If you are using Freod's JSON checking 
          * utilities (`checkJson` / `JsonExpectedValue`), you should use the 
          * other overload directly!
          * @note If you don't want to parse some of the base properties, such as 
@@ -218,8 +218,8 @@ namespace geode {
         void parseDefaultValue(JsonExpectedValue& json) {
             auto root = json.needs("default");
             // Check if this is a platform-specific default value
-            if (root.isObject() && root.has(GEODE_PLATFORM_SHORT_IDENTIFIER_NOARCH)) {
-                root.needs(GEODE_PLATFORM_SHORT_IDENTIFIER_NOARCH).into(m_impl->defaultValue);
+            if (root.isObject() && root.has(FREOD_PLATFORM_SHORT_IDENTIFIER_NOARCH)) {
+                root.needs(FREOD_PLATFORM_SHORT_IDENTIFIER_NOARCH).into(m_impl->defaultValue);
             }
             else {
                 root.into(m_impl->defaultValue);
@@ -232,7 +232,7 @@ namespace geode {
          * @param key The key of the setting
          * @param modID The ID of the mod this setting is being parsed for
          * @param json The current JSON checking instance being used. If you 
-         * aren't using Geode's JSON checking utilities, use the other overload 
+         * aren't using Freod's JSON checking utilities, use the other overload 
          * of this function
          */
         void parseBaseProperties(std::string const& key, std::string const& modID, JsonExpectedValue& json) {
@@ -243,7 +243,7 @@ namespace geode {
          * Parse shared value, including the default value for this setting
          * @param key The key of the setting
          * @param modID The ID of the mod this setting is being parsed for
-         * @param json The JSON value. If you are using Geode's JSON checking 
+         * @param json The JSON value. If you are using Freod's JSON checking 
          * utilities (`checkJson` / `JsonExpectedValue`), you should use the 
          * other overload directly!
          */
@@ -320,7 +320,7 @@ namespace geode {
         }
     };
 
-    class GEODE_DLL TitleSettingV3 final : public SettingV3 {
+    class FREOD_DLL TitleSettingV3 final : public SettingV3 {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -341,7 +341,7 @@ namespace geode {
         void reset() override;
     };
 
-    class GEODE_DLL BoolSettingV3 final : public SettingBaseValueV3<bool> {
+    class FREOD_DLL BoolSettingV3 final : public SettingBaseValueV3<bool> {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -359,7 +359,7 @@ namespace geode {
         SettingNodeV3* createNode(float width) override;
     };
 
-    class GEODE_DLL IntSettingV3 final : public SettingBaseValueV3<int64_t> {
+    class FREOD_DLL IntSettingV3 final : public SettingBaseValueV3<int64_t> {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -388,7 +388,7 @@ namespace geode {
         SettingNodeV3* createNode(float width) override;
     };
 
-    class GEODE_DLL FloatSettingV3 final : public SettingBaseValueV3<double> {
+    class FREOD_DLL FloatSettingV3 final : public SettingBaseValueV3<double> {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -417,7 +417,7 @@ namespace geode {
         SettingNodeV3* createNode(float width) override;
     };
 
-    class GEODE_DLL StringSettingV3 final : public SettingBaseValueV3<std::string, std::string_view> {
+    class FREOD_DLL StringSettingV3 final : public SettingBaseValueV3<std::string, std::string_view> {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -439,7 +439,7 @@ namespace geode {
         SettingNodeV3* createNode(float width) override;
     };
 
-    class GEODE_DLL FileSettingV3 final : public SettingBaseValueV3<std::filesystem::path, std::filesystem::path const&> {
+    class FREOD_DLL FileSettingV3 final : public SettingBaseValueV3<std::filesystem::path, std::filesystem::path const&> {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -462,7 +462,7 @@ namespace geode {
         SettingNodeV3* createNode(float width) override;
     };
 
-    class GEODE_DLL Color3BSettingV3 final : public SettingBaseValueV3<cocos2d::ccColor3B> {
+    class FREOD_DLL Color3BSettingV3 final : public SettingBaseValueV3<cocos2d::ccColor3B> {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -480,7 +480,7 @@ namespace geode {
         SettingNodeV3* createNode(float width) override;
     };
 
-    class GEODE_DLL Color4BSettingV3 final : public SettingBaseValueV3<cocos2d::ccColor4B> {
+    class FREOD_DLL Color4BSettingV3 final : public SettingBaseValueV3<cocos2d::ccColor4B> {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -498,7 +498,7 @@ namespace geode {
         SettingNodeV3* createNode(float width) override;
     };
 
-    class GEODE_DLL SettingNodeV3 : public cocos2d::CCNode {
+    class FREOD_DLL SettingNodeV3 : public cocos2d::CCNode {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -638,7 +638,7 @@ namespace geode {
         }
     };
 
-    class GEODE_DLL SettingChangedEventV3 final : public Event {
+    class FREOD_DLL SettingChangedEventV3 final : public Event {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -648,7 +648,7 @@ namespace geode {
 
         std::shared_ptr<SettingV3> getSetting() const;
     };
-    class GEODE_DLL SettingChangedFilterV3 final : public EventFilter<SettingChangedEventV3> {
+    class FREOD_DLL SettingChangedFilterV3 final : public EventFilter<SettingChangedEventV3> {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -670,7 +670,7 @@ namespace geode {
         SettingChangedFilterV3(SettingChangedFilterV3 const&);
     };
 
-    class GEODE_DLL SettingNodeSizeChangeEventV3 : public Event {
+    class FREOD_DLL SettingNodeSizeChangeEventV3 : public Event {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -681,7 +681,7 @@ namespace geode {
 
         SettingNodeV3* getNode() const;
     };
-    class GEODE_DLL SettingNodeValueChangeEventV3 : public Event {
+    class FREOD_DLL SettingNodeValueChangeEventV3 : public Event {
     private:
         class Impl;
         std::shared_ptr<Impl> m_impl;
@@ -736,7 +736,7 @@ namespace geode {
         using Ty = typename SettingTypeForValueType<T>::SettingType;
         return new EventListener(
             [callback = std::move(callback)](std::shared_ptr<SettingV3> setting) {
-                if (auto ty = geode::cast::typeinfo_pointer_cast<Ty>(setting)) {
+                if (auto ty = freod::cast::typeinfo_pointer_cast<Ty>(setting)) {
                     callback(ty->getValue());
                 }
             },
@@ -747,7 +747,7 @@ namespace geode {
         using T = std::remove_cvref_t<utils::function::Arg<0, decltype(callback)>>;
         return listenForSettingChangesV3<T>(settingKey, std::move(callback), mod);
     }
-    GEODE_DLL EventListener<SettingChangedFilterV3>* listenForAllSettingChangesV3(
+    FREOD_DLL EventListener<SettingChangedFilterV3>* listenForAllSettingChangesV3(
         std::function<void(std::shared_ptr<SettingV3>)> const& callback,
         Mod* mod = getMod()
     );

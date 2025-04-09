@@ -50,9 +50,9 @@ struct _ccCArray;
 */
 class CC_DLL CCKeypadDispatcher : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCKeypadDispatcher, CCObject);
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCKeypadDispatcher, CCObject);
     CCKeypadDispatcher();
     ~CCKeypadDispatcher();
 

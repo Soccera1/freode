@@ -1,8 +1,8 @@
-#include <Geode/Geode.hpp>
-#include <Geode/modify/ChannelControl.hpp>
-#include <Geode/modify/System.hpp>
+#include <Freod/Freod.hpp>
+#include <Freod/modify/ChannelControl.hpp>
+#include <Freod/modify/System.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // Workaround for a bug where FMOD::ChannelControl::setVolume is called with
 //   uninitialized (invalid) channel pointers from FMODAudioEngine.
@@ -31,7 +31,7 @@ struct FMODChannelControlFix : Modify<FMODChannelControlFix, FMOD::ChannelContro
 // this hook requires a tuliphook update
 // (setEffectsVolume is too small to hook, so it overwrites the stopAllMusic call below it)
 
-#include <Geode/modify/FMODAudioEngine.hpp>
+#include <Freod/modify/FMODAudioEngine.hpp>
 
 struct AndroidFMODFix : Modify<AndroidFMODFix, FMODAudioEngine> {
     void setEffectsVolume(float volume) {

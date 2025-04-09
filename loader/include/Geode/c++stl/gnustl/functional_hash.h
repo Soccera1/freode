@@ -34,7 +34,7 @@
 
 #include "hash_bytes.h"
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /** @defgroup hashes Hashes

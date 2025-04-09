@@ -226,7 +226,7 @@ public:
         _type = type;
     }
 
-    // @note Geode addition
+    // @note Freod addition
     inline void setType(GJHttpType type) {
         _type = static_cast<int>(type);
     }

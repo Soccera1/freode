@@ -1,6 +1,6 @@
 #pragma once
 
-namespace geode::cast {
+namespace freod::cast {
 
     struct DummyClass {
         virtual ~DummyClass() {}

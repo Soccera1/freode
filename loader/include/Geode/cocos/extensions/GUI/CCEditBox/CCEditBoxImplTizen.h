@@ -44,7 +44,7 @@ class CC_DLL CCEditBox;
 class CC_DLL CCEditBoxImplTizen : public CCEditBoxImpl
 {
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCEditBoxImplTizen, CCEditBoxImpl)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCEditBoxImplTizen, CCEditBoxImpl)
     CCEditBoxImplTizen() {}
 
     CCEditBoxImplTizen(CCEditBox* pEditText);

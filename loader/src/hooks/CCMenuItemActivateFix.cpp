@@ -1,8 +1,8 @@
-#include <Geode/Geode.hpp>
-#include <Geode/modify/CCMenuItem.hpp>
-#include <Geode/modify/CCMenu.hpp>
+#include <Freod/Freod.hpp>
+#include <Freod/modify/CCMenuItem.hpp>
+#include <Freod/modify/CCMenu.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 class $modify(CCMenuItem) {
     void activate() {

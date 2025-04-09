@@ -2,7 +2,7 @@
 
 #include <tuple>
 
-namespace geode::utils::function {
+namespace freod::utils::function {
     namespace detail {
         template <class F>
         struct ImplExtract;

@@ -2,7 +2,7 @@
 
 #include "../DefaultInclude.hpp"
 #include "../cocos/support/zip_support/ZipUtils.h"
-#include <Geode/Result.hpp>
+#include <Freod/Result.hpp>
 #include "../utils/VersionInfo.hpp"
 #include "../utils/general.hpp"
 
@@ -22,7 +22,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace geode {    
+namespace freod {    
     template <class T>
     struct HandleToSaved : public T {
         Mod* m_mod;
@@ -52,7 +52,7 @@ namespace geode {
         return action == ModRequestedAction::Uninstall || action == ModRequestedAction::UninstallWithSaveData;
     }
 
-    GEODE_HIDDEN Mod* takeNextLoaderMod();
+    FREOD_HIDDEN Mod* takeNextLoaderMod();
 
     class ModImpl;
 
@@ -60,7 +60,7 @@ namespace geode {
      * Represents a Mod ingame.
      * @class Mod
      */
-    class GEODE_DLL Mod final {
+    class FREOD_DLL Mod final {
     protected:
         class Impl;
         std::unique_ptr<Impl> m_impl;
@@ -68,15 +68,15 @@ namespace geode {
         friend class Loader;
 
         template <class = void>
-        static inline GEODE_HIDDEN Mod* sharedMod = nullptr;
+        static inline FREOD_HIDDEN Mod* sharedMod = nullptr;
 
-        // used internally in geode_implicit_load
+        // used internally in freod_implicit_load
         template <class = void>
-        static inline GEODE_HIDDEN void setSharedMod(Mod* mod) {
+        static inline FREOD_HIDDEN void setSharedMod(Mod* mod) {
             sharedMod<> = mod;
         }
 
-        friend void GEODE_CALL ::geode_implicit_load(Mod*);
+        friend void FREOD_CALL ::freod_implicit_load(Mod*);
 
     public:
         // no copying
@@ -116,13 +116,13 @@ namespace geode {
          * Get the dependency settings for a specific dependency via its ID. For 
          * example, if this mod depends on Custom Keybinds, it can specify the 
          * keybinds it wants to add in `mod.json` under 
-         * `dependencies."geode.custom-keybinds".settings.keybinds`
+         * `dependencies."freod.custom-keybinds".settings.keybinds`
          * @returns Null JSON value if there are no settings or if the mod 
          * doesn't depend on the given mod ID
          */
         matjson::Value getDependencySettingsFor(std::string_view dependencyID) const;
 
-#if defined(GEODE_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
+#if defined(FREOD_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
         void setMetadata(ModMetadata const& metadata);
         std::vector<Mod*> getDependants() const;
 #endif
@@ -131,7 +131,7 @@ namespace geode {
         /**
          * Check if this Mod has updates available on the mods index. If 
          * you're using this for automatic update checking, use 
-         * `openInfoPopup` from the `ui/GeodeUI.hpp` header to open the Mod's 
+         * `openInfoPopup` from the `ui/FreodUI.hpp` header to open the Mod's 
          * page to let the user install the update
          * @returns A task that resolves to an option, either the latest 
          * available version on the index if there are updates available, or 
@@ -153,7 +153,7 @@ namespace geode {
         std::filesystem::path getConfigDir(bool create = true) const;
         /**
          * Get the mod's persistent directory path
-         * This directory is not deleted even when Geode/mod is uninstalled
+         * This directory is not deleted even when Freod/mod is uninstalled
          */
         std::filesystem::path getPersistentDir(bool create = true) const;
 
@@ -178,7 +178,7 @@ namespace geode {
 
         /**
          * Register a custom setting type. See 
-         * [the setting docs](https://docs.geode-sdk.org/mods/settings) for more
+         * [the setting docs](https://docs.freod-sdk.org/mods/settings) for more
          * @param type The type of the setting. This should **not** include the 
          * `custom:` prefix!
          * @param generator A pointer to a function that, when called, returns a 
@@ -204,7 +204,7 @@ namespace geode {
         /**
          * Get a mod-specific launch argument. This is equivalent to `Loader::getLaunchArgument`
          * with the argument name prefixed by the mod ID. For example, a launch argument named
-         * `mod-arg` for the mod `author.test` would be specified with `--geode:author.test.mod-arg=value`.
+         * `mod-arg` for the mod `author.test` would be specified with `--freod:author.test.mod-arg=value`.
          * @param name The argument name
          * @return The value, if present
          */
@@ -229,7 +229,7 @@ namespace geode {
         matjson::Value& getSavedSettingsData();
 
         /**
-         * Get the value of a [setting](https://docs.geode-sdk.org/mods/settings). 
+         * Get the value of a [setting](https://docs.freod-sdk.org/mods/settings). 
          * To use this for custom settings, first specialize the 
          * `SettingTypeForValueType` class, and then make sure your custom 
          * setting type has a `getValue` function which returns the value
@@ -299,7 +299,7 @@ namespace geode {
          * @returns The current mod
          */
         template <class = void>
-        static inline GEODE_HIDDEN Mod* get() {
+        static inline FREOD_HIDDEN Mod* get() {
             if (!sharedMod<>) {
                 sharedMod<> = takeNextLoaderMod();
             }
@@ -328,7 +328,7 @@ namespace geode {
             tulip::hook::HookMetadata const& hookMetadata = tulip::hook::HookMetadata()
         ) {
             auto hook = Hook::create(address, detour, displayName, convention, hookMetadata);
-            GEODE_UNWRAP_INTO(auto ptr, this->claimHook(std::move(hook)));
+            FREOD_UNWRAP_INTO(auto ptr, this->claimHook(std::move(hook)));
             return Ok(ptr);
         }
 
@@ -338,7 +338,7 @@ namespace geode {
             tulip::hook::HookMetadata const& hookMetadata
         ) {
             auto hook = Hook::create(address, detour, displayName, handlerMetadata, hookMetadata);
-            GEODE_UNWRAP_INTO(auto ptr, this->claimHook(std::move(hook)));
+            FREOD_UNWRAP_INTO(auto ptr, this->claimHook(std::move(hook)));
             return Ok(ptr);
         }
 
@@ -373,7 +373,7 @@ namespace geode {
          */
         Result<Patch*> patch(void* address, ByteVector const& data) {
             auto patch = Patch::create(address, data);
-            GEODE_UNWRAP_INTO(auto ptr, this->claimPatch(std::move(patch)));
+            FREOD_UNWRAP_INTO(auto ptr, this->claimPatch(std::move(patch)));
             return Ok(ptr);
         }
 
@@ -414,7 +414,7 @@ namespace geode {
         Result<> disable();
 
         /**
-         * Delete the mod's .geode package.
+         * Delete the mod's .freod package.
          * @param deleteSaveData Whether should also delete the mod's save data
          * @returns Successful result on success,
          * errorful result with info on error
@@ -458,9 +458,9 @@ namespace geode {
         void setLoggingEnabled(bool enabled);
 
         /**
-         * If this mod is built for an outdated GD or Geode version, returns the 
+         * If this mod is built for an outdated GD or Freod version, returns the 
          * `LoadProblem` describing the situation. Otherwise `nullopt` if the 
-         * mod is made for the correct version of the game and Geode
+         * mod is made for the correct version of the game and Freod
          */
         std::optional<LoadProblem> targetsOutdatedVersion() const;
         /**
@@ -478,14 +478,14 @@ namespace geode {
     };
 }
 
-namespace geode::geode_internal {
-    // this impl relies on the GEODE_MOD_ID macro set by cmake
+namespace freod::freod_internal {
+    // this impl relies on the FREOD_MOD_ID macro set by cmake
     template <size_t N>
     struct StringConcatModIDSlash {
-        static constexpr size_t extra = sizeof(GEODE_MOD_ID);
+        static constexpr size_t extra = sizeof(FREOD_MOD_ID);
         char buffer[extra + N]{};
         constexpr StringConcatModIDSlash(const char (&pp)[N]) {
-            char id[] = GEODE_MOD_ID;
+            char id[] = FREOD_MOD_ID;
             for (int i = 0; i < sizeof(id); ++i) {
                 buffer[i] = id[i];
             }
@@ -497,7 +497,7 @@ namespace geode::geode_internal {
     };
 }
 
-template <geode::geode_internal::StringConcatModIDSlash Str>
+template <freod::freod_internal::StringConcatModIDSlash Str>
 constexpr auto operator""_spr() {
     return Str.buffer;
 }

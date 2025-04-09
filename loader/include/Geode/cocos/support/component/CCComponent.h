@@ -32,13 +32,13 @@ NS_CC_BEGIN
 
 class CC_DLL CCComponent : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 protected:
 
 
     CCComponent(void);
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCComponent, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCComponent, CCObject)
     /**
      *  @js NA
      *  @lua NA

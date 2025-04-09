@@ -3,12 +3,12 @@
 #include "MDTextArea.hpp"
 #include "Popup.hpp"
 
-namespace geode {
+namespace freod {
     /**
      * FLAlertLayer with support for Markdown. See MDTextArea
      * for details on what features of MD are supported.
      */
-    class GEODE_DLL MDPopup :
+    class FREOD_DLL MDPopup :
         public Popup<
             std::string const&, std::string const&, char const*, char const*,
             std::function<void(bool)>> {

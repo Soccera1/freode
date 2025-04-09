@@ -57,7 +57,7 @@ class CCSprite;
  */
 class CC_DLL CCSpriteFrameCache : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 protected:
 
 
@@ -67,7 +67,7 @@ protected:
      */
     CCSpriteFrameCache(void) : m_pSpriteFrames(NULL), m_pSpriteFramesAliases(NULL){}
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSpriteFrameCache, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCSpriteFrameCache, CCObject)
 
     bool init(void);
     /**
@@ -154,7 +154,7 @@ public:
      *  @js getInstance
      */
     static CCSpriteFrameCache* sharedSpriteFrameCache(void);
-    static GEODE_DLL CCSpriteFrameCache* get();
+    static FREOD_DLL CCSpriteFrameCache* get();
 
     /** Purges the cache. It releases all the Sprite Frames and the retained instance. */
     static void purgeSharedSpriteFrameCache(void);

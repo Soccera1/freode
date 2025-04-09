@@ -5,7 +5,7 @@
 #include <string>
 #include <type_traits>
 
-namespace geode::cast {
+namespace freod::cast {
     /**
      * Alias for static_cast
      */

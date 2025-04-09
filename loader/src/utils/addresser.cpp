@@ -2,63 +2,63 @@
  * Adapted from https://gist.github.com/altalk23/29b97969e9f0624f783b673f6c1cd279
  */
 
-#include <Geode/DefaultInclude.hpp>
-#include <Geode/utils/addresser.hpp>
+#include <Freod/DefaultInclude.hpp>
+#include <Freod/utils/addresser.hpp>
 #include <cstdlib>
 #include <stddef.h>
 
-#define GEODE_ADDRESSER_NEST1(macro, begin)                                                      \
-    macro(GEODE_CONCAT(begin, 0)), macro(GEODE_CONCAT(begin, 1)), macro(GEODE_CONCAT(begin, 2)), \
-        macro(GEODE_CONCAT(begin, 3)), macro(GEODE_CONCAT(begin, 4)),                            \
-        macro(GEODE_CONCAT(begin, 5)), macro(GEODE_CONCAT(begin, 6)),                            \
-        macro(GEODE_CONCAT(begin, 7)), macro(GEODE_CONCAT(begin, 8)),                            \
-        macro(GEODE_CONCAT(begin, 9)), macro(GEODE_CONCAT(begin, a)),                            \
-        macro(GEODE_CONCAT(begin, b)), macro(GEODE_CONCAT(begin, c)),                            \
-        macro(GEODE_CONCAT(begin, d)), macro(GEODE_CONCAT(begin, e)), macro(GEODE_CONCAT(begin, f))
+#define FREOD_ADDRESSER_NEST1(macro, begin)                                                      \
+    macro(FREOD_CONCAT(begin, 0)), macro(FREOD_CONCAT(begin, 1)), macro(FREOD_CONCAT(begin, 2)), \
+        macro(FREOD_CONCAT(begin, 3)), macro(FREOD_CONCAT(begin, 4)),                            \
+        macro(FREOD_CONCAT(begin, 5)), macro(FREOD_CONCAT(begin, 6)),                            \
+        macro(FREOD_CONCAT(begin, 7)), macro(FREOD_CONCAT(begin, 8)),                            \
+        macro(FREOD_CONCAT(begin, 9)), macro(FREOD_CONCAT(begin, a)),                            \
+        macro(FREOD_CONCAT(begin, b)), macro(FREOD_CONCAT(begin, c)),                            \
+        macro(FREOD_CONCAT(begin, d)), macro(FREOD_CONCAT(begin, e)), macro(FREOD_CONCAT(begin, f))
 
-#define GEODE_ADDRESSER_NEST2(macro, begin)                   \
-    GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 0)),     \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 1)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 2)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 3)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 4)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 5)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 6)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 7)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 8)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, 9)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, a)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, b)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, c)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, d)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, e)), \
-        GEODE_ADDRESSER_NEST1(macro, GEODE_CONCAT(begin, f))
+#define FREOD_ADDRESSER_NEST2(macro, begin)                   \
+    FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 0)),     \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 1)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 2)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 3)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 4)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 5)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 6)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 7)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 8)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, 9)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, a)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, b)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, c)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, d)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, e)), \
+        FREOD_ADDRESSER_NEST1(macro, FREOD_CONCAT(begin, f))
 
-#define GEODE_ADDRESSER_THUNK0_DEFINE(hex) (intptr_t) & f<hex * sizeof(intptr_t)>
-#define GEODE_ADDRESSER_TABLE_DEFINE(hex) (intptr_t) & ThunkTable::table
+#define FREOD_ADDRESSER_THUNK0_DEFINE(hex) (intptr_t) & f<hex * sizeof(intptr_t)>
+#define FREOD_ADDRESSER_TABLE_DEFINE(hex) (intptr_t) & ThunkTable::table
 
-#define GEODE_ADDRESSER_THUNK0_SET() GEODE_ADDRESSER_NEST2(GEODE_ADDRESSER_THUNK0_DEFINE, 0x)
-#define GEODE_ADDRESSER_TABLE_SET() GEODE_ADDRESSER_NEST2(GEODE_ADDRESSER_TABLE_DEFINE, 0x)
+#define FREOD_ADDRESSER_THUNK0_SET() FREOD_ADDRESSER_NEST2(FREOD_ADDRESSER_THUNK0_DEFINE, 0x)
+#define FREOD_ADDRESSER_TABLE_SET() FREOD_ADDRESSER_NEST2(FREOD_ADDRESSER_TABLE_DEFINE, 0x)
 
-using namespace geode::addresser;
+using namespace freod::addresser;
 
 namespace {
     template <ptrdiff_t index>
-    GEODE_HIDDEN ptrdiff_t f() {
+    FREOD_HIDDEN ptrdiff_t f() {
         return index;
     }
 
     using thunk0_table_t = intptr_t[0x100];
     using table_table_t = intptr_t[0x100];
 
-    struct GEODE_HIDDEN ThunkTable {
-        static inline thunk0_table_t table = {GEODE_ADDRESSER_THUNK0_SET()};
+    struct FREOD_HIDDEN ThunkTable {
+        static inline thunk0_table_t table = {FREOD_ADDRESSER_THUNK0_SET()};
     };
 
-    class GEODE_HIDDEN TableTable {
-        friend class geode::addresser::Addresser;
+    class FREOD_HIDDEN TableTable {
+        friend class freod::addresser::Addresser;
 
-        static inline table_table_t table = {GEODE_ADDRESSER_TABLE_SET()};
+        static inline table_table_t table = {FREOD_ADDRESSER_TABLE_SET()};
     };
 }
 
@@ -66,7 +66,7 @@ Addresser::MultipleInheritance* Addresser::instance() {
     return reinterpret_cast<Addresser::MultipleInheritance*>(&TableTable::table);
 }
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
 #include <delayimp.h>
 extern "C" FARPROC WINAPI __delayLoadHelper2(PCImgDelayDescr pidd, FARPROC* ppfnIATEntry); // NOLINT(*-reserved-identifier)
 
@@ -84,11 +84,11 @@ FARPROC WINAPI delayLoadHook(unsigned dliNotify, PDelayLoadInfo pdli) {
 
 extern "C" const PfnDliHook __pfnDliFailureHook2 = delayLoadHook;
 
-PVOID GeodeFunctionTableAccess64(HANDLE hProcess, DWORD64 AddrBase);
+PVOID FreodFunctionTableAccess64(HANDLE hProcess, DWORD64 AddrBase);
 #endif
 
 intptr_t Addresser::followThunkFunction(intptr_t address) {
-#ifdef GEODE_IS_WINDOWS32
+#ifdef FREOD_IS_WINDOWS32
     // if theres a jmp at the start
     if (address && *reinterpret_cast<uint8_t*>(address) == 0xE9) {
         auto relative = *reinterpret_cast<uint32_t*>(address + 1);
@@ -133,7 +133,7 @@ intptr_t Addresser::followThunkFunction(intptr_t address) {
         }
     }
 #endif
-#ifdef GEODE_IS_WINDOWS64
+#ifdef FREOD_IS_WINDOWS64
     static constexpr auto checkByteSequence = [](uintptr_t address, const std::initializer_list<uint8_t>& bytes) {
         for (auto byte : bytes) {
             if (*reinterpret_cast<uint8_t*>(address++) != byte) {
@@ -151,7 +151,7 @@ intptr_t Addresser::followThunkFunction(intptr_t address) {
         auto checkAddress = *reinterpret_cast<uintptr_t*>(address + 6 + offset);
         
         // only follow the thunk if it's not a hook handler
-        if (GeodeFunctionTableAccess64(GetCurrentProcess(), static_cast<DWORD64>(checkAddress)) == nullptr) {
+        if (FreodFunctionTableAccess64(GetCurrentProcess(), static_cast<DWORD64>(checkAddress)) == nullptr) {
             address = checkAddress;
         }
     }

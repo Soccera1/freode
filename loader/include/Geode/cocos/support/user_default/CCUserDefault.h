@@ -44,9 +44,9 @@ NS_CC_BEGIN
  */
 class CC_DLL CCUserDefault
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCUserDefault)
+    FREOD_CUSTOM_CONSTRUCTOR_BEGIN(CCUserDefault)
     ~CCUserDefault();
 
     // get value methods

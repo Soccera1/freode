@@ -1,7 +1,7 @@
-#include <Geode/utils/JsonValidation.hpp>
-#include <Geode/utils/ranges.hpp>
+#include <Freod/utils/JsonValidation.hpp>
+#include <Freod/utils/ranges.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // This is used for null JsonExpectedValues (for example when doing 
 // `json.has("key")` where "key" doesn't exist)
@@ -269,6 +269,6 @@ Result<> JsonExpectedValue::ok() {
     return Ok();
 }
 
-JsonExpectedValue geode::checkJson(matjson::Value const& json, std::string_view rootScopeName) {
+JsonExpectedValue freod::checkJson(matjson::Value const& json, std::string_view rootScopeName) {
     return JsonExpectedValue(json, rootScopeName);
 }

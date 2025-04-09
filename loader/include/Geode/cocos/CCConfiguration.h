@@ -54,7 +54,7 @@ typedef enum _ccConfigurationType {
  */
 class CC_DLL CCConfiguration : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** returns a shared instance of CCConfiguration */
     static CCConfiguration *sharedConfiguration(void);
@@ -63,7 +63,7 @@ public:
     static void purgeConfiguration(void);
 
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCConfiguration, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCConfiguration, CCObject)
     /**
      *  @js NA
      *  @lua NA

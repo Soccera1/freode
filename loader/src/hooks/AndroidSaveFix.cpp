@@ -1,9 +1,9 @@
-#include <Geode/platform/cplatform.h>
+#include <Freod/platform/cplatform.h>
 
-#ifdef GEODE_IS_ANDROID
-#include <Geode/loader/Mod.hpp>
+#ifdef FREOD_IS_ANDROID
+#include <Freod/loader/Mod.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 void* g_decodeAddress = nullptr;
 

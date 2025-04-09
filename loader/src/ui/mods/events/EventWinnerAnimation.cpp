@@ -1,12 +1,12 @@
 #include "EventWinnerAnimation.hpp"
-#include <Geode/binding/CCLightFlash.hpp>
-#include <Geode/binding/GameToolbox.hpp>
-#include <Geode/binding/FMODAudioEngine.hpp>
-#include <Geode/binding/CCCircleWave.hpp>
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
-#include <Geode/ui/GeodeUI.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/binding/CCLightFlash.hpp>
+#include <Freod/binding/GameToolbox.hpp>
+#include <Freod/binding/FMODAudioEngine.hpp>
+#include <Freod/binding/CCCircleWave.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/binding/CCMenuItemSpriteExtra.hpp>
+#include <Freod/ui/FreodUI.hpp>
+#include <Freod/utils/cocos.hpp>
 
 static float shakeyNoise(float x) {
     // i wrote some stuff in geogebra until i got a shakey looking function

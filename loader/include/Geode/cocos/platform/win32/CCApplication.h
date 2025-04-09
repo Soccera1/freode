@@ -14,9 +14,9 @@ class CCRect;
 
 class CC_DLL CCApplication : public CCApplicationProtocol
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCApplication)
+    FREOD_CUSTOM_CONSTRUCTOR_BEGIN(CCApplication)
     CCApplication();
     virtual ~CCApplication();
 
@@ -35,7 +35,7 @@ public:
     */
     static CCApplication* sharedApplication();
 
-    static GEODE_DLL CCApplication* get();
+    static FREOD_DLL CCApplication* get();
 
     /* override functions */
     virtual void setAnimationInterval(double interval);

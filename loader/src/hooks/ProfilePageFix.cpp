@@ -1,11 +1,11 @@
-#include <Geode/modify/ProfilePage.hpp>
-#include <Geode/binding/GJUserScore.hpp>
+#include <Freod/modify/ProfilePage.hpp>
+#include <Freod/binding/GJUserScore.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // Fixes the names not showing up on profile links
 struct CustomProfilePage : Modify<CustomProfilePage, ProfilePage> {
-    GEODE_FORWARD_COMPAT_DISABLE_HOOKS("ProfilePage fix")
+    FREOD_FORWARD_COMPAT_DISABLE_HOOKS("ProfilePage fix")
 
     virtual void getUserInfoFinished(GJUserScore* info) {
         m_usernameLabel->setString(info->m_userName.c_str());

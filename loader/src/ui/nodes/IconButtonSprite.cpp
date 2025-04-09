@@ -1,8 +1,8 @@
-#include <Geode/ui/IconButtonSprite.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/ui/IconButtonSprite.hpp>
+#include <Freod/utils/cocos.hpp>
 #include <cocos-ext.h>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 bool IconButtonSprite::init(
     char const* bg, bool bgIsFrame, cocos2d::CCNode* icon, char const* text, char const* font

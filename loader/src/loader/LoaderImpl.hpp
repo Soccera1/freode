@@ -3,13 +3,13 @@
 #include "FileWatcher.hpp"
 
 #include <matjson.hpp>
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/Result.hpp>
-#include <Geode/utils/map.hpp>
-#include <Geode/utils/ranges.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/Result.hpp>
+#include <Freod/utils/map.hpp>
+#include <Freod/utils/ranges.hpp>
 #include "ModImpl.hpp"
 #include <crashlog.hpp>
 #include <mutex>
@@ -21,8 +21,8 @@
 #include <queue>
 #include <tulip/TulipHook.hpp>
 
-namespace geode {
-    static constexpr std::string_view LAUNCH_ARG_PREFIX = "--geode:";
+namespace freod {
+    static constexpr std::string_view LAUNCH_ARG_PREFIX = "--freod:";
 
     class Loader::Impl {
     public:
@@ -143,7 +143,7 @@ namespace geode {
         void forceSafeMode();
 
         // This will potentially start a whole sequence of popups that guide the 
-        // user through installing the specific .geode file
+        // user through installing the specific .freod file
         void installModManuallyFromFile(std::filesystem::path const& path, std::function<void()> after);
 
         bool isRestartRequired() const;

@@ -1,10 +1,10 @@
 #include "ModSource.hpp"
 
-#include <Geode/loader/ModMetadata.hpp>
-#include <Geode/loader/ModSettingsManager.hpp>
-#include <Geode/ui/GeodeUI.hpp>
+#include <Freod/loader/ModMetadata.hpp>
+#include <Freod/loader/ModSettingsManager.hpp>
+#include <Freod/ui/FreodUI.hpp>
 #include <server/DownloadManager.hpp>
-#include <Geode/binding/GameObject.hpp>
+#include <Freod/binding/GameObject.hpp>
 #include <unordered_set>
 
 LoadModSuggestionTask loadModSuggestion(LoadProblem const& problem) {
@@ -81,7 +81,7 @@ std::string ModSource::formatDevelopers() const {
 CCNode* ModSource::createModLogo() const {
     return std::visit(makeVisitor {
         [](Mod* mod) {
-            return geode::createModLogo(mod);
+            return freod::createModLogo(mod);
         },
         [](server::ServerModMetadata const& metadata) {
             return createServerModLogo(metadata.id);

@@ -1,19 +1,19 @@
-#include <Geode/loader/IPC.hpp>
-#include <Geode/loader/Log.hpp>
+#include <Freod/loader/IPC.hpp>
+#include <Freod/loader/Log.hpp>
 #include <loader/ModImpl.hpp>
 #include <loader/LoaderImpl.hpp>
-#include <Geode/utils/string.hpp>
+#include <Freod/utils/string.hpp>
 #include <processenv.h>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 #include <Psapi.h>
 
 #include "gdTimestampMap.hpp"
 std::string Loader::Impl::getGameVersion() {
     if (m_gdVersion.empty()) {
-        auto dosHeader = reinterpret_cast<IMAGE_DOS_HEADER*>(geode::base::get());
-        auto ntHeader = reinterpret_cast<PIMAGE_NT_HEADERS>(geode::base::get() + dosHeader->e_lfanew);
+        auto dosHeader = reinterpret_cast<IMAGE_DOS_HEADER*>(freod::base::get());
+        auto ntHeader = reinterpret_cast<PIMAGE_NT_HEADERS>(freod::base::get() + dosHeader->e_lfanew);
         auto timestamp = ntHeader->FileHeader.TimeDateStamp;
         m_gdVersion = timestampToVersion(timestamp);
     }

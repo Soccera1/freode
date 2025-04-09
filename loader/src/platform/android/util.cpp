@@ -1,30 +1,30 @@
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-#include <Geode/utils/cocos.hpp>
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/utils/file.hpp>
-#include <Geode/utils/web.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/utils/file.hpp>
+#include <Freod/utils/web.hpp>
 #include <filesystem>
-#include <Geode/utils/general.hpp>
-#include <Geode/utils/permission.hpp>
-#include <Geode/utils/Task.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/binding/AppDelegate.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/binding/MenuLayer.hpp>
-#include <Geode/Result.hpp>
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/utils/general.hpp>
+#include <Freod/utils/permission.hpp>
+#include <Freod/utils/Task.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/binding/AppDelegate.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/binding/MenuLayer.hpp>
+#include <Freod/Result.hpp>
+#include <Freod/DefaultInclude.hpp>
 #include <optional>
 #include <mutex>
 
 #include <jni.h>
-#include <Geode/cocos/platform/android/jni/JniHelper.h>
+#include <Freod/cocos/platform/android/jni/JniHelper.h>
 
-using geode::utils::permission::Permission;
+using freod::utils::permission::Permission;
 
 bool utils::clipboard::write(std::string const& data) {
     JniMethodInfo t;
-    if (JniHelper::getStaticMethodInfo(t, "com/geode/launcher/utils/GeodeUtils", "writeClipboard", "(Ljava/lang/String;)V")) {
+    if (JniHelper::getStaticMethodInfo(t, "com/freod/launcher/utils/FreodUtils", "writeClipboard", "(Ljava/lang/String;)V")) {
         jstring stringArg1 = t.env->NewStringUTF(data.c_str());
 
         t.env->CallStaticVoidMethod(t.classID, t.methodID, stringArg1);
@@ -38,7 +38,7 @@ bool utils::clipboard::write(std::string const& data) {
 
 std::string utils::clipboard::read() {
     JniMethodInfo t;
-    if (JniHelper::getStaticMethodInfo(t, "com/geode/launcher/utils/GeodeUtils", "readClipboard", "()Ljava/lang/String;")) {
+    if (JniHelper::getStaticMethodInfo(t, "com/freod/launcher/utils/FreodUtils", "readClipboard", "()Ljava/lang/String;")) {
         jstring stringResult = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
 
         std::string result = JniHelper::jstring2string(stringResult);
@@ -70,14 +70,14 @@ namespace {
     std::string s_savedBaseDir = "";
 
     std::filesystem::path getBaseDir() {
-        std::string path = "/storage/emulated/0/Android/data/com.geode.launcher/files";
+        std::string path = "/storage/emulated/0/Android/data/com.freod.launcher/files";
 
         if (!s_savedBaseDir.empty()) {
             return std::filesystem::path(s_savedBaseDir);
         }
 
         JniMethodInfo t;
-        if (JniHelper::getStaticMethodInfo(t, "com/geode/launcher/utils/GeodeUtils", "getBaseDirectory", "()Ljava/lang/String;")) {
+        if (JniHelper::getStaticMethodInfo(t, "com/freod/launcher/utils/FreodUtils", "getBaseDirectory", "()Ljava/lang/String;")) {
             jstring str = reinterpret_cast<jstring>(t.env->CallStaticObjectMethod(t.classID, t.methodID));
             t.env->DeleteLocalRef(t.classID);
             path = JniHelper::jstring2string(str);
@@ -102,10 +102,10 @@ std::filesystem::path dirs::getSaveDir() {
 std::filesystem::path dirs::getModRuntimeDir() {
     static std::string cachedResult = [] {
         // incase the jni fails, default to this
-        std::string path = "/data/user/0/com.geode.launcher/files/";
+        std::string path = "/data/user/0/com.freod.launcher/files/";
 
         JniMethodInfo t;
-        if (JniHelper::getStaticMethodInfo(t, "com/geode/launcher/utils/GeodeUtils", "getInternalDirectory", "()Ljava/lang/String;")) {
+        if (JniHelper::getStaticMethodInfo(t, "com/freod/launcher/utils/FreodUtils", "getInternalDirectory", "()Ljava/lang/String;")) {
             jstring str = reinterpret_cast<jstring>(t.env->CallStaticObjectMethod(t.classID, t.methodID));
             t.env->DeleteLocalRef(t.classID);
             path = JniHelper::jstring2string(str);
@@ -116,7 +116,7 @@ std::filesystem::path dirs::getModRuntimeDir() {
 
         return path;
     }();
-    return std::filesystem::path(cachedResult) / "geode" / "unzipped";
+    return std::filesystem::path(cachedResult) / "freod" / "unzipped";
 }
 
 void utils::web::openLinkInBrowser(std::string const& url) {
@@ -125,7 +125,7 @@ void utils::web::openLinkInBrowser(std::string const& url) {
 
 bool utils::file::openFolder(std::filesystem::path const& path) {
     JniMethodInfo t;
-    if (JniHelper::getStaticMethodInfo(t, "com/geode/launcher/utils/GeodeUtils", "openFolder", "(Ljava/lang/String;)Z")) {
+    if (JniHelper::getStaticMethodInfo(t, "com/freod/launcher/utils/FreodUtils", "openFolder", "(Ljava/lang/String;)Z")) {
         jstring stringArg1 = t.env->NewStringUTF(path.string().c_str());
 
         jboolean result = t.env->CallStaticBooleanMethod(t.classID, t.methodID, stringArg1);
@@ -143,7 +143,7 @@ static std::function<void(Result<std::vector<std::filesystem::path>>)> s_filesCa
 static std::function<bool()> s_taskCancelled {};
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_geode_launcher_utils_GeodeUtils_selectFileCallback(
+JNIEXPORT void JNICALL Java_com_freod_launcher_utils_FreodUtils_selectFileCallback(
         JNIEnv *env,
         jobject,
         jstring data
@@ -164,7 +164,7 @@ JNIEXPORT void JNICALL Java_com_geode_launcher_utils_GeodeUtils_selectFileCallba
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_geode_launcher_utils_GeodeUtils_selectFilesCallback(
+JNIEXPORT void JNICALL Java_com_freod_launcher_utils_FreodUtils_selectFilesCallback(
         JNIEnv *env,
         jobject,
         jobjectArray datas
@@ -190,7 +190,7 @@ JNIEXPORT void JNICALL Java_com_geode_launcher_utils_GeodeUtils_selectFilesCallb
 }
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_geode_launcher_utils_GeodeUtils_failedCallback(
+JNIEXPORT void JNICALL Java_com_freod_launcher_utils_FreodUtils_failedCallback(
         JNIEnv *env,
         jobject
 ) {
@@ -230,7 +230,7 @@ Task<Result<std::filesystem::path>> file::pick(file::PickMode mode, file::FilePi
     }
 
     JniMethodInfo t;
-    if (JniHelper::getStaticMethodInfo(t, "com/geode/launcher/utils/GeodeUtils", method.c_str(), "(Ljava/lang/String;)Z")) {
+    if (JniHelper::getStaticMethodInfo(t, "com/freod/launcher/utils/FreodUtils", method.c_str(), "(Ljava/lang/String;)Z")) {
         jstring stringArg1 = t.env->NewStringUTF(options.defaultPath.value_or(std::filesystem::path()).filename().string().c_str());
 
         jboolean result = t.env->CallStaticBooleanMethod(t.classID, t.methodID, stringArg1);
@@ -257,7 +257,7 @@ Task<Result<std::vector<std::filesystem::path>>> file::pickMany(FilePickOptions 
     }
 
     JniMethodInfo t;
-    if (JniHelper::getStaticMethodInfo(t, "com/geode/launcher/utils/GeodeUtils", "selectFiles", "(Ljava/lang/String;)Z")) {
+    if (JniHelper::getStaticMethodInfo(t, "com/freod/launcher/utils/FreodUtils", "selectFiles", "(Ljava/lang/String;)Z")) {
         jstring stringArg1 = t.env->NewStringUTF(options.defaultPath.value_or(std::filesystem::path()).string().c_str());
 
         jboolean result = t.env->CallStaticBooleanMethod(t.classID, t.methodID, stringArg1);
@@ -276,11 +276,11 @@ Task<Result<std::vector<std::filesystem::path>>> file::pickMany(FilePickOptions 
     });
 }
 
-void geode::utils::game::launchLoaderUninstaller(bool deleteSaveData) {
-    log::error("Launching Geode uninstaller is not supported on android");
+void freod::utils::game::launchLoaderUninstaller(bool deleteSaveData) {
+    log::error("Launching Freod uninstaller is not supported on android");
 }
 
-void geode::utils::game::exit() {
+void freod::utils::game::exit() {
     // TODO: yeah
     // if (CCApplication::sharedApplication() &&
     //     (GameManager::get()->m_playLayer || GameManager::get()->m_levelEditorLayer)) {
@@ -297,7 +297,7 @@ void geode::utils::game::exit() {
     ), CCDirector::get()->getRunningScene(), false);
 }
 
-void geode::utils::game::restart() {
+void freod::utils::game::restart() {
     // if (CCApplication::sharedApplication() &&
     //     (GameManager::get()->m_playLayer || GameManager::get()->m_levelEditorLayer)) {
     //     log::error("Cannot restart in PlayLayer or LevelEditorLayer!");
@@ -308,7 +308,7 @@ void geode::utils::game::restart() {
     public:
         void restart() {
             JniMethodInfo t;
-            if (JniHelper::getStaticMethodInfo(t, "com/geode/launcher/utils/GeodeUtils", "restartGame", "()V")) {
+            if (JniHelper::getStaticMethodInfo(t, "com/freod/launcher/utils/FreodUtils", "restartGame", "()V")) {
                 t.env->CallStaticVoidMethod(t.classID, t.methodID);
 
                 t.env->DeleteLocalRef(t.classID);
@@ -330,7 +330,7 @@ void geode::utils::game::restart() {
 
 static const char* permissionToName(Permission permission) {
 #define PERM(x) "android.permission." x
-#define INTERNAL_PERM(x) "geode.permission_internal." x
+#define INTERNAL_PERM(x) "freod.permission_internal." x
     switch (permission) {
     case Permission::RecordAudio: return PERM("RECORD_AUDIO");
     case Permission::ReadAllFiles: return INTERNAL_PERM("MANAGE_ALL_FILES");
@@ -339,9 +339,9 @@ static const char* permissionToName(Permission permission) {
 #undef INTERNAL_PERM
 }
 
-bool geode::utils::permission::getPermissionStatus(Permission permission) {
+bool freod::utils::permission::getPermissionStatus(Permission permission) {
     JniMethodInfo info;
-    if (JniHelper::getStaticMethodInfo(info, "com/geode/launcher/utils/GeodeUtils", "getPermissionStatus", "(Ljava/lang/String;)Z")) {
+    if (JniHelper::getStaticMethodInfo(info, "com/freod/launcher/utils/FreodUtils", "getPermissionStatus", "(Ljava/lang/String;)Z")) {
         jstring permString = info.env->NewStringUTF(permissionToName(permission));
         jboolean result = info.env->CallStaticBooleanMethod(info.classID, info.methodID, permString);
         info.env->DeleteLocalRef(info.classID);
@@ -358,7 +358,7 @@ bool geode::utils::permission::getPermissionStatus(Permission permission) {
 static std::function<void(bool)> s_permissionCallback;
 
 extern "C"
-JNIEXPORT void JNICALL Java_com_geode_launcher_utils_GeodeUtils_permissionCallback(
+JNIEXPORT void JNICALL Java_com_freod_launcher_utils_FreodUtils_permissionCallback(
         JNIEnv* env,
         jobject,
         jboolean granted
@@ -370,10 +370,10 @@ JNIEXPORT void JNICALL Java_com_geode_launcher_utils_GeodeUtils_permissionCallba
     }
 }
 
-void geode::utils::permission::requestPermission(Permission permission, std::function<void(bool)> callback) {
+void freod::utils::permission::requestPermission(Permission permission, std::function<void(bool)> callback) {
     s_permissionCallback = callback;
     JniMethodInfo info;
-    if (JniHelper::getStaticMethodInfo(info, "com/geode/launcher/utils/GeodeUtils", "requestPermission", "(Ljava/lang/String;)V")) {
+    if (JniHelper::getStaticMethodInfo(info, "com/freod/launcher/utils/FreodUtils", "requestPermission", "(Ljava/lang/String;)V")) {
         jstring permString = info.env->NewStringUTF(permissionToName(permission));
         info.env->CallStaticVoidMethod(info.classID, info.methodID, permString);
         info.env->DeleteLocalRef(info.classID);
@@ -386,15 +386,15 @@ void geode::utils::permission::requestPermission(Permission permission, std::fun
 #include "../../utils/thread.hpp"
 #include <unistd.h>
 
-std::string geode::utils::thread::getDefaultName() {
+std::string freod::utils::thread::getDefaultName() {
     return fmt::format("Thread #{}", gettid());
 }
 
-void geode::utils::thread::platformSetName(std::string const& name) {
+void freod::utils::thread::platformSetName(std::string const& name) {
     pthread_setname_np(pthread_self(), name.c_str());
 }
 
-std::string geode::utils::getEnvironmentVariable(const char* name) {
+std::string freod::utils::getEnvironmentVariable(const char* name) {
     auto result = std::getenv(name);
     return result ? result : "";
 }

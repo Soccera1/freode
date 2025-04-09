@@ -1,13 +1,13 @@
 #include "ModImpl.hpp"
 
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/loader/Mod.hpp>
 #include <loader/ModMetadataImpl.hpp>
 #include <optional>
 #include <string_view>
 #include <server/Server.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 Mod::Mod(ModMetadata const& metadata) : m_impl(std::make_unique<Impl>(this, metadata)) {}
 
@@ -94,7 +94,7 @@ matjson::Value Mod::getDependencySettingsFor(std::string_view dependencyID) cons
     return settings.contains(id) ? settings.at(id) : matjson::Value();
 }
 
-#if defined(GEODE_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
+#if defined(FREOD_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
 void Mod::setMetadata(ModMetadata const& metadata) {
     m_impl->setMetadata(metadata);
 }
@@ -111,7 +111,7 @@ Mod::CheckUpdatesTask Mod::checkUpdates() const {
                 if (auto value = result->unwrap()) {
                     if (value->replacement) {
                         return Err(
-                            "Mod has been replaced by {} - please visit the Geode "
+                            "Mod has been replaced by {} - please visit the Freod "
                             "menu to install the replacement",
                             value->replacement->id
                         );

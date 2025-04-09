@@ -1,18 +1,18 @@
 #pragma once
 
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
-#include <Geode/binding/FLAlertLayer.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/ui/Layout.hpp>
+#include <Freod/binding/CCMenuItemSpriteExtra.hpp>
+#include <Freod/binding/FLAlertLayer.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/ui/Layout.hpp>
 
-namespace geode {
+namespace freod {
     template <class... InitArgs>
     class Popup : public FLAlertLayer {
     public:
         /**
          * Event posted when this popup is being closed
          */
-        class CloseEvent final : public ::geode::Event {
+        class CloseEvent final : public ::freod::Event {
         private:
             class Impl final {
             private:
@@ -32,7 +32,7 @@ namespace geode {
                 return m_impl->popup;
             }
         };
-        class CloseEventFilter final : public ::geode::EventFilter<CloseEvent> {
+        class CloseEventFilter final : public ::freod::EventFilter<CloseEvent> {
         public:
 		    using Callback = void(CloseEvent*);
 
@@ -104,7 +104,7 @@ namespace geode {
                 m_mainLayer->setPosition(winSize / 2);
                 m_mainLayer->setContentSize(m_size);
                 m_mainLayer->setLayout(
-                    geode::CopySizeLayout::create()
+                    freod::CopySizeLayout::create()
                         ->add(m_buttonMenu)
                         ->add(m_bgSprite)
                 );
@@ -119,7 +119,7 @@ namespace geode {
                 closeSpr, this, (cocos2d::SEL_MenuHandler)(&Popup::onClose)
             );
             if (dynamic) {
-                m_buttonMenu->addChildAtPosition(m_closeBtn, geode::Anchor::TopLeft, { 3.f, -3.f });
+                m_buttonMenu->addChildAtPosition(m_closeBtn, freod::Anchor::TopLeft, { 3.f, -3.f });
             }
             else {
                 m_closeBtn->setPosition(-m_size.width / 2 + 3.f, m_size.height / 2 - 3.f);
@@ -177,7 +177,7 @@ namespace geode {
                 m_title = cocos2d::CCLabelBMFont::create(title.c_str(), font);
                 m_title->setZOrder(2);
                 if (m_dynamic) {
-                    m_mainLayer->addChildAtPosition(m_title, geode::Anchor::Top, ccp(0, -offset));
+                    m_mainLayer->addChildAtPosition(m_title, freod::Anchor::Top, ccp(0, -offset));
                 }
                 else {
                     auto winSize = cocos2d::CCDirector::get()->getWinSize();
@@ -211,22 +211,22 @@ namespace geode {
         }
     };
 
-    GEODE_DLL FLAlertLayer* createQuickPopup(
+    FREOD_DLL FLAlertLayer* createQuickPopup(
         char const* title, std::string const& content, char const* btn1, char const* btn2,
         std::function<void(FLAlertLayer*, bool)> selected, bool doShow = true
     );
 
-    GEODE_DLL FLAlertLayer* createQuickPopup(
+    FREOD_DLL FLAlertLayer* createQuickPopup(
         char const* title, std::string const& content, char const* btn1, char const* btn2,
         float width, std::function<void(FLAlertLayer*, bool)> selected, bool doShow = true
     );
 
-    GEODE_DLL FLAlertLayer* createQuickPopup(
+    FREOD_DLL FLAlertLayer* createQuickPopup(
         char const* title, std::string const& content, char const* btn1, char const* btn2,
         std::function<void(FLAlertLayer*, bool)> selected, bool doShow, bool cancelledByEscape
     );
 
-    GEODE_DLL FLAlertLayer* createQuickPopup(
+    FREOD_DLL FLAlertLayer* createQuickPopup(
         char const* title, std::string const& content, char const* btn1, char const* btn2,
         float width, std::function<void(FLAlertLayer*, bool)> selected, bool doShow, bool cancelledByEscape
     );

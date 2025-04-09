@@ -8,7 +8,7 @@
 
 class CC_DLL CXBOXController
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     //CCControllerHandler();
     //CCControllerState getState();

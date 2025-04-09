@@ -1,9 +1,9 @@
 #pragma once
 
-#include <Geode/loader/Event.hpp>
+#include <Freod/loader/Event.hpp>
 #include "sources/ModSource.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 struct UpdatePageNumberState final {
     bool operator==(UpdatePageNumberState const&) const = default;

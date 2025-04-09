@@ -1,7 +1,7 @@
-#include <Geode/Geode.hpp>
-#include <Geode/modify/CCScene.hpp>
+#include <Freod/Freod.hpp>
+#include <Freod/modify/CCScene.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 class $modify(CCScene) {
     int getHighestChildZ() {

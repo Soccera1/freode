@@ -1,9 +1,9 @@
 #pragma once
 
 #include "../loader/Hook.hpp"
-#include <Geode/Result.hpp>
+#include <Freod/Result.hpp>
 
-namespace geode {
+namespace freod {
     namespace hook {
         /**
          * Add a new Objective-C method to a class. This method will be created
@@ -45,7 +45,7 @@ namespace geode {
          */
         template <class Func>
         static Result<std::shared_ptr<Hook>> create(std::string const& className, std::string const& selectorName, Func function, tulip::hook::HookMetadata const& metadata = tulip::hook::HookMetadata()) {
-            GEODE_UNWRAP_INTO(auto imp, geode::hook::getObjcMethodImp(className, selectorName));
+            FREOD_UNWRAP_INTO(auto imp, freod::hook::getObjcMethodImp(className, selectorName));
 
             return Ok(Hook::create(
                 getMod(),
@@ -69,7 +69,7 @@ namespace geode {
          */
         template <class Func>
         static Result<std::shared_ptr<Hook>> create(std::string const& className, std::string const& selectorName, Func function, void(*empty)(), tulip::hook::HookMetadata const& metadata = tulip::hook::HookMetadata()) {
-            GEODE_UNWRAP(geode::hook::addObjcMethod(className, selectorName, (void*)empty));
+            FREOD_UNWRAP(freod::hook::addObjcMethod(className, selectorName, (void*)empty));
 
             return ObjcHook::create(className, selectorName, function, metadata);
         }

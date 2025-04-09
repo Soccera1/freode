@@ -1,9 +1,9 @@
 ﻿#include <loader/console.hpp>
 #include <iostream>
-#include <Geode/loader/Log.hpp>
+#include <Freod/loader/Log.hpp>
 #include <android/log.h>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 namespace {
     android_LogPriority getLogSeverityForSeverity(Severity severity) {
@@ -23,7 +23,7 @@ void console::openIfClosed() { }
 void console::log(std::string const& msg, Severity severity) {
     __android_log_print(
         getLogSeverityForSeverity(severity),
-        "Geode",
+        "Freod",
         "%s",
         msg.c_str()
     );

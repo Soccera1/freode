@@ -41,11 +41,11 @@ class CCRenderTexture;
 
 class CC_DLL CCTransitionProgress : public CCTransitionScene
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     static CCTransitionProgress* create(float t, CCScene* scene);
 
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTransitionProgress, CCTransitionScene)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTransitionProgress, CCTransitionScene)
     /**
      *  @js ctor
      */
@@ -76,7 +76,7 @@ public:
  */
 class CC_DLL CCTransitionProgressRadialCCW : public CCTransitionProgress
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     static CCTransitionProgressRadialCCW* create(float t, CCScene* scene);
 protected:
@@ -90,7 +90,7 @@ protected:
 */
 class CC_DLL CCTransitionProgressRadialCW : public CCTransitionProgress
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     static CCTransitionProgressRadialCW* create(float t, CCScene* scene);
 protected:
@@ -103,7 +103,7 @@ protected:
  */
 class CC_DLL CCTransitionProgressHorizontal : public CCTransitionProgress
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
 
     static CCTransitionProgressHorizontal* create(float t, CCScene* scene);
@@ -114,7 +114,7 @@ protected:
 
 class CC_DLL CCTransitionProgressVertical : public CCTransitionProgress
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
 
     static CCTransitionProgressVertical* create(float t, CCScene* scene);
@@ -125,7 +125,7 @@ protected:
 
 class CC_DLL CCTransitionProgressInOut : public CCTransitionProgress
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
 
     static CCTransitionProgressInOut* create(float t, CCScene* scene);
@@ -137,7 +137,7 @@ protected:
 
 class CC_DLL CCTransitionProgressOutIn : public CCTransitionProgress
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
 
     static CCTransitionProgressOutIn* create(float t, CCScene* scene);

@@ -1,14 +1,14 @@
-// #define GEODE_UI_TEST
-#ifdef GEODE_UI_TEST
+// #define FREOD_UI_TEST
+#ifdef FREOD_UI_TEST
 
-#include <Geode/modify/MenuLayer.hpp>
-#include <Geode/ui/Popup.hpp>
-#include <Geode/ui/BasedButtonSprite.hpp>
-#include <Geode/utils/web.hpp>
+#include <Freod/modify/MenuLayer.hpp>
+#include <Freod/ui/Popup.hpp>
+#include <Freod/ui/BasedButtonSprite.hpp>
+#include <Freod/utils/web.hpp>
 #include <server/Server.hpp>
 #include "../sources/ModListSource.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 using StrTask = Task<std::string>;
 
@@ -129,7 +129,7 @@ protected:
     }
 
     void makeRequest() {
-        auto task = web::WebRequest().get("https://api.geode-sdk.org/");
+        auto task = web::WebRequest().get("https://api.freod-sdk.org/");
         m_rawListener.setFilter(task);
         m_strListener.setFilter(task.map(
             [](auto* result) {

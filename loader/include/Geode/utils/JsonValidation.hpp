@@ -4,9 +4,9 @@
 #include "../loader/Log.hpp"
 #include <set>
 #include <variant>
-#include <Geode/Result.hpp>
+#include <Freod/Result.hpp>
 
-namespace geode {
+namespace freod {
     struct JsonChecker;
 
     template <typename T, typename = void>
@@ -77,7 +77,7 @@ namespace geode {
     struct JsonMaybeObject;
     struct JsonMaybeValue;
 
-    class GEODE_DLL JsonExpectedValue final {
+    class FREOD_DLL JsonExpectedValue final {
     protected:
         class Impl;
         std::unique_ptr<Impl> m_impl;
@@ -281,5 +281,5 @@ namespace geode {
             return Ok(std::forward<T>(value));
         }
     };
-    GEODE_DLL JsonExpectedValue checkJson(matjson::Value const& json, std::string_view rootScopeName);
+    FREOD_DLL JsonExpectedValue checkJson(matjson::Value const& json, std::string_view rootScopeName);
 }

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
-#include <Geode/loader/IPC.hpp>
-#include <Geode/loader/Log.hpp>
+#include <Freod/loader/IPC.hpp>
+#include <Freod/loader/Log.hpp>
 #include <iostream>
 #include <loader/LoaderImpl.hpp>
 #include <loader/console.hpp>
@@ -10,7 +10,7 @@
 #include <loader/LogImpl.hpp>
 #include <dlfcn.h>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 struct MacConsoleData {
     std::string logFile;
@@ -57,13 +57,13 @@ void console::openIfClosed() {
     auto script = outFile + ".command";
     auto scriptContent = fmt::format(R"(
         #!/bin/sh
-        echo -n -e "\033]0;Geode Console {}\007"
+        echo -n -e "\033]0;Freod Console {}\007"
         tail -f {} &
         trap "" SIGINT
         lsof -p {} +r 1 &>/dev/null
         pkill -P $$
         osascript -e 'tell application "Terminal"
-            close (every window whose name contains "Geode Console {}")
+            close (every window whose name contains "Freod Console {}")
             if (count windows) is 0 then quit
         end tell' &
         exit
@@ -94,14 +94,14 @@ CFDataRef msgPortCallback(CFMessagePortRef port, SInt32 messageID, CFDataRef dat
 
     std::string cdata(reinterpret_cast<char const*>(CFDataGetBytePtr(data)), CFDataGetLength(data));
 
-    std::string reply = geode::ipc::processRaw(port, cdata).dump();
+    std::string reply = freod::ipc::processRaw(port, cdata).dump();
 
     return CFDataCreate(NULL, (UInt8 const*)reply.data(), reply.size());
 }
 
-void geode::ipc::setup() {
+void freod::ipc::setup() {
     std::thread([]() {
-        thread::setName("Geode Main IPC");
+        thread::setName("Freod Main IPC");
 
         CFStringRef portName = CFStringCreateWithCString(NULL, IPC_PORT_NAME, kCFStringEncodingUTF8);
 
@@ -200,14 +200,14 @@ const auto& uuidToVersionMap() {
     // so for now, 2.207
     // you can get these hashes from otool, just look for the LC_UUID load command!
     static std::unordered_map<std::string, std::string> uuidToVersionName{
-#if defined(GEODE_IS_ARM_MAC)
+#if defined(FREOD_IS_ARM_MAC)
         {"620B0C9B-8F75-3043-BD34-3BB9DD201C3A", "2.206"},
         {"48C25B63-0D7C-3F67-B831-DF935524C043", "2.207"},
         {"4933391F-D6C1-3188-99E8-23D64C674B64", "2.2071"},
         {"9C1D62A7-7C2F-3514-AEFB-D1AB7BBD48FF", "2.2072"},
         {"0B1FCFE4-79E8-3246-8ECB-500FDBDCFD9A", "2.2073"},
         {"27044C8B-76BD-303C-A035-5314AF1D9E6E", "2.2074"},
-#elif defined(GEODE_IS_INTEL_MAC)
+#elif defined(FREOD_IS_INTEL_MAC)
         {"29549F90-F083-35A8-B917-9962262FE112", "2.200"},
         {"AE6DFCCC-153A-32AB-BFD5-6F2478BC41B6", "2.206"},
         {"D497E431-5C3F-3EB4-9DF7-115B861578EE", "2.207"},
@@ -249,7 +249,7 @@ std::string Loader::Impl::getGameVersion() {
             }
 
             // return the uuid as a fallback
-            // in this situation, geode (and any mods) won't load, so it's not really a big deal
+            // in this situation, freod (and any mods) won't load, so it's not really a big deal
             return uuidStr;
         }();
 

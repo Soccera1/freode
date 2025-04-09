@@ -32,9 +32,9 @@ NS_CC_BEGIN
 
 class CC_DLL CCEGLView : public CCEGLViewProtocol
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCEGLView, CCEGLViewProtocol)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCEGLView, CCEGLViewProtocol)
     
     CCEGLView();
     virtual ~CCEGLView();
@@ -52,7 +52,7 @@ public:
     */
     static CCEGLView* sharedOpenGLView();
     
-    static GEODE_DLL CCEGLView* get();
+    static FREOD_DLL CCEGLView* get();
 };
 
 NS_CC_END

@@ -6,12 +6,12 @@
 #include <string>
 #include <compare>
 
-namespace geode::stl {
+namespace freod::stl {
 	class StringImpl;
 
 	struct StringData;
 
-#if defined(GEODE_IS_WINDOWS)
+#if defined(FREOD_IS_WINDOWS)
 	struct StringData {
 		union {
 			std::array<char, 16> m_smallStorage;
@@ -21,7 +21,7 @@ namespace geode::stl {
 		size_t m_size;
 		size_t m_capacity;
 	};
-#elif defined(GEODE_IS_MACOS) || defined(GEODE_IS_ANDROID)
+#elif defined(FREOD_IS_MACOS) || defined(FREOD_IS_ANDROID)
 	struct StringData {
 		struct Internal {
 			size_t m_size;
@@ -30,7 +30,7 @@ namespace geode::stl {
 		};
 		Internal* m_data = nullptr;
 	};
-#elif defined(GEODE_IS_IOS)
+#elif defined(FREOD_IS_IOS)
 	struct StringData {
 		struct Short {
 			uint8_t sizex2;
@@ -52,15 +52,15 @@ namespace geode::stl {
 }
 
 namespace gd {
-#if defined(GEODE_IS_MACOS) || defined(GEODE_IS_WINDOWS) || defined(GEODE_IS_IOS)
+#if defined(FREOD_IS_MACOS) || defined(FREOD_IS_WINDOWS) || defined(FREOD_IS_IOS)
 	// rob uses libc++ now! this will prob work fine
 	using string = std::string;
 
 #else
 
-	class GEODE_DLL string {
-		geode::stl::StringData m_data;
-		friend geode::stl::StringImpl;
+	class FREOD_DLL string {
+		freod::stl::StringData m_data;
+		friend freod::stl::StringImpl;
 	public:
 		string();
 		string(string const&);

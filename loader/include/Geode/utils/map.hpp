@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Geode/Result.hpp>
+#include <Freod/Result.hpp>
 
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 #include <functional>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-namespace geode::utils::map {
+namespace freod::utils::map {
     /**
      * Returns true if the map contains
      * a value matching `containFunc`.

@@ -1,6 +1,6 @@
 #include "CopyButtonSetting.hpp"
-#include <Geode/loader/Mod.hpp>
-#include <Geode/ui/Notification.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/ui/Notification.hpp>
 
 $on_mod(Loaded) {
     (void)Mod::get()->registerCustomSettingType("copy-mods", &CopyButtonSetting::parse);

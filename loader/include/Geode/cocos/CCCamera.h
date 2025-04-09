@@ -63,7 +63,7 @@ using the camera.
 */
 class CC_DLL CCCamera : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     float m_fEyeX;
     float m_fEyeY;
@@ -80,7 +80,7 @@ public:
     bool m_bDirty;
     kmMat4    m_lookupMatrix;
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCCamera, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCCamera, CCObject)
     /**
      *  @js ctor
      */

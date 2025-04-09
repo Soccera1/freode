@@ -42,9 +42,9 @@ NS_CC_BEGIN
  */
 class CC_DLL CCThread
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCThread)
+    FREOD_CUSTOM_CONSTRUCTOR_BEGIN(CCThread)
     CCThread() : m_pAutoreasePool(0) {}
     ~CCThread();
 

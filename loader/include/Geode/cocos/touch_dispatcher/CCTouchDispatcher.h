@@ -71,7 +71,7 @@ struct ccTouchHandlerHelperData {
  */
 class CC_DLL EGLTouchDelegate
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      * @lua NA
@@ -116,9 +116,9 @@ struct _ccCArray;
  */
 class CC_DLL CCTouchDispatcher : public CCObject, public EGLTouchDelegate
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTouchDispatcher, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTouchDispatcher, CCObject)
     /**
      * @lua NA
      */
@@ -139,7 +139,7 @@ public:
     {}
 
 public:
-    static GEODE_DLL CCTouchDispatcher* get();
+    static FREOD_DLL CCTouchDispatcher* get();
 
     /** Whether or not the events are going to be dispatched. Default: true */
     bool isDispatchEvents(void);

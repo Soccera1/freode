@@ -1,7 +1,7 @@
 // this is mostly copied from macos
 #include <crashlog.hpp>
 
-#include <Geode/utils/string.hpp>
+#include <Freod/utils/string.hpp>
 #include <array>
 #include <thread>
 #include <execinfo.h>
@@ -15,7 +15,7 @@
 #include <fcntl.h>
 #import <Foundation/Foundation.h>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // https://gist.github.com/jvranish/4441299
 
@@ -146,8 +146,8 @@ static Mod* modFromAddress(void const* addr) {
     if (!std::filesystem::exists(imagePath)) {
         return nullptr;
     }
-    auto geodePath = dirs::getGeodeDir() / "Geode.ios.dylib";
-    if (imagePath.filename() == geodePath.filename()) {
+    auto freodPath = dirs::getFreodDir() / "Freod.ios.dylib";
+    if (imagePath.filename() == freodPath.filename()) {
         return Mod::get();
     }
 
@@ -248,7 +248,7 @@ static std::string getStacktrace() {
         std::getline(stream, binary);
         auto cutoff = binary.find("0x");
         stream = std::stringstream(binary.substr(cutoff));
-        binary = geode::utils::string::trim(binary.substr(0, cutoff));
+        binary = freod::utils::string::trim(binary.substr(0, cutoff));
         stream >> std::hex >> address >> std::dec;
 
         if (!line.empty()) {
@@ -274,7 +274,7 @@ static std::string getStacktrace() {
             cutoff = function.find("+");
             stream = std::stringstream(function.substr(cutoff));
             stream >> offset;
-            function = geode::utils::string::trim(function.substr(0, cutoff));
+            function = freod::utils::string::trim(function.substr(0, cutoff));
 
             {
                 int status;
@@ -385,7 +385,7 @@ static void handlerThread() {
         // }
         auto text = crashlog::writeCrashlog(faultyMod, getInfo(signalAddress, faultyMod), getStacktrace(), getRegisters());
 
-        log::error("Geode crashed!\n{}", text);
+        log::error("Freod crashed!\n{}", text);
         std::_Exit(EXIT_FAILURE);
 	//s_signal = 0;
     }
@@ -428,5 +428,5 @@ bool crashlog::didLastLaunchCrash() {
 }
 
 std::filesystem::path crashlog::getCrashLogDirectory() {
-    return dirs::getGeodeDir() / "crashlogs";
+    return dirs::getFreodDir() / "crashlogs";
 }

@@ -1,11 +1,11 @@
-#include <Geode/Loader.hpp>
-#include <Geode/modify/MenuLayer.hpp>
-#define GEODE_DEFINE_EVENT_EXPORTS
-#include <Geode/loader/Dispatch.hpp>
-#include <Geode/Bindings.hpp>
+#include <Freod/Loader.hpp>
+#include <Freod/modify/MenuLayer.hpp>
+#define FREOD_DEFINE_EVENT_EXPORTS
+#include <Freod/loader/Dispatch.hpp>
+#include <Freod/Bindings.hpp>
 #include "main.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 std::string TestEvent::getData() const {
     return data;
@@ -163,7 +163,7 @@ struct MyMenuLayer : Modify<MyMenuLayer, MenuLayer> {
 
 struct AfterMenuLayer : Modify<AfterMenuLayer, MenuLayer> {
     static void onModify(auto& self) {
-        if (self.setHookPriorityAfterPost("MenuLayer::init", "geode.test")) {
+        if (self.setHookPriorityAfterPost("MenuLayer::init", "freod.test")) {
             log::debug("priority set after test");
         }
     }
@@ -179,7 +179,7 @@ struct AfterMenuLayer : Modify<AfterMenuLayer, MenuLayer> {
 
 struct BeforeMenuLayer : Modify<BeforeMenuLayer, MenuLayer> {
     static void onModify(auto& self) {
-        if (self.setHookPriorityBeforePost("MenuLayer::init", "geode.test")) {
+        if (self.setHookPriorityBeforePost("MenuLayer::init", "freod.test")) {
             log::debug("priority set before test");
         }
     }
@@ -203,7 +203,7 @@ $on_mod(Loaded) {
     	label->setZOrder(99999);
     	gl->addChild(label);
         return ListenerResult::Propagate;
-    }, MyDispatchFilter("geode.test/test-garage-open"));
+    }, MyDispatchFilter("freod.test/test-garage-open"));
 }
 
 Result<int> api::addNumbers(int a, int b) {

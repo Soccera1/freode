@@ -1,16 +1,16 @@
 #pragma once
 
-#include <Geode/ui/General.hpp>
-#include <Geode/ui/ScrollLayer.hpp>
-#include <Geode/ui/TextArea.hpp>
-#include <Geode/ui/TextInput.hpp>
-#include <Geode/ui/IconButtonSprite.hpp>
-#include <Geode/binding/TextArea.hpp>
+#include <Freod/ui/General.hpp>
+#include <Freod/ui/ScrollLayer.hpp>
+#include <Freod/ui/TextArea.hpp>
+#include <Freod/ui/TextInput.hpp>
+#include <Freod/ui/IconButtonSprite.hpp>
+#include <Freod/binding/TextArea.hpp>
 #include "ModItem.hpp"
 #include "../sources/ModListSource.hpp"
 #include <server/DownloadManager.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 struct ModListErrorStatus {};
 struct ModListUnkProgressStatus {};

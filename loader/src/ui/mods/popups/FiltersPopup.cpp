@@ -131,7 +131,7 @@ bool FiltersPopup::setup(ModListSource* src) {
         m_mainLayer->addChildAtPosition(inputContainer, Anchor::Bottom, ccp(0, 60), ccp(.5f, .5f));
     }
 
-    auto okSpr = createGeodeButton("OK", false, GeodeButtonSprite::Default, m_forceDisableTheme);
+    auto okSpr = createFreodButton("OK", false, FreodButtonSprite::Default, m_forceDisableTheme);
     okSpr->setScale(.7f);
     auto okBtn = CCMenuItemSpriteExtra::create(
         okSpr, this, menu_selector(FiltersPopup::onClose)
@@ -149,10 +149,10 @@ void FiltersPopup::onLoadTags(typename server::ServerRequest<std::vector<server:
         auto tags = event->getValue()->unwrap();
         m_tagsMenu->removeAllChildren();
         for (auto& tag : tags) {
-            auto offSpr = createGeodeTagLabel(tag);
+            auto offSpr = createFreodTagLabel(tag);
             offSpr->m_BGSprite->setOpacity(105);
             offSpr->m_label->setOpacity(105);
-            auto onSpr = createGeodeTagLabel(tag);
+            auto onSpr = createFreodTagLabel(tag);
             auto btn = CCMenuItemToggler::create(
                 offSpr, onSpr, this, menu_selector(FiltersPopup::onSelectTag)
             );

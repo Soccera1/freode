@@ -54,9 +54,9 @@ class CCSpriteFrame;
  */
 class CC_DLL CCAnimationFrame : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCAnimationFrame, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCAnimationFrame, CCObject)
     /**
      * @js ctor
      */
@@ -97,9 +97,9 @@ You can animate a CCAnimation object by using the CCAnimate action. Example:
 */
 class CC_DLL CCAnimation : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCAnimation, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCAnimation, CCObject)
     /**
      * @js ctor
      */

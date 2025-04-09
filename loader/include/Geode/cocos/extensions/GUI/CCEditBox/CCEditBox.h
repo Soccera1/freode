@@ -176,7 +176,7 @@ class CC_DLL CCEditBox
 , public CCIMEDelegate
 {
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCEditBox, CCControlButton)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCEditBox, CCControlButton)
 
     /**
      * Constructor.

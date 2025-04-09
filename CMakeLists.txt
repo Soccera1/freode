@@ -6,14 +6,14 @@ cmake_policy(SET CMP0141 NEW)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build libraries static" FORCE)
 
 # Docs flags
-if (GEODE_BUILDING_DOCS)
-	set(GEODE_DISABLE_CLI_CALLS ON)
-	set(GEODE_DISABLE_PRECOMPILED_HEADERS ON)
+if (FREOD_BUILDING_DOCS)
+	set(FREOD_DISABLE_CLI_CALLS ON)
+	set(FREOD_DISABLE_PRECOMPILED_HEADERS ON)
 	set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-	set(GEODE_DONT_BUILD_TEST_MODS ON)
+	set(FREOD_DONT_BUILD_TEST_MODS ON)
 endif()
 
-option(GEODE_USE_BREAKPAD "Enables the use of the Breakpad library for crash dumps." ON)
+option(FREOD_USE_BREAKPAD "Enables the use of the Breakpad library for crash dumps." ON)
 
 # Check if git is installed, raise a fatal error if not
 find_program(GIT_EXECUTABLE git)
@@ -22,40 +22,40 @@ if (NOT GIT_EXECUTABLE)
 endif()
 
 # Read version
-file(READ VERSION GEODE_VERSION)
-string(STRIP "${GEODE_VERSION}" GEODE_VERSION)
-set(GEODE_VERSION "${GEODE_VERSION}" CACHE INTERNAL "Geode version")
-set(GEODE_VERSION_FULL "${GEODE_VERSION}" CACHE INTERNAL "Geode version full")
+file(READ VERSION FREOD_VERSION)
+string(STRIP "${FREOD_VERSION}" FREOD_VERSION)
+set(FREOD_VERSION "${FREOD_VERSION}" CACHE INTERNAL "Freod version")
+set(FREOD_VERSION_FULL "${FREOD_VERSION}" CACHE INTERNAL "Freod version full")
 
 # Check if version has a tag like v1.0.0-alpha
-string(FIND ${GEODE_VERSION} "-" GEODE_VERSION_HAS_TAG)
-if (NOT ${GEODE_VERSION_HAS_TAG} EQUAL "-1")
-	string(REGEX MATCH "[a-z]+(\.[0-9]+)?$" GEODE_VERSION_TAG ${GEODE_VERSION})
-	string(SUBSTRING "${GEODE_VERSION}" 0 ${GEODE_VERSION_HAS_TAG} GEODE_VERSION)
-	string(FIND ${GEODE_VERSION_TAG} "." GEODE_VERSION_TAG_HAS_NUMBER)
+string(FIND ${FREOD_VERSION} "-" FREOD_VERSION_HAS_TAG)
+if (NOT ${FREOD_VERSION_HAS_TAG} EQUAL "-1")
+	string(REGEX MATCH "[a-z]+(\.[0-9]+)?$" FREOD_VERSION_TAG ${FREOD_VERSION})
+	string(SUBSTRING "${FREOD_VERSION}" 0 ${FREOD_VERSION_HAS_TAG} FREOD_VERSION)
+	string(FIND ${FREOD_VERSION_TAG} "." FREOD_VERSION_TAG_HAS_NUMBER)
 
 	# Extract tag type and number from tag
-	if (NOT ${GEODE_VERSION_TAG_HAS_NUMBER} EQUAL "-1")
-		string(SUBSTRING "${GEODE_VERSION_TAG}" 0 ${GEODE_VERSION_TAG_HAS_NUMBER} GEODE_VERSION_TAG_TYPE)
-		math(EXPR GEODE_VERSION_TAG_HAS_NUMBER "${GEODE_VERSION_TAG_HAS_NUMBER} + 1")
-		string(SUBSTRING "${GEODE_VERSION_TAG}" ${GEODE_VERSION_TAG_HAS_NUMBER} -1 GEODE_VERSION_TAG_NUMBER)
+	if (NOT ${FREOD_VERSION_TAG_HAS_NUMBER} EQUAL "-1")
+		string(SUBSTRING "${FREOD_VERSION_TAG}" 0 ${FREOD_VERSION_TAG_HAS_NUMBER} FREOD_VERSION_TAG_TYPE)
+		math(EXPR FREOD_VERSION_TAG_HAS_NUMBER "${FREOD_VERSION_TAG_HAS_NUMBER} + 1")
+		string(SUBSTRING "${FREOD_VERSION_TAG}" ${FREOD_VERSION_TAG_HAS_NUMBER} -1 FREOD_VERSION_TAG_NUMBER)
 	else()
-		set(GEODE_VERSION_TAG_TYPE "${GEODE_VERSION_TAG}")
-		set(GEODE_VERSION_TAG_NUMBER "")
+		set(FREOD_VERSION_TAG_TYPE "${FREOD_VERSION_TAG}")
+		set(FREOD_VERSION_TAG_NUMBER "")
 	endif()
 
 	# Capitalize first letter of tag type
-	string(SUBSTRING ${GEODE_VERSION_TAG_TYPE} 0 1 FIRST_LETTER)
+	string(SUBSTRING ${FREOD_VERSION_TAG_TYPE} 0 1 FIRST_LETTER)
 	string(TOUPPER ${FIRST_LETTER} FIRST_LETTER)
-	string(REGEX REPLACE "^.(.*)" "${FIRST_LETTER}\\1" GEODE_VERSION_TAG_TYPE "${GEODE_VERSION_TAG_TYPE}")
+	string(REGEX REPLACE "^.(.*)" "${FIRST_LETTER}\\1" FREOD_VERSION_TAG_TYPE "${FREOD_VERSION_TAG_TYPE}")
 
-	message(STATUS "Version: ${GEODE_VERSION}, tag: ${GEODE_VERSION_TAG} (type: ${GEODE_VERSION_TAG_TYPE}, number: ${GEODE_VERSION_TAG_NUMBER})")
+	message(STATUS "Version: ${FREOD_VERSION}, tag: ${FREOD_VERSION_TAG} (type: ${FREOD_VERSION_TAG_TYPE}, number: ${FREOD_VERSION_TAG_NUMBER})")
 else()
-	set(GEODE_VERSION_TAG "")
-	set(GEODE_VERSION_TAG_TYPE "")
-	set(GEODE_VERSION_TAG_NUMBER "")
+	set(FREOD_VERSION_TAG "")
+	set(FREOD_VERSION_TAG_TYPE "")
+	set(FREOD_VERSION_TAG_NUMBER "")
 
-	message(STATUS "Version: ${GEODE_VERSION}")
+	message(STATUS "Version: ${FREOD_VERSION}")
 endif()
 
 include(cmake/CPM.cmake)
@@ -67,34 +67,34 @@ endif()
 
 # Allow users to have their own copy of bindings that can be overwritten with a CMake option.
 # If the option is not provided, by default just clone bindings with CPM and use that
-if (DEFINED ENV{GEODE_BINDINGS_REPO_PATH})
-	set(temp $ENV{GEODE_BINDINGS_REPO_PATH})
+if (DEFINED ENV{FREOD_BINDINGS_REPO_PATH})
+	set(temp $ENV{FREOD_BINDINGS_REPO_PATH})
 	# this is so stupid i hate windows paths
-	string(REPLACE "\\" "/" GEODE_BINDINGS_REPO_PATH ${temp})
+	string(REPLACE "\\" "/" FREOD_BINDINGS_REPO_PATH ${temp})
 endif()
 
-if (NOT GEODE_BINDINGS_REPO_PATH)
+if (NOT FREOD_BINDINGS_REPO_PATH)
 	message(STATUS
 		"No override path for bindings provided, using CPM to clone default. "
 		"If you would like to use a separate clone of the bindings repo "
 		"(for example in order to be able to efficiently change and "
-		"contribute new bindings) then set GEODE_BINDINGS_REPO_PATH to where you have "
+		"contribute new bindings) then set FREOD_BINDINGS_REPO_PATH to where you have "
 		"cloned the repository (system environment variables are supported)."
 	)
 	CPMAddPackage(NAME "bindings"
-		GITHUB_REPOSITORY "geode-sdk/bindings"
+		GITHUB_REPOSITORY "freod-sdk/bindings"
 		GIT_TAG "main"
 		DOWNLOAD_ONLY YES
 		NO_CACHE YES
 	)
-	set(GEODE_BINDINGS_REPO_PATH ${bindings_SOURCE_DIR})
+	set(FREOD_BINDINGS_REPO_PATH ${bindings_SOURCE_DIR})
 else()
-	message(STATUS "Using ${GEODE_BINDINGS_REPO_PATH} for bindings repo")
+	message(STATUS "Using ${FREOD_BINDINGS_REPO_PATH} for bindings repo")
 endif()
 
-project(geode-sdk VERSION ${GEODE_VERSION} LANGUAGES CXX C)
+project(freod-sdk VERSION ${FREOD_VERSION} LANGUAGES CXX C)
 
-if (NOT GEODE_DONT_USE_CCACHE)
+if (NOT FREOD_DONT_USE_CCACHE)
 	message(STATUS "Looking for ccache/sccache")
 	if (DEFINED CMAKE_C_COMPILER_LAUNCHER OR DEFINED CMAKE_CXX_COMPILER_LAUNCHER)
 		message(STATUS "Looking for ccache/sccache - detecting variant")
@@ -102,10 +102,10 @@ if (NOT GEODE_DONT_USE_CCACHE)
 			CMAKE_C_COMPILER_LAUNCHER STREQUAL CMAKE_CXX_COMPILER_LAUNCHER)
 			if (CMAKE_CXX_COMPILER_LAUNCHER MATCHES "sccache(|.exe)$")
 				message(STATUS "Looking for ccache/sccache - detected sccache")
-				set(GEODE_CCACHE_VARIANT "sccache")
+				set(FREOD_CCACHE_VARIANT "sccache")
 			elseif(CMAKE_CXX_COMPILER_LAUNCHER MATCHES "ccache(|.exe)$")
 				message(STATUS "Looking for ccache/sccache - detected ccache")
-				set(GEODE_CCACHE_VARIANT "ccache")
+				set(FREOD_CCACHE_VARIANT "ccache")
 			else()
 				message(STATUS "Looking for ccache/sccache - none (custom compiler launcher: {CMAKE_C_COMPILER_LAUNCHER}, {CMAKE_CXX_COMPILER_LAUNCHER})")
 			endif()
@@ -115,42 +115,42 @@ if (NOT GEODE_DONT_USE_CCACHE)
 	elseif (CMAKE_GENERATOR MATCHES "Visual Studio")
 		message(STATUS "Looking for ccache/sccache - skipped (Visual Studio generator)")
 	else()
-		find_program(GEODE_CCACHE NAMES sccache ccache)
-		if (GEODE_CCACHE)
-			if (${GEODE_CCACHE} MATCHES "sccache(|.exe)$")
-				set(GEODE_CCACHE_VARIANT "sccache")
+		find_program(FREOD_CCACHE NAMES sccache ccache)
+		if (FREOD_CCACHE)
+			if (${FREOD_CCACHE} MATCHES "sccache(|.exe)$")
+				set(FREOD_CCACHE_VARIANT "sccache")
 			else()
-				set(GEODE_CCACHE_VARIANT "ccache")
+				set(FREOD_CCACHE_VARIANT "ccache")
 			endif()
-			message(STATUS "Looking for ccache/sccache - found ${GEODE_CCACHE_VARIANT}")
+			message(STATUS "Looking for ccache/sccache - found ${FREOD_CCACHE_VARIANT}")
 			message(NOTICE "Compiler launcher not set but ccache/sccache was found. "
 				"Setting compiler launcher to that")
-			set(CMAKE_C_COMPILER_LAUNCHER ${GEODE_CCACHE})
-			set(CMAKE_CXX_COMPILER_LAUNCHER ${GEODE_CCACHE})
+			set(CMAKE_C_COMPILER_LAUNCHER ${FREOD_CCACHE})
+			set(CMAKE_CXX_COMPILER_LAUNCHER ${FREOD_CCACHE})
 		else()
 			message(STATUS "Looking for ccache/sccache - not found")
 		endif()
-		unset(GEODE_CCACHE)
+		unset(FREOD_CCACHE)
 	endif()
 else()
-	message(STATUS "Not looking for ccache because GEODE_DONT_USE_CCACHE was ON")
+	message(STATUS "Not looking for ccache because FREOD_DONT_USE_CCACHE was ON")
 endif()
 
-if (DEFINED GEODE_CCACHE_VARIANT)
-	if (NOT DEFINED GEODE_DISABLE_PRECOMPILED_HEADERS)
-		if (${GEODE_CCACHE_VARIANT} STREQUAL "sccache" AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+if (DEFINED FREOD_CCACHE_VARIANT)
+	if (NOT DEFINED FREOD_DISABLE_PRECOMPILED_HEADERS)
+		if (${FREOD_CCACHE_VARIANT} STREQUAL "sccache" AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 			if (APPLE AND DEFINED CMAKE_OSX_ARCHITECTURES AND (CMAKE_OSX_ARCHITECTURES STREQUAL "arm64;x86_64" OR CMAKE_OSX_ARCHITECTURES STREQUAL "x86_64;arm64"))
-				message(NOTICE "Using ${GEODE_CCACHE_VARIANT} with ${CMAKE_CXX_COMPILER_ID} while building multiple architectures, PCH will be disabled due to issues with sccache.")
-				message("(You can override this by setting GEODE_DISABLE_PRECOMPILED_HEADERS to ON).")
+				message(NOTICE "Using ${FREOD_CCACHE_VARIANT} with ${CMAKE_CXX_COMPILER_ID} while building multiple architectures, PCH will be disabled due to issues with sccache.")
+				message("(You can override this by setting FREOD_DISABLE_PRECOMPILED_HEADERS to ON).")
 
-				set(GEODE_DISABLE_PRECOMPILED_HEADERS ON)
+				set(FREOD_DISABLE_PRECOMPILED_HEADERS ON)
 			else()
-				message(NOTICE "Using ${GEODE_CCACHE_VARIANT} with ${CMAKE_CXX_COMPILER_ID}, PCH will be enabled.")
-				set(GEODE_DISABLE_PRECOMPILED_HEADERS OFF)
+				message(NOTICE "Using ${FREOD_CCACHE_VARIANT} with ${CMAKE_CXX_COMPILER_ID}, PCH will be enabled.")
+				set(FREOD_DISABLE_PRECOMPILED_HEADERS OFF)
 			endif()
 		else()
-			message(NOTICE "Using ${GEODE_CCACHE_VARIANT} with ${CMAKE_CXX_COMPILER_ID}, PCH will be disabled.")
-			set(GEODE_DISABLE_PRECOMPILED_HEADERS ON)
+			message(NOTICE "Using ${FREOD_CCACHE_VARIANT} with ${CMAKE_CXX_COMPILER_ID}, PCH will be disabled.")
+			set(FREOD_DISABLE_PRECOMPILED_HEADERS ON)
 		endif()
 	endif()
 else()
@@ -164,17 +164,17 @@ else()
 			"normally you can just use your usual package manager (e.g. 'scoop install sccache').")
 	endif()
 
-	if (NOT DEFINED GEODE_DISABLE_PRECOMPILED_HEADERS)
+	if (NOT DEFINED FREOD_DISABLE_PRECOMPILED_HEADERS)
 		message(NOTICE "Because of this, PCH will be enabled.")
-		set(GEODE_DISABLE_PRECOMPILED_HEADERS OFF)
+		set(FREOD_DISABLE_PRECOMPILED_HEADERS OFF)
 	endif()
 endif()
 
-if (NOT DEFINED GEODE_DISABLE_PRECOMPILED_HEADERS)
-	set(GEODE_DISABLE_PRECOMPILED_HEADERS OFF)
+if (NOT DEFINED FREOD_DISABLE_PRECOMPILED_HEADERS)
+	set(FREOD_DISABLE_PRECOMPILED_HEADERS OFF)
 endif()
 
-if (GEODE_DISABLE_PRECOMPILED_HEADERS)
+if (FREOD_DISABLE_PRECOMPILED_HEADERS)
 	message(STATUS "Pre-compiled headers - OFF")
 else()
 	message(STATUS "Pre-compiled headers - ON")
@@ -187,23 +187,23 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CMAKE_CONFIGURE_DEPENDS VERSION
 
 target_compile_definitions(${PROJECT_NAME} INTERFACE -DPROJECT_NAME=${CMAKE_PROJECT_NAME})
 
-set(GEODE_BIN_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
-set(GEODE_LOADER_PATH ${CMAKE_CURRENT_SOURCE_DIR}/loader)
-set(GEODE_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+set(FREOD_BIN_PATH ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set(FREOD_LOADER_PATH ${CMAKE_CURRENT_SOURCE_DIR}/loader)
+set(FREOD_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 include(cmake/Platform.cmake)
-include(cmake/GeodeFile.cmake)
+include(cmake/FreodFile.cmake)
 
-if (NOT DEFINED GEODE_GD_VERSION)
-	set(GEODE_GD_VERSION 2.2074)
-	set(GEODE_COMP_GD_VERSION 22074)
+if (NOT DEFINED FREOD_GD_VERSION)
+	set(FREOD_GD_VERSION 2.2074)
+	set(FREOD_COMP_GD_VERSION 22074)
 endif()
 
 target_compile_definitions(
 	${PROJECT_NAME} INTERFACE
-	GEODE_GD_VERSION=${GEODE_GD_VERSION}
-	GEODE_COMP_GD_VERSION=${GEODE_COMP_GD_VERSION}
-	GEODE_GD_VERSION_STRING="${GEODE_GD_VERSION}"
+	FREOD_GD_VERSION=${FREOD_GD_VERSION}
+	FREOD_COMP_GD_VERSION=${FREOD_COMP_GD_VERSION}
+	FREOD_GD_VERSION_STRING="${FREOD_GD_VERSION}"
 )
 
 if (WIN32)
@@ -242,38 +242,38 @@ if (ANDROID)
 endif()
 
 set(MAT_JSON_AS_INTERFACE ON)
-CPMAddPackage("gh:geode-sdk/result@1.3.3")
-CPMAddPackage("gh:geode-sdk/json@3.2.1")
+CPMAddPackage("gh:freod-sdk/result@1.3.3")
+CPMAddPackage("gh:freod-sdk/json@3.2.1")
 CPMAddPackage("gh:fmtlib/fmt#11.1.4")
 
 target_compile_definitions(${PROJECT_NAME} INTERFACE MAT_JSON_DYNAMIC=1)
 
 # this is needed for cross compilation on linux,
 # since fmtlib will fail to compile otherwise
-if (GEODE_DISABLE_FMT_CONSTEVAL)
+if (FREOD_DISABLE_FMT_CONSTEVAL)
 	message(VERBOSE "Disabling FMT_CONSTEVAL")
 	target_compile_definitions(fmt PUBLIC -DFMT_CONSTEVAL=)
 endif()
 
 # Tulip hook (hooking)
-if (PROJECT_IS_TOP_LEVEL AND NOT GEODE_BUILDING_DOCS)
+if (PROJECT_IS_TOP_LEVEL AND NOT FREOD_BUILDING_DOCS)
 	set(TULIP_LINK_SOURCE ON)
 endif()
 set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
 
 # Allow users to have their own copy of TulipHook that can be overwritten with a CMake option.
 # If the option is not provided, by default just clone TulipHook with CPM and use that
-if (DEFINED ENV{GEODE_TULIPHOOK_REPO_PATH})
-	set(temp $ENV{GEODE_TULIPHOOK_REPO_PATH})
+if (DEFINED ENV{FREOD_TULIPHOOK_REPO_PATH})
+	set(temp $ENV{FREOD_TULIPHOOK_REPO_PATH})
 	# this is so stupid i hate windows paths
-	string(REPLACE "\\" "/" GEODE_TULIPHOOK_REPO_PATH ${temp})
+	string(REPLACE "\\" "/" FREOD_TULIPHOOK_REPO_PATH ${temp})
 endif()
 
-if (DEFINED GEODE_TULIPHOOK_REPO_PATH)
-	message(STATUS "Using ${GEODE_TULIPHOOK_REPO_PATH} for TulipHook")
-	add_subdirectory(${GEODE_TULIPHOOK_REPO_PATH} ${GEODE_TULIPHOOK_REPO_PATH}/build)
+if (DEFINED FREOD_TULIPHOOK_REPO_PATH)
+	message(STATUS "Using ${FREOD_TULIPHOOK_REPO_PATH} for TulipHook")
+	add_subdirectory(${FREOD_TULIPHOOK_REPO_PATH} ${FREOD_TULIPHOOK_REPO_PATH}/build)
 else()
-	CPMAddPackage("gh:geode-sdk/TulipHook@2.4.3")
+	CPMAddPackage("gh:freod-sdk/TulipHook@2.4.3")
 endif()
 set(CMAKE_WARN_DEPRECATED ON CACHE BOOL "" FORCE)
 
@@ -288,56 +288,56 @@ endif()
 
 target_sources(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/entry.cpp)
 
-add_subdirectory(${GEODE_BINDINGS_REPO_PATH} ${CMAKE_BINARY_DIR}/bindings)
+add_subdirectory(${FREOD_BINDINGS_REPO_PATH} ${CMAKE_BINARY_DIR}/bindings)
 
-if (NOT GEODE_DISABLE_PRECOMPILED_HEADERS)
-	target_precompile_headers(GeodeBindings INTERFACE
-		"$<$<COMPILE_LANGUAGE:CXX>:${GEODE_LOADER_PATH}/include/Geode/Bindings.hpp>"
+if (NOT FREOD_DISABLE_PRECOMPILED_HEADERS)
+	target_precompile_headers(FreodBindings INTERFACE
+		"$<$<COMPILE_LANGUAGE:CXX>:${FREOD_LOADER_PATH}/include/Freod/Bindings.hpp>"
 	)
 endif()
 
-target_include_directories(GeodeBindings PUBLIC
-	${GEODE_LOADER_PATH}/include
-	${GEODE_LOADER_PATH}/include/Geode/cocos/include
-	${GEODE_LOADER_PATH}/include/Geode/cocos/extensions
-	${GEODE_LOADER_PATH}/include/Geode/fmod
+target_include_directories(FreodBindings PUBLIC
+	${FREOD_LOADER_PATH}/include
+	${FREOD_LOADER_PATH}/include/Freod/cocos/include
+	${FREOD_LOADER_PATH}/include/Freod/cocos/extensions
+	${FREOD_LOADER_PATH}/include/Freod/fmod
 )
-target_link_directories(GeodeBindings PUBLIC ${GEODE_LOADER_PATH}/include/link)
-target_link_libraries(GeodeBindings PUBLIC fmt TulipHookInclude mat-json GeodeResult)
-target_link_libraries(${PROJECT_NAME} INTERFACE GeodeBindings)
+target_link_directories(FreodBindings PUBLIC ${FREOD_LOADER_PATH}/include/link)
+target_link_libraries(FreodBindings PUBLIC fmt TulipHookInclude mat-json FreodResult)
+target_link_libraries(${PROJECT_NAME} INTERFACE FreodBindings)
 
-if (NOT EXISTS ${GEODE_BIN_PATH})
-	file(MAKE_DIRECTORY ${GEODE_BIN_PATH})
+if (NOT EXISTS ${FREOD_BIN_PATH})
+	file(MAKE_DIRECTORY ${FREOD_BIN_PATH})
 endif()
 
-if (NOT EXISTS ${GEODE_BIN_PATH}/${PROJECT_VERSION} AND EXISTS ${GEODE_BIN_PATH}/nightly/)
-	set(GEODE_LINK_NIGHTLY 1)
+if (NOT EXISTS ${FREOD_BIN_PATH}/${PROJECT_VERSION} AND EXISTS ${FREOD_BIN_PATH}/nightly/)
+	set(FREOD_LINK_NIGHTLY 1)
 endif()
 
-if (${GEODE_LINK_NIGHTLY})
-	set(GEODE_PLATFORM_BIN_PATH ${GEODE_BIN_PATH}/nightly/${GEODE_PLATFORM_BINARY})
+if (${FREOD_LINK_NIGHTLY})
+	set(FREOD_PLATFORM_BIN_PATH ${FREOD_BIN_PATH}/nightly/${FREOD_PLATFORM_BINARY})
 else()
-	set(GEODE_PLATFORM_BIN_PATH ${GEODE_BIN_PATH}/${PROJECT_VERSION}/${GEODE_PLATFORM_BINARY})
+	set(FREOD_PLATFORM_BIN_PATH ${FREOD_BIN_PATH}/${PROJECT_VERSION}/${FREOD_PLATFORM_BINARY})
 endif()
 
 if (PROJECT_IS_TOP_LEVEL)
 	add_subdirectory(loader)
-	target_link_libraries(${PROJECT_NAME} INTERFACE geode-loader)
+	target_link_libraries(${PROJECT_NAME} INTERFACE freod-loader)
 	if (SUPPORTS_W_NO_EVERYTHING)
-		target_compile_options(geode-loader PRIVATE -Wno-inconsistent-missing-override)
+		target_compile_options(freod-loader PRIVATE -Wno-inconsistent-missing-override)
 	endif()
-elseif (EXISTS ${GEODE_PLATFORM_BIN_PATH})
-	target_link_libraries(${PROJECT_NAME} INTERFACE "${GEODE_PLATFORM_BIN_PATH}")
-	if (NOT GEODE_DISABLE_PRECOMPILED_HEADERS)
+elseif (EXISTS ${FREOD_PLATFORM_BIN_PATH})
+	target_link_libraries(${PROJECT_NAME} INTERFACE "${FREOD_PLATFORM_BIN_PATH}")
+	if (NOT FREOD_DISABLE_PRECOMPILED_HEADERS)
 		target_precompile_headers(${PROJECT_NAME} INTERFACE
-			"$<$<COMPILE_LANGUAGE:CXX>:${GEODE_LOADER_PATH}/include/Geode/DefaultInclude.hpp>"
-			"$<$<COMPILE_LANGUAGE:CXX>:${GEODE_LOADER_PATH}/include/Geode/Geode.hpp>"
-			# please stop adding modify here its not here because it makes windows compilation take longer than geode 1.0 release date
+			"$<$<COMPILE_LANGUAGE:CXX>:${FREOD_LOADER_PATH}/include/Freod/DefaultInclude.hpp>"
+			"$<$<COMPILE_LANGUAGE:CXX>:${FREOD_LOADER_PATH}/include/Freod/Freod.hpp>"
+			# please stop adding modify here its not here because it makes windows compilation take longer than freod 1.0 release date
 		)
 	endif()
 else()
 	message(FATAL_ERROR
-		"No valid loader binary to link to! Install pre-built binaries with `geode sdk install-binaries`, "
-		"or build Geode from source."
+		"No valid loader binary to link to! Install pre-built binaries with `freod sdk install-binaries`, "
+		"or build Freod from source."
 	)
 endif()

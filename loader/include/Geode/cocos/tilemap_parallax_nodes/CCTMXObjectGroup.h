@@ -44,7 +44,7 @@ NS_CC_BEGIN
 */
 class CC_DLL CCTMXObjectGroup : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
     /** offset position of child objects */
     CC_SYNTHESIZE_PASS_BY_REF(CCPoint, m_tPositionOffset, PositionOffset);
     /** list of properties stored in a dictionary */
@@ -52,7 +52,7 @@ class CC_DLL CCTMXObjectGroup : public CCObject
     /** array of the objects */
     CC_PROPERTY(CCArray*, m_pObjects, Objects);
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTMXObjectGroup, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTMXObjectGroup, CCObject)
     /**
      * @js ctor
      */

@@ -1,8 +1,8 @@
-#include <Geode/ui/Popup.hpp>
-#include <Geode/binding/FLAlertLayer.hpp>
-#include <Geode/binding/FLAlertLayerProtocol.hpp>
+#include <Freod/ui/Popup.hpp>
+#include <Freod/binding/FLAlertLayer.hpp>
+#include <Freod/binding/FLAlertLayerProtocol.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // static void fixChildPositions(CCNode* in, CCSize const& size) {
 //     auto winSize = CCDirector::get()->getWinSize();
@@ -58,7 +58,7 @@ using namespace geode::prelude;
 //     in->ignoreAnchorPointForPosition(false);
 // }
 
-// void geode::enableDynamicLayoutForPopup(FLAlertLayer* alert, CCNode* bg) {
+// void freod::enableDynamicLayoutForPopup(FLAlertLayer* alert, CCNode* bg) {
 //     auto winSize = CCDirector::get()->getWinSize();
 
 //     auto size = bg->getContentSize();
@@ -107,7 +107,7 @@ public:
     }
 };
 
-FLAlertLayer* geode::createQuickPopup(
+FLAlertLayer* freod::createQuickPopup(
     char const* title, std::string const& content, char const* btn1, char const* btn2, float width,
     std::function<void(FLAlertLayer*, bool)> selected, bool doShow
 ) {
@@ -118,14 +118,14 @@ FLAlertLayer* geode::createQuickPopup(
     return ret;
 }
 
-FLAlertLayer* geode::createQuickPopup(
+FLAlertLayer* freod::createQuickPopup(
     char const* title, std::string const& content, char const* btn1, char const* btn2,
     std::function<void(FLAlertLayer*, bool)> selected, bool doShow
 ) {
     return createQuickPopup(title, content, btn1, btn2, 350.f, selected, doShow);
 }
 
-FLAlertLayer* geode::createQuickPopup(
+FLAlertLayer* freod::createQuickPopup(
     char const* title, std::string const& content, char const* btn1, char const* btn2, float width,
     std::function<void(FLAlertLayer*, bool)> selected, bool doShow, bool cancelledByEscape
 ) {
@@ -136,7 +136,7 @@ FLAlertLayer* geode::createQuickPopup(
     return ret;
 }
 
-FLAlertLayer* geode::createQuickPopup(
+FLAlertLayer* freod::createQuickPopup(
     char const* title, std::string const& content, char const* btn1, char const* btn2,
     std::function<void(FLAlertLayer*, bool)> selected, bool doShow, bool cancelledByEscape
 ) {

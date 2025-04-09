@@ -4,17 +4,17 @@
 #include <string>
 #include <vector>
 
-#include <Geode/ui/GeodeUI.hpp>
-#include <Geode/utils/ColorProvider.hpp>
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/loader/Loader.hpp>
+#include <Freod/ui/FreodUI.hpp>
+#include <Freod/utils/ColorProvider.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/loader/Loader.hpp>
 #include "server/DownloadManager.hpp"
-#include "ui/mods/GeodeStyle.hpp"
+#include "ui/mods/FreodStyle.hpp"
 #include "ui/mods/popups/ModPopup.hpp"
 #include "ui/mods/popups/DevPopup.hpp"
 #include "ui/mods/popups/ModErrorPopup.hpp"
 #include "ui/mods/sources/ModSource.hpp"
-#include "ui/GeodeUIEvent.hpp"
+#include "ui/FreodUIEvent.hpp"
 
 bool ModItem::init(ModSource&& source) {
     if (!CCNode::init())
@@ -167,20 +167,20 @@ bool ModItem::init(ModSource&& source) {
     if (auto serverMod = m_source.asServer(); serverMod != nullptr) {
         auto version = serverMod->latestVersion();
 
-        auto geodeValid = Loader::get()->isModVersionSupported(version.getGeodeVersion());
+        auto freodValid = Loader::get()->isModVersionSupported(version.getFreodVersion());
         auto gameVersion = version.getGameVersion();
-        auto gdValid = !gameVersion || gameVersion == "*" || gameVersion == GEODE_STR(GEODE_GD_VERSION);
+        auto gdValid = !gameVersion || gameVersion == "*" || gameVersion == FREOD_STR(FREOD_GD_VERSION);
 
-        if (!geodeValid || !gdValid) {
-            spr = createGeodeButton("N/A", 50, false, true, GeodeButtonSprite::Gray);
+        if (!freodValid || !gdValid) {
+            spr = createFreodButton("N/A", 50, false, true, FreodButtonSprite::Gray);
         }
     }
 
     if (!spr) {
         if (Loader::get()->isModInstalled(m_source.getID())) {
-            spr = createGeodeButton("View", 50, false, true);
+            spr = createFreodButton("View", 50, false, true);
         } else {
-            spr = createGeodeButton("Get", 50, false, true, GeodeButtonSprite::Install);
+            spr = createFreodButton("Get", 50, false, true, FreodButtonSprite::Install);
         }
     }
 
@@ -216,7 +216,7 @@ bool ModItem::init(ModSource&& source) {
                 m_viewMenu->updateLayout();
             }
             if (mod->hasLoadProblems() || mod->targetsOutdatedVersion()) {
-                auto viewErrorSpr = createGeodeCircleButton(
+                auto viewErrorSpr = createFreodCircleButton(
                     CCSprite::createWithSpriteFrameName("exclamation.png"_spr), 1.f,
                     CircleBaseSize::Small
                 );
@@ -327,7 +327,7 @@ bool ModItem::init(ModSource&& source) {
         }
     });
 
-    auto updateSpr = createGeodeCircleButton(
+    auto updateSpr = createFreodCircleButton(
         CCSprite::createWithSpriteFrameName("update.png"_spr), 1.15f,
         CircleBaseSize::Medium, true
     );
@@ -492,7 +492,7 @@ void ModItem::updateState() {
     // (possibly overriding later based on state)
     m_source.visit(makeVisitor {
         [this](Mod* mod) {
-            if (isGeodeTheme()) {
+            if (isFreodTheme()) {
                 m_bg->setColor(ccWHITE);
                 m_bg->setOpacity(mod->isOrWillBeEnabled() ? 25 : 10);
             }
@@ -505,8 +505,8 @@ void ModItem::updateState() {
             m_developerLabel->setOpacity(mod->isOrWillBeEnabled() ? 255 : 155);
         },
         [this](server::ServerModMetadata const& metadata) {
-            m_bg->setColor(isGeodeTheme() ? ccWHITE : ccBLACK);
-            m_bg->setOpacity(isGeodeTheme() ? 25 : 90);
+            m_bg->setColor(isFreodTheme() ? ccWHITE : ccBLACK);
+            m_bg->setOpacity(isFreodTheme() ? 25 : 90);
 
             if (metadata.tags.contains("paid")) {
                 m_bg->setColor("mod-list-paid-color"_cc3b);
@@ -521,7 +521,7 @@ void ModItem::updateState() {
                 m_bg->setColor(ccc3(104, 63, 138));
                 m_bg->setOpacity(85);
             }
-            if (isGeodeTheme() && metadata.featured) {
+            if (isFreodTheme() && metadata.featured) {
                 m_bg->setColor("mod-list-featured-color"_cc3b);
                 m_bg->setOpacity(65);
             }
@@ -543,7 +543,7 @@ void ModItem::updateState() {
         m_versionLabel->setColor(to3B(ColorProvider::get()->color("mod-list-version-label-updates-available"_spr)));
 
         m_bg->setColor(to3B(ColorProvider::get()->color("mod-list-version-bg-updates-available"_spr)));
-        m_bg->setOpacity(isGeodeTheme() ? 25 : 90);
+        m_bg->setOpacity(isFreodTheme() ? 25 : 90);
     }
     else {
         m_updateBtn->setVisible(false);
@@ -559,20 +559,20 @@ void ModItem::updateState() {
         std::optional<LoadProblem> targetsOutdated = m_source.asMod()->targetsOutdatedVersion();
         if (m_source.asMod()->hasLoadProblems()) {
             m_bg->setColor("mod-list-errors-found"_cc3b);
-            m_bg->setOpacity(isGeodeTheme() ? 25 : 90);
+            m_bg->setOpacity(isFreodTheme() ? 25 : 90);
         }
         if (!wantsRestart && targetsOutdated && !isDownloading) {
             m_bg->setColor("mod-list-outdated-label"_cc3b);
-            m_bg->setOpacity(isGeodeTheme() ? 25 : 90);
+            m_bg->setOpacity(isFreodTheme() ? 25 : 90);
             m_outdatedLabel->setVisible(true);
             elementToReplaceWithOtherAbnormalElement->setVisible(false);
             if (m_display == ModListDisplay::Grid) {
                 m_outdatedLabel->setString("Outdated");
             }
             else {
-                if (targetsOutdated->type == LoadProblem::Type::UnsupportedGeodeVersion || targetsOutdated->type == LoadProblem::Type::NeedsNewerGeodeVersion) {
+                if (targetsOutdated->type == LoadProblem::Type::UnsupportedFreodVersion || targetsOutdated->type == LoadProblem::Type::NeedsNewerFreodVersion) {
                     m_outdatedLabel->setString(fmt::format(
-                        "Outdated (Geode {})", m_source.getMetadata().getGeodeVersion().toNonVString()
+                        "Outdated (Freod {})", m_source.getMetadata().getFreodVersion().toNonVString()
                     ).c_str());
                 } else {
                     // TODO: this is dumb but i didn't want to figure out the LoadProblem. sorry
@@ -693,7 +693,7 @@ void ModItem::updateState() {
     // Highlight item via BG if it wants to restart for extra UI attention
     if (wantsRestart) {
         m_bg->setColor("mod-list-restart-required-label"_cc3b);
-        m_bg->setOpacity(isGeodeTheme() ? 25 : 90);
+        m_bg->setOpacity(isFreodTheme() ? 25 : 90);
     }
 
     // Update enable toggle state
@@ -744,7 +744,7 @@ void ModItem::onView(CCObject*) {
             "Paid Content",
             "This mod contains <cg>Paid Content</c>. This means that some or all "
             "features of the mod <cj>require money to use</c>.\n\n"
-            "<cy>Geode does not handle any payments. The mod handles all transactions in their own way.</c>\n\n"
+            "<cy>Freod does not handle any payments. The mod handles all transactions in their own way.</c>\n\n"
             "<cp>The paid content may not be available in your country.</c>",
             "OK", nullptr, 360
         )->show();
@@ -762,7 +762,7 @@ void ModItem::onView(CCObject*) {
                 "OK", nullptr, 360
             )->show();
         }
-        if (gameVersion && gameVersion != "*" && gameVersion != GEODE_STR(GEODE_GD_VERSION)) {
+        if (gameVersion && gameVersion != "*" && gameVersion != FREOD_STR(FREOD_GD_VERSION)) {
             return FLAlertLayer::create(
                 nullptr,
                 "Unavailable",
@@ -770,11 +770,11 @@ void ModItem::onView(CCObject*) {
                 "OK", nullptr, 360
             )->show();
         }
-        if (!Loader::get()->isModVersionSupported(version.getGeodeVersion())) {
+        if (!Loader::get()->isModVersionSupported(version.getFreodVersion())) {
             return FLAlertLayer::create(
                 nullptr,
                 "Unavailable",
-                "This mod targets an <cr>unsupported version of Geode</c>.",
+                "This mod targets an <cr>unsupported version of Freod</c>.",
                 "OK", nullptr, 360
             )->show();
         }
@@ -796,14 +796,14 @@ void ModItem::onViewError(CCObject*) {
                         "the mod</c> that supports the newer version.";
                 } break;
 
-                case LoadProblem::Type::NeedsNewerGeodeVersion: {
-                    issue = "This mod is made for a <cp>newer version of Geode</c>.";
-                    howToFix = "<cp>update Geode</c> by enabling <co>Automatic Updates</c> "
-                        "or redownloading it from the Geode website.";
+                case LoadProblem::Type::NeedsNewerFreodVersion: {
+                    issue = "This mod is made for a <cp>newer version of Freod</c>.";
+                    howToFix = "<cp>update Freod</c> by enabling <co>Automatic Updates</c> "
+                        "or redownloading it from the Freod website.";
                 } break;
 
-                case LoadProblem::Type::UnsupportedGeodeVersion: {
-                    issue = "This mod is made for an <cy>older version of Geode</c>.";
+                case LoadProblem::Type::UnsupportedFreodVersion: {
+                    issue = "This mod is made for an <cy>older version of Freod</c>.";
                     howToFix = "wait for the developer to <cj>release an update to "
                         "the mod</c> that supports the newer version.";
                 } break;

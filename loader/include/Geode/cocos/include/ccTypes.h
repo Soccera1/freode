@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include <string>
 
 #ifdef __cplusplus
-#include <Geode/c++stl/gdstdlib.hpp>
+#include <Freod/c++stl/gdstdlib.hpp>
 #endif
 
 #include "../cocoa/CCGeometry.h"

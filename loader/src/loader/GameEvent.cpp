@@ -1,6 +1,6 @@
-#include <Geode/loader/GameEvent.hpp>
+#include <Freod/loader/GameEvent.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 GameEvent::GameEvent(GameEventType type) : m_type(type) {}
 

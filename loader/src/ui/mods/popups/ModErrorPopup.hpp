@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Mod.hpp>
 
-#include "ui/mods/GeodeStyle.hpp"
+#include "ui/mods/FreodStyle.hpp"
 #include "ui/mods/list/ModProblemList.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-class ModErrorPopup : public GeodePopup<Mod*> {
+class ModErrorPopup : public FreodPopup<Mod*> {
 protected:
     Mod* m_mod;
     ModProblemList* m_list;

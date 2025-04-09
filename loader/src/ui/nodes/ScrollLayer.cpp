@@ -1,7 +1,7 @@
-#include <Geode/ui/ScrollLayer.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/ui/ScrollLayer.hpp>
+#include <Freod/utils/cocos.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 GenericContentLayer* GenericContentLayer::create(float width, float height) {
     auto ret = new GenericContentLayer();

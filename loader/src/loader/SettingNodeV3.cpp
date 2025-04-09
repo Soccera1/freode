@@ -1,8 +1,8 @@
 #include "SettingNodeV3.hpp"
-#include <Geode/utils/ColorProvider.hpp>
-#include <Geode/utils/ranges.hpp>
-#include <Geode/loader/Dirs.hpp>
-#include <ui/mods/GeodeStyle.hpp>
+#include <Freod/utils/ColorProvider.hpp>
+#include <Freod/utils/ranges.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <ui/mods/FreodStyle.hpp>
 
 class SettingNodeSizeChangeEventV3::Impl final {
 public:

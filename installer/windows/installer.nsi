@@ -4,8 +4,8 @@
     !include WinMessages.nsh
 
 ; settings
-    Name "Geode"
-    OutFile "geode-installer-win.exe"
+    Name "Freod"
+    OutFile "freod-installer-win.exe"
     Unicode true
     InstallDir "$PROGRAMFILES32\Steam\steamapps\common\Geometry Dash\" ; set default path to the most common one
     XPStyle on
@@ -42,31 +42,31 @@
     !insertmacro MUI_UNPAGE_FINISH
 
 ; languages
-    !macro GEODE_LANGUAGE NSFID
+    !macro FREOD_LANGUAGE NSFID
         !insertmacro MUI_LANGUAGE ${NSFID}
         !insertmacro LANGFILE_INCLUDE "Language Files\${NSFID}Extra.nsh"
     !macroend
 
     ; TODO: add the commented out languages (other available languages are listed here: https://nsis.sourceforge.io/Examples/Modern%20UI/MultiLanguage.nsi)
-    !insertmacro GEODE_LANGUAGE "English"
-    !insertmacro GEODE_LANGUAGE "French"
-    !insertmacro GEODE_LANGUAGE "German"
-    !insertmacro GEODE_LANGUAGE "Spanish"
-    !insertmacro GEODE_LANGUAGE "SpanishInternational"
-    !insertmacro GEODE_LANGUAGE "Swedish"
-    !insertmacro GEODE_LANGUAGE "Greek"
-    !insertmacro GEODE_LANGUAGE "Finnish"
-    !insertmacro GEODE_LANGUAGE "Polish"
-    !insertmacro GEODE_LANGUAGE "Russian"
-    !insertmacro GEODE_LANGUAGE "PortugueseBR"
-    !insertmacro GEODE_LANGUAGE "Portuguese"
-    !insertmacro GEODE_LANGUAGE "Ukrainian"
-    !insertmacro GEODE_LANGUAGE "Czech"
-    !insertmacro GEODE_LANGUAGE "Turkish"
-    !insertmacro GEODE_LANGUAGE "Japanese"
-    !insertmacro GEODE_LANGUAGE "SimpChinese"
-    !insertmacro GEODE_LANGUAGE "TradChinese"
-    !insertmacro GEODE_LANGUAGE "Korean"
+    !insertmacro FREOD_LANGUAGE "English"
+    !insertmacro FREOD_LANGUAGE "French"
+    !insertmacro FREOD_LANGUAGE "German"
+    !insertmacro FREOD_LANGUAGE "Spanish"
+    !insertmacro FREOD_LANGUAGE "SpanishInternational"
+    !insertmacro FREOD_LANGUAGE "Swedish"
+    !insertmacro FREOD_LANGUAGE "Greek"
+    !insertmacro FREOD_LANGUAGE "Finnish"
+    !insertmacro FREOD_LANGUAGE "Polish"
+    !insertmacro FREOD_LANGUAGE "Russian"
+    !insertmacro FREOD_LANGUAGE "PortugueseBR"
+    !insertmacro FREOD_LANGUAGE "Portuguese"
+    !insertmacro FREOD_LANGUAGE "Ukrainian"
+    !insertmacro FREOD_LANGUAGE "Czech"
+    !insertmacro FREOD_LANGUAGE "Turkish"
+    !insertmacro FREOD_LANGUAGE "Japanese"
+    !insertmacro FREOD_LANGUAGE "SimpChinese"
+    !insertmacro FREOD_LANGUAGE "TradChinese"
+    !insertmacro FREOD_LANGUAGE "Korean"
 
     !insertmacro MUI_RESERVEFILE_LANGDLL
 
@@ -337,7 +337,7 @@
 
 ; installer
 
-Var geode.DirectoryPage.ErrorText
+Var freod.DirectoryPage.ErrorText
 
 Var GamePath
 Function FindGamePath
@@ -392,13 +392,13 @@ FunctionEnd
 
 Function DirectoryPageShow
     System::Call 'USER32::CreateWindowEx(i${__NSD_Label_EXSTYLE}, t"${__NSD_Label_CLASS}", t"", i${__NSD_Label_STYLE}, i0, i70, i400, i40, p$mui.DirectoryPage, p0, p0, p0)p.s'
-    Pop $geode.DirectoryPage.ErrorText
-    ShowWindow $geode.DirectoryPage.ErrorText 0
+    Pop $freod.DirectoryPage.ErrorText
+    ShowWindow $freod.DirectoryPage.ErrorText 0
     SendMessage $mui.DirectoryPage ${WM_GETFONT} 0 0 $0
-    SendMessage $geode.DirectoryPage.ErrorText ${WM_SETFONT} $0 1
-    SetCtlColors $geode.DirectoryPage.ErrorText ff0000 transparent
+    SendMessage $freod.DirectoryPage.ErrorText ${WM_SETFONT} $0 1
+    SetCtlColors $freod.DirectoryPage.ErrorText ff0000 transparent
     ; place the label at the top
-    System::Call 'USER32::SetWindowPos(p$geode.DirectoryPage.ErrorText, p0, i0, i0, i0, i0, i3)i'
+    System::Call 'USER32::SetWindowPos(p$freod.DirectoryPage.ErrorText, p0, i0, i0, i0, i0, i3)i'
     Pop $0
 FunctionEnd
 
@@ -414,8 +414,8 @@ Function .onVerifyInstDir
     IfFileExists $INSTDIR\pthreadVC3.dll 0 versionIssueImo
     IfFileExists $INSTDIR\libcrypto-3-x64.dll 0 versionIssueImo
 
-    ; check if geode is already installed
-    IfFileExists $INSTDIR\Geode.dll valid
+    ; check if freod is already installed
+    IfFileExists $INSTDIR\Freod.dll valid
 
     ; check mod loaders/mod menus
     IfFileExists $INSTDIR\hackpro.dll other_hackpro
@@ -423,15 +423,15 @@ Function .onVerifyInstDir
 
     ; all checks passed
     valid:
-        ShowWindow $geode.DirectoryPage.ErrorText 0
+        ShowWindow $freod.DirectoryPage.ErrorText 0
         LockWindow off
         Return
 
     noGameNoLife:
-        SendMessage $geode.DirectoryPage.ErrorText ${WM_SETTEXT} "" "STR:$(GEODE_TEXT_GD_MISSING)"
+        SendMessage $freod.DirectoryPage.ErrorText ${WM_SETTEXT} "" "STR:$(FREOD_TEXT_GD_MISSING)"
         Goto error
     versionIssueImo:
-        SendMessage $geode.DirectoryPage.ErrorText ${WM_SETTEXT} "" "STR:$(GEODE_TEXT_GD_OLD)"
+        SendMessage $freod.DirectoryPage.ErrorText ${WM_SETTEXT} "" "STR:$(FREOD_TEXT_GD_OLD)"
         Goto error
     other_hackpro:
         StrCpy $0 "hackpro.dll"
@@ -440,31 +440,31 @@ Function .onVerifyInstDir
         StrCpy $0 "XInput1_4.dll"
         Goto other
     other:
-        ${StrRep} $0 $(GEODE_TEXT_MOD_LOADER_ALREADY_INSTALLED) "the dll trademark" $0
-        SendMessage $geode.DirectoryPage.ErrorText ${WM_SETTEXT} "" "STR:$0"
-        SetCtlColors $geode.DirectoryPage.ErrorText e25402 transparent
+        ${StrRep} $0 $(FREOD_TEXT_MOD_LOADER_ALREADY_INSTALLED) "the dll trademark" $0
+        SendMessage $freod.DirectoryPage.ErrorText ${WM_SETTEXT} "" "STR:$0"
+        SetCtlColors $freod.DirectoryPage.ErrorText e25402 transparent
         LockWindow off
         Return
 
     error:
-        ShowWindow $geode.DirectoryPage.ErrorText 1
-        SetCtlColors $geode.DirectoryPage.ErrorText ff0000 transparent
+        ShowWindow $freod.DirectoryPage.ErrorText 1
+        SetCtlColors $freod.DirectoryPage.ErrorText ff0000 transparent
         LockWindow off
         Abort
         Return
 FunctionEnd
 
-SectionGroup "Geode"
+SectionGroup "Freod"
     Section "Loader" LOADER_SECTION
         SetOutPath $INSTDIR
 
-        File ${BINDIR}\Geode.dll
-        File ${BINDIR}\Geode.pdb
-        File ${BINDIR}\GeodeUpdater.exe
+        File ${BINDIR}\Freod.dll
+        File ${BINDIR}\Freod.pdb
+        File ${BINDIR}\FreodUpdater.exe
         File ${BINDIR}\XInput1_4.dll
 
-        RMdir /r $INSTDIR\geode\update
-        RMdir /r $INSTDIR\geode\index
+        RMdir /r $INSTDIR\freod\update
+        RMdir /r $INSTDIR\freod\index
         Delete "$INSTDIR\xinput9_1_0.dll"
         Delete "$INSTDIR\xinput9_1_0.lib"
         Delete "$INSTDIR\xinput9_1_0.pdb"
@@ -476,12 +476,12 @@ SectionGroup "Geode"
         Delete "$INSTDIR\vcruntime140.dll"
         Delete "$INSTDIR\vcruntime140d.dll"
 
-        WriteUninstaller "GeodeUninstaller.exe"
+        WriteUninstaller "FreodUninstaller.exe"
     SectionEnd
 
     Section "Resources"
-        CreateDirectory $INSTDIR\geode\resources\geode.loader
-        SetOutPath $INSTDIR\geode\resources\geode.loader
+        CreateDirectory $INSTDIR\freod\resources\freod.loader
+        SetOutPath $INSTDIR\freod\resources\freod.loader
         File /r ${BINDIR}\resources\*
     SectionEnd
 SectionGroupEnd
@@ -526,28 +526,28 @@ Function un.onInit
     IfFileExists $INSTDIR\*.exe 0 invalid
     IfFileExists $INSTDIR\libcocos2d.dll 0 invalid
 
-    ; check if xinput and geode exist
+    ; check if xinput and freod exist
     IfFileExists $INSTDIR\XInput1_4.dll 0 invalid
-    IfFileExists $INSTDIR\Geode.dll 0 invalid
+    IfFileExists $INSTDIR\Freod.dll 0 invalid
         Return
 
     invalid:
-        MessageBox MB_ICONSTOP|MB_OK $(GEODE_UNTEXT_GEODE_MISSING)
+        MessageBox MB_ICONSTOP|MB_OK $(FREOD_UNTEXT_FREOD_MISSING)
         Abort
 FunctionEnd
 Section "Uninstall"
-    DeleteRegKey /ifempty HKCU "Software\Geode"
-    Delete $INSTDIR\GeodeUninstaller.exe
-    Delete $INSTDIR\Geode.dll
-    Delete $INSTDIR\Geode.pdb
-    Delete $INSTDIR\Geode.lib
-    Delete $INSTDIR\GeodeUpdater.exe
+    DeleteRegKey /ifempty HKCU "Software\Freod"
+    Delete $INSTDIR\FreodUninstaller.exe
+    Delete $INSTDIR\Freod.dll
+    Delete $INSTDIR\Freod.pdb
+    Delete $INSTDIR\Freod.lib
+    Delete $INSTDIR\FreodUpdater.exe
     Delete $INSTDIR\XInput1_4.dll
 
     # default value of DATA is an empty string
     # if DATA is empty, keep user data
-    # otherwise, delete the entire geode and DATA\geode\mods dirs
-    # the reason we're deleting DATA\geode\mods instead of just passing
+    # otherwise, delete the entire freod and DATA\freod\mods dirs
+    # the reason we're deleting DATA\freod\mods instead of just passing
     # that dir directly to DATA is so that in case someone (either accidentally or maliciously)
     # passes the wrong directory, the uninstaller doesn't just blindly clear it
     # it will also check for the presence of CCGameManager.dat and CCLocalLevels.dat in DATA
@@ -560,24 +560,24 @@ Section "Uninstall"
 
     keep_data:
         # keep configs, mods, logs and crash logs
-        RMdir /r $INSTDIR\geode\index
-        RMdir /r $INSTDIR\geode\resources
-        RMdir /r $INSTDIR\geode\temp
-        RMdir /r $INSTDIR\geode\unzipped
-        RMdir /r $INSTDIR\geode\update
+        RMdir /r $INSTDIR\freod\index
+        RMdir /r $INSTDIR\freod\resources
+        RMdir /r $INSTDIR\freod\temp
+        RMdir /r $INSTDIR\freod\unzipped
+        RMdir /r $INSTDIR\freod\update
         Return
 
     remove_data:
-        RMdir /r $INSTDIR\geode
+        RMdir /r $INSTDIR\freod
         IfFileExists $0\CCGameManager.dat 0 invalid
         IfFileExists $0\CCLocalLevels.dat 0 invalid
-        RMdir /r $0\geode\mods ; delete DATA\geode\mods
-        RMdir $0\geode ; then delete DATA\geode non-recursively, assuming mods is the only directory in DATA\geode
+        RMdir /r $0\freod\mods ; delete DATA\freod\mods
+        RMdir $0\freod ; then delete DATA\freod non-recursively, assuming mods is the only directory in DATA\freod
         Return
 
     invalid:
         # this message doesnt rly need translatable as
-        # its only supposed to be used internally by geode itself
+        # its only supposed to be used internally by freod itself
         MessageBox MB_ICONSTOP|MB_OK "The path passed to DATA is not a valid Geometry Dash data folder!"
         Abort
 

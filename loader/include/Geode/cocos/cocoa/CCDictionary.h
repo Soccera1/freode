@@ -62,7 +62,7 @@ class CCDictionary;
  */
 class CC_DLL CCDictElement
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 private:
     /**
      *  Constructor of CCDictElement. It's only for internal usage. CCDictionary is its friend class.
@@ -174,14 +174,14 @@ public:
 
 class CC_DLL CCDictionary : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /** 
      * The constructor of CCDictionary.
      * @lua NA
      */
     CCDictionary();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCDictionary, CCObject);
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCDictionary, CCObject);
 
     /**
      * The destructor of CCDictionary

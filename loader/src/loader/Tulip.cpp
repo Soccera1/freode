@@ -1,16 +1,16 @@
 
-#include <Geode/loader/Tulip.hpp>
+#include <Freod/loader/Tulip.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-Result<void*> geode::hook::createWrapper(
+Result<void*> freod::hook::createWrapper(
     void* address,
     tulip::hook::WrapperMetadata const& metadata
 ) noexcept {
     return tulip::hook::createWrapper(address, metadata);
 }
 
-std::shared_ptr<tulip::hook::CallingConvention> geode::hook::createConvention(
+std::shared_ptr<tulip::hook::CallingConvention> freod::hook::createConvention(
     tulip::hook::TulipConvention convention
 ) noexcept {
     return tulip::hook::createConvention(convention);

@@ -1,13 +1,13 @@
 
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef FREOD_IS_WINDOWS
 
     #include <loader/LoaderImpl.hpp>
-    #include <Geode/loader/Mod.hpp>
-    #include <Geode/modify/Modify.hpp>
+    #include <Freod/loader/Mod.hpp>
+    #include <Freod/modify/Modify.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 // for some reason RobTop uses MessageBoxW in his GLFW error handler.
 // no one knows how this is possible (he passes char* to wchar_t*).
@@ -41,18 +41,18 @@ $execute {
     // hook them to call our own handler
     if (LoaderImpl::get()->isForwardCompatMode()) return;
 
-#if GEODE_COMP_GD_VERSION == 22074
+#if FREOD_COMP_GD_VERSION == 22074
     const uintptr_t offset1 = 0x75D90; // member function in CCEGLView
     const uintptr_t offset2 = 0x75DF0; // static function
     
     (void) Mod::get()->hook(
-        reinterpret_cast<void*>(geode::base::getCocos() + offset1),
+        reinterpret_cast<void*>(freod::base::getCocos() + offset1),
         fixedErrorHandler,
         "onGLFWError"
     );
     
     (void) Mod::get()->hook(
-        reinterpret_cast<void*>(geode::base::getCocos() + offset2),
+        reinterpret_cast<void*>(freod::base::getCocos() + offset2),
         fixedErrorHandler2,
         "onGLFWError2"
     );

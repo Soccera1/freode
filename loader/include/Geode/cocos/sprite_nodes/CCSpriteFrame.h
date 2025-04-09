@@ -54,7 +54,7 @@ class CCZone;
  */
 class CC_DLL CCSpriteFrame : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     // attributes
 
@@ -99,7 +99,7 @@ public:
      */
     ~CCSpriteFrame(void);
     inline CCSpriteFrame() {}
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSpriteFrame, CCObject);
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCSpriteFrame, CCObject);
 
     /**
      *  @js NA

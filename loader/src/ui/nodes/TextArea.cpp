@@ -1,6 +1,6 @@
-#include <Geode/ui/TextArea.hpp>
+#include <Freod/ui/TextArea.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 SimpleTextArea* SimpleTextArea::create(const std::string& text, const std::string& font, float scale) {
     return SimpleTextArea::create(font, text, scale, CCDirector::sharedDirector()->getWinSize().width / 2, false);

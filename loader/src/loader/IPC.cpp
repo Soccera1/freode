@@ -1,9 +1,9 @@
-#include <Geode/loader/IPC.hpp>
+#include <Freod/loader/IPC.hpp>
 #include "IPC.hpp"
 #include <matjson.hpp>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Mod.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 ipc::IPCEvent::IPCEvent(
     void* rawPipeHandle,

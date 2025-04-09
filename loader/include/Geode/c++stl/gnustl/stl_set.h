@@ -59,7 +59,7 @@
 #include "ext/rb_tree.h"
 #include <initializer_list>
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /**
@@ -689,7 +689,7 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
        * @param  __x Element to be located.
        * @return  True if set contains the element.
        *
-       * @note Geode addition.
+       * @note Freod addition.
        */
       bool
 	  contains(const key_type& __x) const

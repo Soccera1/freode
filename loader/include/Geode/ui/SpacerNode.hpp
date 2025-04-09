@@ -2,7 +2,7 @@
 
 #include <cocos2d.h>
 
-namespace geode {
+namespace freod {
 
 #pragma warning(push)
 #pragma warning(disable: 4275)
@@ -22,7 +22,7 @@ namespace geode {
  * @note If you want to specify a minimum width for a SpacerNode, add 
  * AxisLayoutOptions for it and use setLength
  */
-class GEODE_DLL SpacerNode : public cocos2d::CCNode {
+class FREOD_DLL SpacerNode : public cocos2d::CCNode {
 protected:
     size_t m_grow;
 
@@ -59,7 +59,7 @@ public:
  * @note This is useful for making a spacer node that takes up the remaining
  * space in a layout
  */
-class GEODE_DLL SpacerNodeChild : public SpacerNode {
+class FREOD_DLL SpacerNodeChild : public SpacerNode {
 protected:
     cocos2d::CCNode* m_child = nullptr;
 

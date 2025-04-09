@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Geode/DefaultInclude.hpp>
-//#include <Geode/utils/general.hpp>
+#include <Freod/DefaultInclude.hpp>
+//#include <Freod/utils/general.hpp>
 #include <filesystem>
 #include <functional>
 #include <string>

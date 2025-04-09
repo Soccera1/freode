@@ -11,7 +11,7 @@ NS_CC_BEGIN
 class CC_DLL CCKeyboardDispatcher : public CCObject 
 {
 public:
-	GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCKeyboardDispatcher, CCObject)
+	FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCKeyboardDispatcher, CCObject)
 	CCKeyboardDispatcher();
 	virtual ~CCKeyboardDispatcher();
 
@@ -38,7 +38,7 @@ public:
 		return m_bShiftPressed;
 	}
 
-	static GEODE_DLL CCKeyboardDispatcher* get();
+	static FREOD_DLL CCKeyboardDispatcher* get();
 
 	const char* keyToString(enumKeyCodes key);
 

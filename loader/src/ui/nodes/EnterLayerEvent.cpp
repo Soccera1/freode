@@ -1,6 +1,6 @@
-#include <Geode/ui/EnterLayerEvent.hpp>
+#include <Freod/ui/EnterLayerEvent.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 AEnterLayerEvent::AEnterLayerEvent(
     std::string const& layerID,

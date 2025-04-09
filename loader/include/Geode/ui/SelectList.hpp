@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
+#include <Freod/binding/CCMenuItemSpriteExtra.hpp>
 
-namespace geode {
+namespace freod {
 
     template <class T>
     T do_nothing(T t) {

@@ -44,7 +44,7 @@ NS_CC_BEGIN
  */
 class CC_DLL CCDrawNode : public CCNodeRGBA
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
 
     GLuint      m_uVao;
@@ -79,7 +79,7 @@ public:
     virtual bool init();
     virtual void draw();
     
-#if GEODE_COMP_GD_VERSION > 22000
+#if FREOD_COMP_GD_VERSION > 22000
     /** draw a dot at a position, with a given radius and color */
     bool drawDot(const CCPoint &pos, float radius, const ccColor4F &color);
     
@@ -139,7 +139,7 @@ public:
     void setBlendFunc(const ccBlendFunc &blendFunc);
     
     CCDrawNode();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCDrawNode, CCNodeRGBA)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCDrawNode, CCNodeRGBA)
 
     /** listen the event that coming to foreground on Android  
      * @js NA

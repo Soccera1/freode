@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Geode/ui/General.hpp>
+#include <Freod/ui/General.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 class SwelvyBG : public CCNode {
 protected:

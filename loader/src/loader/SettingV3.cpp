@@ -1,15 +1,15 @@
-#include <Geode/loader/Mod.hpp>
-#include <Geode/loader/Setting.hpp>
-#include <Geode/loader/ModSettingsManager.hpp>
-#include <Geode/utils/ranges.hpp>
-#include <Geode/utils/string.hpp>
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/utils/JsonValidation.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/loader/Setting.hpp>
+#include <Freod/loader/ModSettingsManager.hpp>
+#include <Freod/utils/ranges.hpp>
+#include <Freod/utils/string.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/utils/JsonValidation.hpp>
 #include <regex>
 #include "SettingNodeV3.hpp"
 #include <matjson/std.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 namespace enable_if_parsing {
     struct Component {
@@ -151,7 +151,7 @@ namespace enable_if_parsing {
 
         Result<> checkSemantics() const override {
             for (auto& comp : components) {
-                GEODE_UNWRAP(comp->checkSemantics());
+                FREOD_UNWRAP(comp->checkSemantics());
             }
             return Ok();
         }
@@ -173,7 +173,7 @@ namespace enable_if_parsing {
                     return comp->shouldEnableReason(defaultModID);
                 }
             }
-            return "If you see this, Geode is broken";
+            return "If you see this, Freod is broken";
         }
     };
     struct RequireSome final : public Component {
@@ -183,7 +183,7 @@ namespace enable_if_parsing {
 
         Result<> checkSemantics() const override {
             for (auto& comp : components) {
-                GEODE_UNWRAP(comp->checkSemantics());
+                FREOD_UNWRAP(comp->checkSemantics());
             }
             return Ok();
         }
@@ -200,7 +200,7 @@ namespace enable_if_parsing {
             for (auto& comp : components) {
                 auto res = comp->shouldEnableSetting(defaultModID);
                 if (res) {
-                    return "If you see this, Geode is broken";
+                    return "If you see this, Freod is broken";
                 }
                 // Only show first condition that isn't met
                 if (!err.has_value()) {
@@ -210,7 +210,7 @@ namespace enable_if_parsing {
             if (err.has_value()) {
                 return *err;
             }
-            return "If you see this, Geode is broken";
+            return "If you see this, Freod is broken";
         }
     };
 
@@ -288,7 +288,7 @@ namespace enable_if_parsing {
             return ret.unwrap();
         }
         Result<std::unique_ptr<Component>> nextComponent() {
-            GEODE_UNWRAP_INTO(auto maybeWord, this->nextWord());
+            FREOD_UNWRAP_INTO(auto maybeWord, this->nextWord());
             if (!maybeWord) {
                 return Err("Expected component, got end-of-enable-if-string");
             }
@@ -300,8 +300,8 @@ namespace enable_if_parsing {
                 return Err("Unexpected closing parenthesis at index {}", m_index - 1);
             }
             if (word == "(") {
-                GEODE_UNWRAP_INTO(auto op, this->next());
-                GEODE_UNWRAP_INTO(auto maybeClosing, this->nextWord());
+                FREOD_UNWRAP_INTO(auto op, this->next());
+                FREOD_UNWRAP_INTO(auto maybeClosing, this->nextWord());
                 if (!maybeClosing) {
                     return Err("Expected closing parenthesis, got end-of-enable-if-string");
                 }
@@ -368,7 +368,7 @@ namespace enable_if_parsing {
                     op = *peek;
                 }
             }
-            GEODE_UNWRAP_INTO(auto comp, this->nextComponent());
+            FREOD_UNWRAP_INTO(auto comp, this->nextComponent());
             if (op.empty()) {
                 return Ok(std::move(comp));
             }
@@ -380,21 +380,21 @@ namespace enable_if_parsing {
                     return Err(
                         "THIS SHOULD BE UNREACHABLE!! \"{}\" was an unhandled "
                         "unary operator despite isUnOpWord claiming it's valid! "
-                        "REPORT THIS BUG TO GEODE DEVELOPERS",
+                        "REPORT THIS BUG TO FREOD DEVELOPERS",
                         op
                     );
                 } break;
             }
         }
         Result<std::unique_ptr<Component>> nextBiOp() {
-            GEODE_UNWRAP_INTO(auto first, this->nextUnOp());
+            FREOD_UNWRAP_INTO(auto first, this->nextUnOp());
             std::string firstOp;
             std::vector<std::unique_ptr<Component>> components;
             while (auto peek = this->peekWord()) {
                 if (!isBiOpWord(*peek)) {
                     break;
                 }
-                GEODE_UNWRAP_INTO(auto word, this->nextWord());
+                FREOD_UNWRAP_INTO(auto word, this->nextWord());
                 auto op = *word;
                 if (firstOp.empty()) {
                     firstOp = op;
@@ -406,7 +406,7 @@ namespace enable_if_parsing {
                         firstOp, op
                     );
                 }
-                GEODE_UNWRAP_INTO(auto comp, this->nextUnOp());
+                FREOD_UNWRAP_INTO(auto comp, this->nextUnOp());
                 components.emplace_back(std::move(comp));
             }
             if (components.size()) {
@@ -422,7 +422,7 @@ namespace enable_if_parsing {
                         return Err(
                             "THIS SHOULD BE UNREACHABLE!! \"{}\" was an unhandled "
                             "binary operator despite isBiOpWord claiming it's valid! "
-                            "REPORT THIS BUG TO GEODE DEVELOPERS",
+                            "REPORT THIS BUG TO FREOD DEVELOPERS",
                             firstOp
                         );
                     } break;
@@ -439,8 +439,8 @@ namespace enable_if_parsing {
             auto ret = Parser();
             ret.m_src = str;
             ret.m_defaultModID = defaultModID;
-            GEODE_UNWRAP_INTO(auto comp, ret.next());
-            GEODE_UNWRAP_INTO(auto shouldBeEOF, ret.nextWord());
+            FREOD_UNWRAP_INTO(auto comp, ret.next());
+            FREOD_UNWRAP_INTO(auto shouldBeEOF, ret.nextWord());
             if (shouldBeEOF) {
                 return Err(
                     "Expected end-of-enable-if-string, got \"{}\" at index {}",
@@ -497,7 +497,7 @@ SettingChangedFilterV3::SettingChangedFilterV3(Mod* mod, std::optional<std::stri
 
 SettingChangedFilterV3::SettingChangedFilterV3(SettingChangedFilterV3 const&) = default;
 
-EventListener<SettingChangedFilterV3>* geode::listenForAllSettingChangesV3(
+EventListener<SettingChangedFilterV3>* freod::listenForAllSettingChangesV3(
     std::function<void(std::shared_ptr<SettingV3>)> const& callback,
     Mod* mod
 ) {
@@ -509,7 +509,7 @@ EventListener<SettingChangedFilterV3>* geode::listenForAllSettingChangesV3(
     );
 }
 
-class SettingV3::GeodeImpl {
+class SettingV3::FreodImpl {
 public:
     std::string modID;
     std::string key;
@@ -522,7 +522,7 @@ public:
     bool requiresRestart = false;
 };
 
-SettingV3::SettingV3() : m_impl(std::make_shared<GeodeImpl>()) {}
+SettingV3::SettingV3() : m_impl(std::make_shared<FreodImpl>()) {}
 SettingV3::~SettingV3() = default;
 
 void SettingV3::init(std::string const& key, std::string const& modID) {
@@ -546,8 +546,8 @@ void SettingV3::parseNameAndDescription(JsonExpectedValue& json) {
 void SettingV3::parseEnableIf(JsonExpectedValue& json) {
     json.has("enable-if")
         .mustBe<std::string>("a valid \"enable-if\" scheme", [this](std::string const& str) -> Result<> {
-            GEODE_UNWRAP_INTO(auto tree, enable_if_parsing::Parser::parse(str, m_impl->modID));
-            GEODE_UNWRAP(tree->checkSemantics());
+            FREOD_UNWRAP_INTO(auto tree, enable_if_parsing::Parser::parse(str, m_impl->modID));
+            FREOD_UNWRAP(tree->checkSemantics());
             m_impl->enableIfTree = std::move(tree);
             return Ok();
         })

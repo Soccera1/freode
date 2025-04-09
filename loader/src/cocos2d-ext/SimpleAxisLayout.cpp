@@ -1,8 +1,8 @@
-#include <Geode/ui/SimpleAxisLayout.hpp>
-#include <Geode/ui/SpacerNode.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/ui/SimpleAxisLayout.hpp>
+#include <Freod/ui/SpacerNode.hpp>
+#include <Freod/utils/cocos.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 class SimpleAxisLayoutOptions::Impl {
 public:

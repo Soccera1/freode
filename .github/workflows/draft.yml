@@ -21,12 +21,12 @@ jobs:
         id: ref
         shell: bash
         run: |
-          VERSION=$(unzip -p ${{ github.workspace }}/dev/geode-nightly.zip geode-sdk-geode-*/VERSION | xargs)
+          VERSION=$(unzip -p ${{ github.workspace }}/dev/freod-nightly.zip freod-sdk-freod-*/VERSION | xargs)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
           # test if release already exists
           set +e
-          curl --fail "https://api.github.com/repos/geode-sdk/geode/releases/tags/v$VERSION" --silent --output /dev/null
+          curl --fail "https://api.github.com/repos/freod-sdk/freod/releases/tags/v$VERSION" --silent --output /dev/null
           RESULT=$?
           set -e
           
@@ -37,12 +37,12 @@ jobs:
 
       - name: Move Files
         run: |
-          mv dev/geode-installer-*-win.exe geode-installer-v${{ steps.ref.outputs.version }}-win.exe
-          mv dev/geode-installer-*-mac.pkg geode-installer-v${{ steps.ref.outputs.version }}-mac.pkg
-          mv dev/geode-*-win.zip geode-v${{ steps.ref.outputs.version }}-win.zip
-          mv dev/geode-*-mac.zip geode-v${{ steps.ref.outputs.version }}-mac.zip
-          mv dev/geode-*-android32.zip geode-v${{ steps.ref.outputs.version }}-android32.zip
-          mv dev/geode-*-android64.zip geode-v${{ steps.ref.outputs.version }}-android64.zip
+          mv dev/freod-installer-*-win.exe freod-installer-v${{ steps.ref.outputs.version }}-win.exe
+          mv dev/freod-installer-*-mac.pkg freod-installer-v${{ steps.ref.outputs.version }}-mac.pkg
+          mv dev/freod-*-win.zip freod-v${{ steps.ref.outputs.version }}-win.zip
+          mv dev/freod-*-mac.zip freod-v${{ steps.ref.outputs.version }}-mac.zip
+          mv dev/freod-*-android32.zip freod-v${{ steps.ref.outputs.version }}-android32.zip
+          mv dev/freod-*-android64.zip freod-v${{ steps.ref.outputs.version }}-android64.zip
           mv dev/resources.zip resources.zip
 
       - name: Create Draft Release
@@ -51,7 +51,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.ref.outputs.version }}
-          name: Geode v${{ steps.ref.outputs.version }}
+          name: Freod v${{ steps.ref.outputs.version }}
           body: |
             TODO before publishing:
              - mark if pre-release
@@ -59,10 +59,10 @@ jobs:
              - remove this
           draft: true
           files: |
-            ./geode-installer-v${{ steps.ref.outputs.version }}-win.exe
-            ./geode-installer-v${{ steps.ref.outputs.version }}-mac.pkg
-            ./geode-v${{ steps.ref.outputs.version }}-win.zip
-            ./geode-v${{ steps.ref.outputs.version }}-mac.zip
-            ./geode-v${{ steps.ref.outputs.version }}-android32.zip
-            ./geode-v${{ steps.ref.outputs.version }}-android64.zip
+            ./freod-installer-v${{ steps.ref.outputs.version }}-win.exe
+            ./freod-installer-v${{ steps.ref.outputs.version }}-mac.pkg
+            ./freod-v${{ steps.ref.outputs.version }}-win.zip
+            ./freod-v${{ steps.ref.outputs.version }}-mac.zip
+            ./freod-v${{ steps.ref.outputs.version }}-android32.zip
+            ./freod-v${{ steps.ref.outputs.version }}-android64.zip
             ./resources.zip

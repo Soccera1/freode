@@ -36,11 +36,11 @@ class CCSize;
 
 class CC_DLL CCEGLView : public CCEGLViewProtocol
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     static CCEGLView* sharedOpenGLView(void);
     
-    static GEODE_DLL CCEGLView* get();
+    static FREOD_DLL CCEGLView* get();
 
     virtual ~CCEGLView(void);
     

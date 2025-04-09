@@ -1,15 +1,15 @@
 #pragma once
 
-#include <Geode/DefaultInclude.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/loader/Types.hpp>
+#include <Freod/DefaultInclude.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/loader/Types.hpp>
 #include <vector>
 #include <fstream>
 #include <string>
 #include <chrono>
 
-namespace geode::log {
+namespace freod::log {
     class Log final {
         log_clock::time_point m_time;
         Severity m_severity;

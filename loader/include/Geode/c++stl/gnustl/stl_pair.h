@@ -62,7 +62,7 @@
 #include <type_traits> // for std::__decay_and_strip too
 #endif
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /**

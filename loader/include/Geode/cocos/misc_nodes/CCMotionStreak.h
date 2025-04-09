@@ -51,13 +51,13 @@ class CC_DLL CCMotionStreak :
     public CCGLBufferedNode
 #endif // EMSCRIPTEN
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      * @js ctor
      */
     CCMotionStreak();
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCMotionStreak, CCNodeRGBA)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCMotionStreak, CCNodeRGBA)
     /**
      * @js NA
      * @lua NA

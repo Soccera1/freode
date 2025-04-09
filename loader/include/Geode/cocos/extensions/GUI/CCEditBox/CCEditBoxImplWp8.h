@@ -34,7 +34,7 @@ class CC_DLL CCEditBox;
 class CC_DLL CCEditBoxImplWp8 : public CCEditBoxImpl
 {
 public:
-	GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCEditBoxImplWp8, CCEditBoxImpl)
+	FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCEditBoxImplWp8, CCEditBoxImpl)
 	CCEditBoxImplWp8() {}
 
 	CCEditBoxImplWp8(CCEditBox* pEditText);

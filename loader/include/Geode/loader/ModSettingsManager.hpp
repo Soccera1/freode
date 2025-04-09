@@ -1,19 +1,19 @@
 #pragma once
 
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 #include "Setting.hpp"
 
-namespace geode {
+namespace freod {
     class Mod;
     class SettingV3;
 
-    class GEODE_DLL ModSettingsManager final {
+    class FREOD_DLL ModSettingsManager final {
     private:
         class Impl;
         std::unique_ptr<Impl> m_impl;
 
-        friend class ::geode::SettingV3;
-        friend class ::geode::Mod;
+        friend class ::freod::SettingV3;
+        friend class ::freod::Mod;
 
         void markRestartRequired();
 

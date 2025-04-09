@@ -48,14 +48,14 @@ is turned on in CCDirector using:
 */
 class CC_DLL CCTransitionPageTurn : public CCTransitionScene
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
 
 
     bool    m_bBack;
     
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTransitionPageTurn, CCTransitionScene)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTransitionPageTurn, CCTransitionScene)
     /**
      *  @js ctor
      */

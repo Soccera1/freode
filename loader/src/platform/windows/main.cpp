@@ -1,4 +1,4 @@
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
 #include "../load.hpp"
 #include <Windows.h>
@@ -6,36 +6,36 @@
 #include "loader/LoaderImpl.hpp"
 #include "loader/console.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-void updateGeode() {
+void updateFreod() {
     const auto workingDir = dirs::getGameDir();
-    const auto geodeDir = dirs::getGeodeDir();
-    const auto updatesDir = geodeDir / "update";
+    const auto freodDir = dirs::getFreodDir();
+    const auto updatesDir = freodDir / "update";
 
-    bool bootstrapperExists = std::filesystem::exists(workingDir / "GeodeBootstrapper.dll");
-    bool updatesDirExists = std::filesystem::exists(geodeDir) && std::filesystem::exists(updatesDir);
+    bool bootstrapperExists = std::filesystem::exists(workingDir / "FreodBootstrapper.dll");
+    bool updatesDirExists = std::filesystem::exists(freodDir) && std::filesystem::exists(updatesDir);
 
     if (!bootstrapperExists && !updatesDirExists)
         return;
 
     // update updater
     if (std::filesystem::exists(updatesDir) &&
-        std::filesystem::exists(updatesDir / "GeodeUpdater.exe"))
-        std::filesystem::rename(updatesDir / "GeodeUpdater.exe", workingDir / "GeodeUpdater.exe");
+        std::filesystem::exists(updatesDir / "FreodUpdater.exe"))
+        std::filesystem::rename(updatesDir / "FreodUpdater.exe", workingDir / "FreodUpdater.exe");
 
     utils::game::restart();
 }
 
 void patchDelayLoad() {
-#ifdef GEODE_IS_WINDOWS64
+#ifdef FREOD_IS_WINDOWS64
     // clang has a stupid issue where its tailmerge does not allocate
     // the correct space for xmm registers, causing them to be overwritten by the delayLoadHelper2 function
     // See: https://github.com/llvm/llvm-project/issues/51941
 
     // based off addresser.cpp followThunkFunction
     // get some function thats not virtual
-    auto address = geode::cast::reference_cast<uintptr_t>(&cocos2d::CCNode::convertToNodeSpace);
+    auto address = freod::cast::reference_cast<uintptr_t>(&cocos2d::CCNode::convertToNodeSpace);
     static constexpr auto checkByteSequence = [](uintptr_t address, const std::initializer_list<uint8_t>& bytes) {
         for (auto byte : bytes) {
             if (*reinterpret_cast<uint8_t*>(address++) != byte) {
@@ -153,26 +153,26 @@ void fixCurrentWorkingDirectory() {
 int WINAPI gdMainHook(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow) {
     // MessageBoxA(NULL, "Hello from gdMainHook!", "Hi", 0);
 
-    updateGeode();
+    updateFreod();
 
     fixCurrentWorkingDirectory();
 
-    if (versionToTimestamp(GEODE_STR(GEODE_GD_VERSION)) > gdTimestamp) {
+    if (versionToTimestamp(FREOD_STR(FREOD_GD_VERSION)) > gdTimestamp) {
         console::messageBox(
-            "Unable to Load Geode!",
+            "Unable to Load Freod!",
             fmt::format(
-                "This version of Geode is made for Geometry Dash {} "
+                "This version of Freod is made for Geometry Dash {} "
                 "but you're trying to play with GD {}.\n"
                 "Please, update your game.",
-                GEODE_STR(GEODE_GD_VERSION),
+                FREOD_STR(FREOD_GD_VERSION),
                 LoaderImpl::get()->getGameVersion()
             )
         );
-        // TODO: should geode FreeLibrary itself here?
+        // TODO: should freod FreeLibrary itself here?
     } else {
         patchDelayLoad();
 
-        int exitCode = geodeEntry(hInstance);
+        int exitCode = freodEntry(hInstance);
         if (exitCode != 0)
             return exitCode;
     }
@@ -182,28 +182,28 @@ int WINAPI gdMainHook(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmd
 
 // incase we're desperate again
 #if 0
-#define MSG_BOX_DEBUG(...) MessageBoxA(NULL, std::format(GEODE_STR(__LINE__) " - " __VA_ARGS__).c_str(), "Geode", 0)
+#define MSG_BOX_DEBUG(...) MessageBoxA(NULL, std::format(FREOD_STR(__LINE__) " - " __VA_ARGS__).c_str(), "Freod", 0)
 #else
 #define MSG_BOX_DEBUG(...)
 #endif
 
-std::string loadGeode() {
+std::string loadFreod() {
     auto process = GetCurrentProcess();
-    auto dosHeader = reinterpret_cast<IMAGE_DOS_HEADER*>(geode::base::get());
-    auto ntHeader = reinterpret_cast<PIMAGE_NT_HEADERS>(geode::base::get() + dosHeader->e_lfanew);
+    auto dosHeader = reinterpret_cast<IMAGE_DOS_HEADER*>(freod::base::get());
+    auto ntHeader = reinterpret_cast<PIMAGE_NT_HEADERS>(freod::base::get() + dosHeader->e_lfanew);
 
     gdTimestamp = ntHeader->FileHeader.TimeDateStamp;
 
-    constexpr size_t trampolineSize = GEODE_WINDOWS64(32) GEODE_WINDOWS32(12);    
+    constexpr size_t trampolineSize = FREOD_WINDOWS64(32) FREOD_WINDOWS32(12);    
     mainTrampolineAddr = VirtualAlloc(
         nullptr, trampolineSize,
         MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE
     );
 
-    const uintptr_t entryAddr = geode::base::get() + ntHeader->OptionalHeader.AddressOfEntryPoint;
+    const uintptr_t entryAddr = freod::base::get() + ntHeader->OptionalHeader.AddressOfEntryPoint;
     bool panicMode = false;
 
-#ifdef GEODE_IS_WINDOWS64
+#ifdef FREOD_IS_WINDOWS64
     // somehow, there are like 2 people where the code at the entry is just nonsense
     // i do not understand it either
     if (*reinterpret_cast<uint32_t*>(entryAddr) != 0x28ec8348) {
@@ -212,7 +212,7 @@ std::string loadGeode() {
     }
 #endif
     
-    MSG_BOX_DEBUG("Entry address: {:x}, {:x}", entryAddr, entryAddr - geode::base::get());
+    MSG_BOX_DEBUG("Entry address: {:x}, {:x}", entryAddr, entryAddr - freod::base::get());
     // function that calls main
     // 32 bit: 
     // e8 xx xx xx xx call (security)
@@ -223,7 +223,7 @@ std::string loadGeode() {
     // 48 83 c4 28    add rsp, 0x28
     // e9 xx xx xx xx jmp
 
-    constexpr ptrdiff_t mainCallJmpOffset = GEODE_WINDOWS64(13) GEODE_WINDOWS32(5);
+    constexpr ptrdiff_t mainCallJmpOffset = FREOD_WINDOWS64(13) FREOD_WINDOWS32(5);
     const uintptr_t mainCallJmpAddress = entryAddr + mainCallJmpOffset;
     const int32_t mainCallJmpValue = panicMode ? 0 : *reinterpret_cast<int32_t*>(mainCallJmpAddress + 1);
     uintptr_t preWinMainAddr = mainCallJmpAddress + mainCallJmpValue + 5;
@@ -231,7 +231,7 @@ std::string loadGeode() {
     // the search bytes for the main function
     // 32 bit:
     // 6a 00                  push 0
-    // 68 00 00 40 00         push geode::base::get()
+    // 68 00 00 40 00         push freod::base::get()
     // e8 ...                 call ...
 
     // 64 bit:
@@ -241,14 +241,14 @@ std::string loadGeode() {
     // 48 8d 0d xx xx xx xx   lea rcx, [rip + ...]
     // e8 ...                 call ...
 
-    constexpr uint64_t mainSearchBytes = GEODE_WINDOWS64(0xd233c08b4ccb8b44) GEODE_WINDOWS32(0x004000006a006800);
-    constexpr ptrdiff_t mainSearchCallOffset = GEODE_WINDOWS64(15) GEODE_WINDOWS32(7);
+    constexpr uint64_t mainSearchBytes = FREOD_WINDOWS64(0xd233c08b4ccb8b44) FREOD_WINDOWS32(0x004000006a006800);
+    constexpr ptrdiff_t mainSearchCallOffset = FREOD_WINDOWS64(15) FREOD_WINDOWS32(7);
 
-#ifdef GEODE_IS_WINDOWS32
-    mainSearchBytes |= static_cast<uint64_t>(geode::base::get()) << 24;
+#ifdef FREOD_IS_WINDOWS32
+    mainSearchBytes |= static_cast<uint64_t>(freod::base::get()) << 24;
 #endif
 
-#ifdef GEODE_IS_WINDOWS64
+#ifdef FREOD_IS_WINDOWS64
     if (panicMode) {
         // at least in 2.206 it seems to be before the entry,
         // so do this and if it fails oh well
@@ -256,7 +256,7 @@ std::string loadGeode() {
     }
 #endif
 
-    MSG_BOX_DEBUG("Searching from {:x}, aka {:x}", preWinMainAddr, preWinMainAddr - geode::base::get());
+    MSG_BOX_DEBUG("Searching from {:x}, aka {:x}", preWinMainAddr, preWinMainAddr - freod::base::get());
 
     uintptr_t patchAddr = 0;
     // 0x1000 should be enough of a limit here..
@@ -271,7 +271,7 @@ std::string loadGeode() {
     }
 
     if (patchAddr == 0)
-        return "Geode could not find the main function, not loading Geode.";
+        return "Freod could not find the main function, not loading Freod.";
 
 #define JMP_ADDR(from, to) (std::bit_cast<uintptr_t>(to) - std::bit_cast<uintptr_t>(from) - 5)
 #define JMP_BYTES(from, to) \
@@ -280,7 +280,7 @@ std::string loadGeode() {
     static_cast<uint8_t>((JMP_ADDR(from, to) >> 16) & 0xFF), \
     static_cast<uint8_t>((JMP_ADDR(from, to) >> 24) & 0xFF)
 
-#ifdef GEODE_IS_WINDOWS64
+#ifdef FREOD_IS_WINDOWS64
     constexpr size_t patchSize = 15;
 
     uintptr_t jumpAddr = patchAddr + patchSize;
@@ -336,28 +336,28 @@ std::string loadGeode() {
     };
 #endif
 
-    MSG_BOX_DEBUG("found the main address {:x}", patchAddr - geode::base::get());
+    MSG_BOX_DEBUG("found the main address {:x}", patchAddr - freod::base::get());
 
     DWORD oldProtect;
     if (!VirtualProtectEx(process, reinterpret_cast<void*>(patchAddr), patchSize, PAGE_EXECUTE_READWRITE, &oldProtect))
-        return "Geode could not hook the main function, not loading Geode.";
+        return "Freod could not hook the main function, not loading Freod.";
     std::memcpy(reinterpret_cast<void*>(patchAddr), patchBytes, patchSize);
     VirtualProtectEx(process, reinterpret_cast<void*>(patchAddr), patchSize, oldProtect, &oldProtect);
     return "";
 }
 
 DWORD WINAPI upgradeThread(void*) {
-    updateGeode();
+    updateFreod();
     return 0;
 }
 
 void earlyError(std::string message) {
     // try to write a file and display a message box
     // wine might not display the message box but *should* write a file
-    std::ofstream fout("_geode_early_error.txt");
+    std::ofstream fout("_freod_early_error.txt");
     fout << message;
     fout.close();
-    console::messageBox("Unable to Load Geode!", message);
+    console::messageBox("Unable to Load Freod!", message);
 }
 
 BOOL WINAPI DllMain(HINSTANCE module, DWORD reason, LPVOID) {
@@ -369,17 +369,17 @@ BOOL WINAPI DllMain(HINSTANCE module, DWORD reason, LPVOID) {
     DisableThreadLibraryCalls(module);
 
     try {
-        // if we find the old bootstrapper dll, don't load geode, copy new updater and let it do the rest
+        // if we find the old bootstrapper dll, don't load freod, copy new updater and let it do the rest
         auto workingDir = dirs::getGameDir();
         std::error_code error;
-        bool oldBootstrapperExists = std::filesystem::exists(workingDir / "GeodeBootstrapper.dll", error);
+        bool oldBootstrapperExists = std::filesystem::exists(workingDir / "FreodBootstrapper.dll", error);
         if (error) {
-            earlyError("There was an error checking whether the old GeodeBootstrapper.dll exists: " + error.message());
+            earlyError("There was an error checking whether the old FreodBootstrapper.dll exists: " + error.message());
             return FALSE;
         }
         else if (oldBootstrapperExists)
             CreateThread(nullptr, 0, upgradeThread, nullptr, 0, nullptr);
-        else if (auto error = loadGeode(); !error.empty()) {
+        else if (auto error = loadFreod(); !error.empty()) {
             earlyError(error);
             return TRUE;
         }

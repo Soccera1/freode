@@ -5,10 +5,10 @@
 
 /**
  * Copied from https://github.com/mlabbe/nativefiledialog
- * Modified to be modern Geode-fitting C++
+ * Modified to be modern Freod-fitting C++
  */
 
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
 #ifdef __MINGW32__
 // Explicitly setting NTDDI version, this is necessary for the MinGW compiler
@@ -41,10 +41,10 @@
 #define NFD_UTF8_BOM "\xEF\xBB\xBF"
 
 #include <stddef.h>
-#include <Geode/Result.hpp>
-#include <Geode/utils/file.hpp>
+#include <Freod/Result.hpp>
+#include <Freod/utils/file.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 enum class NFDMode {
     OpenFile,

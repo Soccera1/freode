@@ -33,7 +33,7 @@
 #include "c++config.h"
 #include "concept_check.h"
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   // Used, in C++03 mode too, by allocators, etc.
@@ -55,7 +55,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 #if __cplusplus >= 201103L
 #include <type_traits> // Brings in std::declval too.
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /**
@@ -154,7 +154,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 #define _GLIBCXX_FORWARD(_Tp, __val) (__val)
 #endif
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   /**

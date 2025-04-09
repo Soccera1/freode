@@ -1,22 +1,22 @@
 #include "../ui/mods/ModsLayer.hpp"
-#include <Geode/loader/GameEvent.hpp>
-#include <Geode/modify/MenuLayer.hpp>
-#include <Geode/modify/Modify.hpp>
-#include <Geode/modify/IDManager.hpp>
-#include <Geode/utils/NodeIDs.hpp>
-#include <Geode/ui/BasedButtonSprite.hpp>
-#include <Geode/ui/Notification.hpp>
-#include <Geode/ui/Popup.hpp>
-#include <Geode/ui/MDPopup.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/utils/web.hpp>
+#include <Freod/loader/GameEvent.hpp>
+#include <Freod/modify/MenuLayer.hpp>
+#include <Freod/modify/Modify.hpp>
+#include <Freod/modify/IDManager.hpp>
+#include <Freod/utils/NodeIDs.hpp>
+#include <Freod/ui/BasedButtonSprite.hpp>
+#include <Freod/ui/Notification.hpp>
+#include <Freod/ui/Popup.hpp>
+#include <Freod/ui/MDPopup.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/utils/web.hpp>
 #include <loader/ModImpl.hpp>
 #include <loader/LoaderImpl.hpp>
 #include <loader/updater.hpp>
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/modify/LevelSelectLayer.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/modify/LevelSelectLayer.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 #pragma warning(disable : 4217)
 
@@ -24,15 +24,15 @@ class CustomMenuLayer;
 
 struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
     static void onModify(auto& self) {
-        if (!self.setHookPriority("MenuLayer::init", geode::node_ids::GEODE_ID_PRIORITY)) {
+        if (!self.setHookPriority("MenuLayer::init", freod::node_ids::FREOD_ID_PRIORITY)) {
             log::warn("Failed to set MenuLayer::init hook priority, node IDs may not work properly");
         }
-        GEODE_FORWARD_COMPAT_DISABLE_HOOKS_INNER("MenuLayer stuff disabled")
+        FREOD_FORWARD_COMPAT_DISABLE_HOOKS_INNER("MenuLayer stuff disabled")
     }
 
     struct Fields {
         bool m_menuDisabled = false;
-        CCSprite* m_geodeButton = nullptr;
+        CCSprite* m_freodButton = nullptr;
         CCSprite* m_exclamation = nullptr;
         Task<std::monostate> m_updateCheckTask;
     };
@@ -40,7 +40,7 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
     bool init() {
         if (!MenuLayer::init()) return false;
 
-        // make sure to add the string IDs for nodes (Geode has no manual
+        // make sure to add the string IDs for nodes (Freod has no manual
         // hook order support yet so gotta do this to ensure)
         NodeIDs::provideFor(this);
 
@@ -48,27 +48,27 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
 
         m_fields->m_menuDisabled = Loader::get()->getLaunchFlag("disable-custom-menu");
 
-        // add geode button
+        // add freod button
         if (!m_fields->m_menuDisabled) {
-            m_fields->m_geodeButton = CircleButtonSprite::createWithSpriteFrameName(
-                "geode-logo-outline-gold.png"_spr,
+            m_fields->m_freodButton = CircleButtonSprite::createWithSpriteFrameName(
+                "freod-logo-outline-gold.png"_spr,
                 .95f,
                 CircleBaseColor::Green,
                 CircleBaseSize::MediumAlt
             );
-            auto geodeBtnSelector = &CustomMenuLayer::onGeode;
-            if (!m_fields->m_geodeButton) {
-                geodeBtnSelector = &CustomMenuLayer::onMissingTextures;
-                m_fields->m_geodeButton = ButtonSprite::create("!!");
+            auto freodBtnSelector = &CustomMenuLayer::onFreod;
+            if (!m_fields->m_freodButton) {
+                freodBtnSelector = &CustomMenuLayer::onMissingTextures;
+                m_fields->m_freodButton = ButtonSprite::create("!!");
             }
 
             auto bottomMenu = static_cast<CCMenu*>(this->getChildByID("bottom-menu"));
 
             auto btn = CCMenuItemSpriteExtra::create(
-                m_fields->m_geodeButton, this,
-                static_cast<SEL_MenuHandler>(geodeBtnSelector)
+                m_fields->m_freodButton, this,
+                static_cast<SEL_MenuHandler>(freodBtnSelector)
             );
-            btn->setID("geode-button"_spr);
+            btn->setID("freod-button"_spr);
             bottomMenu->addChild(btn);
             bottomMenu->setContentSize({ winSize.width / 2, bottomMenu->getScaledContentSize().height });
 
@@ -89,15 +89,15 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
             static bool shownProblemPopup = false;
             if (!shownProblemPopup) {
                 shownProblemPopup = true;
-                Notification::create("There were errors - see Geode page!", NotificationIcon::Error)->show();
+                Notification::create("There were errors - see Freod page!", NotificationIcon::Error)->show();
             }
-            if (m_fields->m_geodeButton) {
+            if (m_fields->m_freodButton) {
                 m_fields->m_exclamation = CCSprite::createWithSpriteFrameName("exMark_001.png");
-                m_fields->m_exclamation->setPosition(m_fields->m_geodeButton->getContentSize() - ccp(10, 10));
+                m_fields->m_exclamation->setPosition(m_fields->m_freodButton->getContentSize() - ccp(10, 10));
                 m_fields->m_exclamation->setID("errors-found");
                 m_fields->m_exclamation->setZOrder(99);
                 m_fields->m_exclamation->setScale(.6f);
-                m_fields->m_geodeButton->addChild(m_fields->m_exclamation);
+                m_fields->m_freodButton->addChild(m_fields->m_exclamation);
             }
         }
         
@@ -109,9 +109,9 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
                 Loader::get()->queueInMainThread([] {
                     auto popup = FLAlertLayer::create(
                         "Hold up!",
-                        "It appears that you have tried to <cr>load DLLs</c> with Geode. "
-                        "Please note that <cy>Geode is incompatible with ALL DLLs</c>, "
-                        "as they can cause Geode mods to <cr>error</c>, or even "
+                        "It appears that you have tried to <cr>load DLLs</c> with Freod. "
+                        "Please note that <cy>Freod is incompatible with ALL DLLs</c>, "
+                        "as they can cause Freod mods to <cr>error</c>, or even "
                         "<cr>crash</c>.\n\n"
                         "Remove the DLLs / other mod loaders you have, or <cr>proceed at "
                         "your own risk.</c>",
@@ -132,7 +132,7 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
             Loader::get()->queueInMainThread([] {
                 auto popup = FLAlertLayer::create(
                     "Update downloaded",
-                    "A new <cy>update</c> for Geode has been installed! "
+                    "A new <cy>update</c> for Freod has been installed! "
                     "Please <cy>restart the game</c> to apply.",
                     "OK"
                 );
@@ -230,7 +230,7 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
     }
 
     void showUpdatesFound() {
-        if(m_fields->m_geodeButton && !m_fields->m_geodeButton->getChildByID("updates-available")) {
+        if(m_fields->m_freodButton && !m_fields->m_freodButton->getChildByID("updates-available")) {
             if(auto icon = CCSprite::createWithSpriteFrameName("updates-available.png"_spr)) {
                 // Remove errors icon if it was added, to prevent overlap
                 if (m_fields->m_exclamation) {
@@ -239,12 +239,12 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
                 }
 
                 icon->setPosition(
-                    m_fields->m_geodeButton->getContentSize() - CCSize { 10.f, 10.f }
+                    m_fields->m_freodButton->getContentSize() - CCSize { 10.f, 10.f }
                 );
                 icon->setID("updates-available");
                 icon->setZOrder(99);
                 icon->setScale(.5f);
-                m_fields->m_geodeButton->addChild(icon);
+                m_fields->m_freodButton->addChild(icon);
             }
         }
     }
@@ -309,24 +309,24 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
 
     void onMissingTextures(CCObject*) {
         
-    #ifdef GEODE_IS_DESKTOP
+    #ifdef FREOD_IS_DESKTOP
 
-        (void) utils::file::createDirectoryAll(dirs::getGeodeDir() / "update" / "resources" / "geode.loader");
+        (void) utils::file::createDirectoryAll(dirs::getFreodDir() / "update" / "resources" / "freod.loader");
 
         createQuickPopup(
             "Missing Textures",
             "You appear to be missing textures, and the automatic texture fixer "
             "hasn't fixed the issue.\n"
             "Download <cy>resources.zip</c> from the latest release on GitHub, "
-            "and <cy>unzip its contents</c> into <cb>geode/update/resources/geode.loader</c>.\n"
+            "and <cy>unzip its contents</c> into <cb>freod/update/resources/freod.loader</c>.\n"
             "Afterwards, <cg>restart the game</c>.\n"
             "You may also continue without installing resources, but be aware that "
-            "you won't be able to open <cr>the Geode menu</c>.",
+            "you won't be able to open <cr>the Freod menu</c>.",
             "Dismiss", "Open Github",
             [](auto, bool btn2) {
                 if (btn2) {
-                    web::openLinkInBrowser("https://github.com/geode-sdk/geode/releases/latest");
-                    file::openFolder(dirs::getGeodeDir() / "update" / "resources");
+                    web::openLinkInBrowser("https://github.com/freod-sdk/freod/releases/latest");
+                    file::openFolder(dirs::getFreodDir() / "update" / "resources");
                     FLAlertLayer::create(
                         "Info",
                         "Opened GitHub in your browser and the destination in "
@@ -350,7 +350,7 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
             "Missing Textures",
             "You appear to be missing textures, and the automatic texture fixer "
             "hasn't fixed the issue.\n"
-            "**<cy>Report this bug to the Geode developers</c>**. It is very likely "
+            "**<cy>Report this bug to the Freod developers</c>**. It is very likely "
             "that your game <cr>will crash</c> until the issue is resolved.",
             "OK"
         )->show();
@@ -358,7 +358,7 @@ struct CustomMenuLayer : Modify<CustomMenuLayer, MenuLayer> {
     #endif
     }
 
-    void onGeode(CCObject*) {
+    void onFreod(CCObject*) {
         ModsLayer::scene();
     }
 };

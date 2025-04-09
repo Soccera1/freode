@@ -1,10 +1,10 @@
 #pragma once
 
 #include <coroutine>
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 #include "Task.hpp"
 
-namespace geode {
+namespace freod {
     template <is_task_type T = void, typename P = std::monostate>
     class CoTask final {
         using Type = Task<T, P>::Type;
@@ -35,7 +35,7 @@ namespace geode {
         } invoke;
     };
 
-    namespace geode_internal {
+    namespace freod_internal {
         template <typename T, typename E>
         struct promise_type {
             using Inner = std::optional<Result<T, E>>;
@@ -85,16 +85,16 @@ namespace geode {
         };
     }
 
-    #define $async(...) geode::CoTask<>::invoke << [__VA_ARGS__]() -> geode::CoTask<>
-    #define $try geode::CoTask<>::invoke << [&]() -> geode::Result
+    #define $async(...) freod::CoTask<>::invoke << [__VA_ARGS__]() -> freod::CoTask<>
+    #define $try freod::CoTask<>::invoke << [&]() -> freod::Result
 };
 
 template <typename T = void, typename E = std::string>
-auto operator co_await(geode::Result<T, E>&& res) {
-    return geode::geode_internal::Awaiter { std::move(res) };
+auto operator co_await(freod::Result<T, E>&& res) {
+    return freod::freod_internal::Awaiter { std::move(res) };
 }
 
 template <typename T, typename E, typename ...Args>
-struct std::coroutine_traits<geode::Result<T, E>, Args...> {
-    using promise_type = geode::geode_internal::promise_type<T, E>;
+struct std::coroutine_traits<freod::Result<T, E>, Args...> {
+    using promise_type = freod::freod_internal::promise_type<T, E>;
 };

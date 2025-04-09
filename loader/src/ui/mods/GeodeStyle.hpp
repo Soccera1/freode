@@ -1,38 +1,38 @@
 #pragma once
 
-#include <Geode/DefaultInclude.hpp>
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/ui/General.hpp>
-#include <Geode/ui/IconButtonSprite.hpp>
-#include <Geode/ui/BasedButtonSprite.hpp>
-#include <Geode/ui/Popup.hpp>
-#include <Geode/loader/Mod.hpp>
+#include <Freod/DefaultInclude.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/ui/General.hpp>
+#include <Freod/ui/IconButtonSprite.hpp>
+#include <Freod/ui/BasedButtonSprite.hpp>
+#include <Freod/ui/Popup.hpp>
+#include <Freod/loader/Mod.hpp>
 #include <server/Server.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
-enum class GeodePopupStyle {
+enum class FreodPopupStyle {
     Default,
     Alt,
     Alt2,
 };
 
-bool isGeodeTheme(bool forceDisableTheme = false);
+bool isFreodTheme(bool forceDisableTheme = false);
 
 template <class... Args>
-class GeodePopup : public Popup<Args...> {
+class FreodPopup : public Popup<Args...> {
 protected:
     bool m_forceDisableTheme = false;
 
-    bool init(float width, float height, Args... args, GeodePopupStyle style = GeodePopupStyle::Default, bool forceDisableTheme = false) {
+    bool init(float width, float height, Args... args, FreodPopupStyle style = FreodPopupStyle::Default, bool forceDisableTheme = false) {
         m_forceDisableTheme = forceDisableTheme;
-        const bool geodeTheme = isGeodeTheme(forceDisableTheme);
+        const bool freodTheme = isFreodTheme(forceDisableTheme);
         const char* bg;
         switch (style) {
             default:
-            case GeodePopupStyle::Default: bg = geodeTheme ? "GE_square01.png"_spr : "GJ_square01.png"; break;
-            case GeodePopupStyle::Alt:     bg = geodeTheme ? "GE_square02.png"_spr : "GJ_square02.png"; break;
-            case GeodePopupStyle::Alt2:    bg = geodeTheme ? "GE_square03.png"_spr : "GJ_square02.png"; break;
+            case FreodPopupStyle::Default: bg = freodTheme ? "GE_square01.png"_spr : "GJ_square01.png"; break;
+            case FreodPopupStyle::Alt:     bg = freodTheme ? "GE_square02.png"_spr : "GJ_square02.png"; break;
+            case FreodPopupStyle::Alt2:    bg = freodTheme ? "GE_square03.png"_spr : "GJ_square02.png"; break;
         }
         if (!Popup<Args...>::initAnchored(width, height, std::forward<Args>(args)..., bg))
             return false;
@@ -40,8 +40,8 @@ protected:
         this->setCloseButtonSpr(
             CircleButtonSprite::createWithSpriteFrameName(
                 "close.png"_spr, .85f,
-                (geodeTheme ? 
-                    (style == GeodePopupStyle::Default ? CircleBaseColor::DarkPurple : CircleBaseColor::DarkAqua) : 
+                (freodTheme ? 
+                    (style == FreodPopupStyle::Default ? CircleBaseColor::DarkPurple : CircleBaseColor::DarkAqua) : 
                     CircleBaseColor::Green
                 )
             )
@@ -51,7 +51,7 @@ protected:
     }
 };
 
-class GeodeSquareSprite : public CCSprite {
+class FreodSquareSprite : public CCSprite {
 protected:
     bool* m_stateSrc = nullptr;
     bool m_state = false;
@@ -64,8 +64,8 @@ protected:
     void updateImage();
 
 public:
-    static GeodeSquareSprite* create(const char* top, bool* state = nullptr, bool forceDisableTheme = false);
-    static GeodeSquareSprite* createWithSpriteFrameName(const char* top, bool* state = nullptr, bool forceDisableTheme = false);
+    static FreodSquareSprite* create(const char* top, bool* state = nullptr, bool forceDisableTheme = false);
+    static FreodSquareSprite* createWithSpriteFrameName(const char* top, bool* state = nullptr, bool forceDisableTheme = false);
 
     CCSprite* getTopSprite() const;
     void setState(bool state);
@@ -73,27 +73,27 @@ public:
 
 CCNode* createLoadingCircle(float sideLength, const char* id = "loading-spinner");
 
-enum class GeodeButtonSprite {
+enum class FreodButtonSprite {
     Default,
     Install,
     Delete,
     Enable,
     Gray,
 };
-const char* getGeodeButtonSpriteName(GeodeButtonSprite spr, bool forceDisableTheme = false);
-IconButtonSprite* createGeodeButton(CCNode* icon, std::string const& text, GeodeButtonSprite bg = GeodeButtonSprite::Default, bool forceDisableTheme = false);
-ButtonSprite* createGeodeButton(std::string const& text, int width, bool absolute = false, bool gold = false, GeodeButtonSprite bg = GeodeButtonSprite::Default, bool forceDisableTheme = false);
-ButtonSprite* createGeodeButton(std::string const& text, bool gold = false, GeodeButtonSprite bg = GeodeButtonSprite::Default, bool forceDisableTheme = false);
+const char* getFreodButtonSpriteName(FreodButtonSprite spr, bool forceDisableTheme = false);
+IconButtonSprite* createFreodButton(CCNode* icon, std::string const& text, FreodButtonSprite bg = FreodButtonSprite::Default, bool forceDisableTheme = false);
+ButtonSprite* createFreodButton(std::string const& text, int width, bool absolute = false, bool gold = false, FreodButtonSprite bg = FreodButtonSprite::Default, bool forceDisableTheme = false);
+ButtonSprite* createFreodButton(std::string const& text, bool gold = false, FreodButtonSprite bg = FreodButtonSprite::Default, bool forceDisableTheme = false);
 
-CircleButtonSprite* createGeodeCircleButton(CCSprite* top, float scale = 1.f, CircleBaseSize size = CircleBaseSize::Medium, bool altColor = false, bool forceDisableTheme = false);
+CircleButtonSprite* createFreodCircleButton(CCSprite* top, float scale = 1.f, CircleBaseSize size = CircleBaseSize::Medium, bool altColor = false, bool forceDisableTheme = false);
 
 ButtonSprite* createTagLabel(std::string const& text, std::pair<ccColor3B, ccColor3B> const& color);
-ButtonSprite* createGeodeTagLabel(server::ServerTag const& tag);
-std::pair<ccColor3B, ccColor3B> geodeTagColors(server::ServerTag const& tag);
+ButtonSprite* createFreodTagLabel(server::ServerTag const& tag);
+std::pair<ccColor3B, ccColor3B> freodTagColors(server::ServerTag const& tag);
 
-ListBorders* createGeodeListBorders(CCSize const& size, bool forceDisableTheme = false);
+ListBorders* createFreodListBorders(CCSize const& size, bool forceDisableTheme = false);
 
-class GeodeTabSprite : public CCNode {
+class FreodTabSprite : public CCNode {
 protected:
     CCScale9Sprite* m_deselectedBG;
     CCScale9Sprite* m_selectedBG;
@@ -103,7 +103,7 @@ protected:
     bool init(const char* iconFrame, const char* text, float width, bool altColor);
 
 public:
-    static GeodeTabSprite* create(const char* iconFrame, const char* text, float width, bool altColor = false);
+    static FreodTabSprite* create(const char* iconFrame, const char* text, float width, bool altColor = false);
 
     void select(bool selected);
     void disable(bool disabled);

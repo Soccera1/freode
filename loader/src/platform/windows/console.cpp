@@ -1,10 +1,10 @@
 ﻿#include <loader/console.hpp>
 #include <loader/LogImpl.hpp>
 #include <io.h>
-#include <Geode/utils/string.hpp>
-#include <Geode/utils/general.hpp>
+#include <Freod/utils/string.hpp>
+#include <Freod/utils/general.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 HANDLE s_outHandle = nullptr;
 bool s_useEscapeCodes = false;
@@ -58,7 +58,7 @@ void WINAPI CompletedReadRoutine(DWORD error, DWORD read, LPOVERLAPPED overlap) 
 }
 
 bool redirectStd(FILE* which, std::string const& name, const Severity sev) {
-    auto pipeName = fmt::format(R"(\\.\pipe\geode-{}-{})", name, GetCurrentProcessId());
+    auto pipeName = fmt::format(R"(\\.\pipe\freod-{}-{})", name, GetCurrentProcessId());
     auto pipe = CreateNamedPipeA(
         pipeName.c_str(),
         PIPE_ACCESS_INBOUND | FILE_FLAG_OVERLAPPED,
@@ -132,7 +132,7 @@ void console::setup() {
 
         setupConsole(
             string::contains(path, "cidr-")
-            || geode::utils::getEnvironmentVariable("GEODE_FORCE_ENABLE_TERMINAL_COLORS") == "1"
+            || freod::utils::getEnvironmentVariable("FREOD_FORCE_ENABLE_TERMINAL_COLORS") == "1"
         );
     }
 

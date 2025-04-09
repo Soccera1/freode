@@ -1,16 +1,16 @@
 #pragma once
 
-#include <Geode/ui/General.hpp>
+#include <Freod/ui/General.hpp>
 #include <server/Server.hpp>
-#include <Geode/binding/ButtonSprite.hpp>
-#include <Geode/binding/Slider.hpp>
-#include <Geode/binding/CCMenuItemToggler.hpp>
-#include <Geode/binding/CCMenuItemSpriteExtra.hpp>
+#include <Freod/binding/ButtonSprite.hpp>
+#include <Freod/binding/Slider.hpp>
+#include <Freod/binding/CCMenuItemToggler.hpp>
+#include <Freod/binding/CCMenuItemSpriteExtra.hpp>
 #include <server/DownloadManager.hpp>
 #include "../sources/ModSource.hpp"
 #include "../UpdateModListState.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 enum class ModListDisplay {
     SmallList,
@@ -23,7 +23,7 @@ enum class ModListDisplay {
 template<>
 struct matjson::Serialize<ModListDisplay> {
     static Result<ModListDisplay> fromJson(matjson::Value const& value) {
-        auto saved = GEODE_UNWRAP(value.asString());
+        auto saved = FREOD_UNWRAP(value.asString());
         if (saved == "small-list") {
             return Ok(ModListDisplay::SmallList);
         } else if (saved == "big-list") {

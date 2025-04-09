@@ -35,7 +35,7 @@
 #include "hashtable_policy.h"
 #include "functional_hash.h"
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   template<typename _Tp, typename _Hash>

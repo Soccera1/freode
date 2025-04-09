@@ -8,11 +8,11 @@
 #include <set>
 #include <vector>
 
-namespace geode::base {
+namespace freod::base {
     uintptr_t get();
 }
 
-#if defined(GEODE_IS_ANDROID)
+#if defined(FREOD_IS_ANDROID)
 
     #include "gnustl-map.hpp"
     #include "gnustl/stl_set.h"
@@ -24,7 +24,7 @@ namespace geode::base {
     #undef _GLIBCXX_USE_DUAL_ABI
 
 namespace gd {
-    using namespace geode::stl;
+    using namespace freod::stl;
 
     void* operatorNew(size_t size);
     void operatorDelete(void* ptr);
@@ -57,7 +57,7 @@ namespace gd {
     };
 
     template <typename K, typename V>
-    class GEODE_DLL map {
+    class FREOD_DLL map {
     protected:
         std::less<K> compare;
         _rb_tree_base m_header;
@@ -291,7 +291,7 @@ namespace gd {
     // using vector = std::vector<Type>;
 
     template <typename T>
-    class GEODE_DLL vector {
+    class FREOD_DLL vector {
     public:
         using value_type = T;
         using iterator = T*;
@@ -687,19 +687,19 @@ namespace gd {
         }
     };
 
-    template<typename Key, typename Compare = geode::stl::less<Key>, typename Alloc = std::allocator<Key>>
-    using set = geode::stl::set<Key, Compare, Alloc>;
+    template<typename Key, typename Compare = freod::stl::less<Key>, typename Alloc = std::allocator<Key>>
+    using set = freod::stl::set<Key, Compare, Alloc>;
 
-    template <class Key, class Tp, class Hash = geode::stl::hash<Key>, class Pred = geode::stl::equal_to<Key>, class Alloc = std::allocator<std::pair<const Key, Tp>>>
-    using unordered_map = geode::stl::unordered_map<Key, Tp, Hash, Pred, Alloc>;
+    template <class Key, class Tp, class Hash = freod::stl::hash<Key>, class Pred = freod::stl::equal_to<Key>, class Alloc = std::allocator<std::pair<const Key, Tp>>>
+    using unordered_map = freod::stl::unordered_map<Key, Tp, Hash, Pred, Alloc>;
 
-    template <class Value, class Hash = geode::stl::hash<Value>, class Pred = geode::stl::equal_to<Value>, class Alloc = std::allocator<Value>>
-    using unordered_set = geode::stl::unordered_set<Value, Hash, Pred, Alloc>;
+    template <class Value, class Hash = freod::stl::hash<Value>, class Pred = freod::stl::equal_to<Value>, class Alloc = std::allocator<Value>>
+    using unordered_set = freod::stl::unordered_set<Value, Hash, Pred, Alloc>;
 };
 
-#elif defined(GEODE_IS_IOS)
+#elif defined(FREOD_IS_IOS)
 namespace gd {
-    class GEODE_DLL string {
+    class FREOD_DLL string {
     public:
         string() {}
 
@@ -738,7 +738,7 @@ namespace gd {
     };
 
     template <typename T>
-    class GEODE_DLL vector {
+    class FREOD_DLL vector {
     public:
         using value_type = T;
 
@@ -771,7 +771,7 @@ namespace gd {
     };
 
     template <typename K, typename V>
-    class GEODE_DLL map {
+    class FREOD_DLL map {
     protected:
         std::map<K, V> m_internal;
 

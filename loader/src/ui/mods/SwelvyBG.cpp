@@ -1,5 +1,5 @@
 #include "SwelvyBG.hpp"
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Mod.hpp>
 #include <random>
 
 bool SwelvyBG::init() {

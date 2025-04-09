@@ -1,13 +1,13 @@
-#include <Geode/binding/CCTextInputNode.hpp>
-#include <Geode/binding/TextInputDelegate.hpp>
-#include <Geode/modify/CCTextInputNode.hpp>
-#include <Geode/ui/TextInput.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/binding/CCTextInputNode.hpp>
+#include <Freod/binding/TextInputDelegate.hpp>
+#include <Freod/modify/CCTextInputNode.hpp>
+#include <Freod/ui/TextInput.hpp>
+#include <Freod/utils/cocos.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 struct TextInputNodeFix : Modify<TextInputNodeFix, CCTextInputNode> {
-    GEODE_FORWARD_COMPAT_DISABLE_HOOKS("TextInputNode fix")
+    FREOD_FORWARD_COMPAT_DISABLE_HOOKS("TextInputNode fix")
 
     bool ccTouchBegan(CCTouch* touch, CCEvent* event) {
         if (!this->getUserObject("fix-text-input")) {
@@ -39,7 +39,7 @@ struct TextInputNodeFix : Modify<TextInputNodeFix, CCTextInputNode> {
     }
 };
 
-const char* geode::getCommonFilterAllowedChars(CommonFilter filter) {
+const char* freod::getCommonFilterAllowedChars(CommonFilter filter) {
     switch (filter) {
         default:
         case CommonFilter::Uint:         return "0123456789";

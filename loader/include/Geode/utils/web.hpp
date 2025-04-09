@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Geode/loader/Loader.hpp> // another great circular dependency fix
+#include <Freod/loader/Loader.hpp> // another great circular dependency fix
 #include <matjson.hpp>
-#include <Geode/Result.hpp>
+#include <Freod/Result.hpp>
 #include "Task.hpp"
 #include <chrono>
 #include <optional>
 
-namespace geode::utils::web {
-    GEODE_DLL void openLinkInBrowser(std::string const& url);
+namespace freod::utils::web {
+    FREOD_DLL void openLinkInBrowser(std::string const& url);
     
     // https://curl.se/libcurl/c/CURLOPT_HTTPAUTH.html
     namespace http_auth {
@@ -61,7 +61,7 @@ namespace geode::utils::web {
 
     class WebRequest;
 
-    class GEODE_DLL WebResponse final {
+    class FREOD_DLL WebResponse final {
     private:
         class Impl;
 
@@ -101,7 +101,7 @@ namespace geode::utils::web {
         std::string const& errorMessage() const;
     };
 
-    class GEODE_DLL WebProgress final {
+    class FREOD_DLL WebProgress final {
     private:
         class Impl;
 
@@ -124,7 +124,7 @@ namespace geode::utils::web {
 
     using WebTask = Task<WebResponse, WebProgress>;
 
-    class GEODE_DLL WebRequest final {
+    class FREOD_DLL WebRequest final {
     private:
         class Impl;
 

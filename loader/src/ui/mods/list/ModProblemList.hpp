@@ -1,13 +1,13 @@
 #pragma once
 
-#include <Geode/cocos/cocoa/CCGeometry.h>
-#include <Geode/cocos/base_nodes/CCNode.h>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/ui/ScrollLayer.hpp>
+#include <Freod/cocos/cocoa/CCGeometry.h>
+#include <Freod/cocos/base_nodes/CCNode.h>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/ui/ScrollLayer.hpp>
 #include <GUI/CCControlExtension/CCScale9Sprite.h>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 class ModProblemList : public CCNode {
 protected:

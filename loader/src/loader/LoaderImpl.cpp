@@ -6,17 +6,17 @@
 #include "LogImpl.hpp"
 #include "console.hpp"
 
-#include <Geode/loader/Dirs.hpp>
-#include <Geode/loader/IPC.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/utils/JsonValidation.hpp>
-#include <Geode/utils/file.hpp>
-#include <Geode/utils/map.hpp>
-#include <Geode/utils/ranges.hpp>
-#include <Geode/utils/string.hpp>
-#include <Geode/utils/web.hpp>
+#include <Freod/loader/Dirs.hpp>
+#include <Freod/loader/IPC.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/utils/JsonValidation.hpp>
+#include <Freod/utils/file.hpp>
+#include <Freod/utils/map.hpp>
+#include <Freod/utils/ranges.hpp>
+#include <Freod/utils/string.hpp>
+#include <Freod/utils/web.hpp>
 #include <about.hpp>
 #include <crashlog.hpp>
 #include <fmt/format.h>
@@ -30,9 +30,9 @@
 #include <vector>
 
 #include <server/DownloadManager.hpp>
-#include <Geode/ui/Popup.hpp>
+#include <Freod/ui/Popup.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 Loader::Impl* LoaderImpl::get() {
     return Loader::get()->m_impl.get();
@@ -45,27 +45,27 @@ Loader::Impl::~Impl() = default;
 // Initialization
 
 bool Loader::Impl::isForwardCompatMode() {
-#ifdef GEODE_IS_ANDROID
+#ifdef FREOD_IS_ANDROID
     // forward compat mode doesn't really make sense on android
     return false;
 #endif
 
     if (!m_forwardCompatMode.has_value()) {
         m_forwardCompatMode = !this->getGameVersion().empty() &&
-            this->getGameVersion() != GEODE_STR(GEODE_GD_VERSION);
+            this->getGameVersion() != FREOD_STR(FREOD_GD_VERSION);
     }
     return m_forwardCompatMode.value();
 }
 
 void Loader::Impl::createDirectories() {
-#ifdef GEODE_IS_MACOS
+#ifdef FREOD_IS_MACOS
     std::filesystem::create_directory(dirs::getSaveDir());
 #endif
 
-    (void) utils::file::createDirectoryAll(dirs::getGeodeResourcesDir());
+    (void) utils::file::createDirectoryAll(dirs::getFreodResourcesDir());
     (void) utils::file::createDirectoryAll(dirs::getModConfigDir());
     (void) utils::file::createDirectoryAll(dirs::getModsDir());
-    (void) utils::file::createDirectoryAll(dirs::getGeodeLogDir());
+    (void) utils::file::createDirectoryAll(dirs::getFreodLogDir());
     (void) utils::file::createDirectoryAll(dirs::getTempDir());
     (void) utils::file::createDirectoryAll(dirs::getModRuntimeDir());
 
@@ -75,11 +75,11 @@ void Loader::Impl::createDirectories() {
 }
 
 void Loader::Impl::removeDirectories() {
-    // clean up of stale data from Geode v2
-    if(std::filesystem::exists(dirs::getGeodeDir() / "index")) {
+    // clean up of stale data from Freod v2
+    if(std::filesystem::exists(dirs::getFreodDir() / "index")) {
         std::thread([] {
             std::error_code ec;
-            std::filesystem::remove_all(dirs::getGeodeDir() / "index", ec);
+            std::filesystem::remove_all(dirs::getFreodDir() / "index", ec);
         }).detach();
     }
 }
@@ -132,7 +132,7 @@ Result<> Loader::Impl::setup() {
 }
 
 void Loader::Impl::addSearchPaths() {
-    CCFileUtils::get()->addPriorityPath(dirs::getGeodeResourcesDir().string().c_str());
+    CCFileUtils::get()->addPriorityPath(dirs::getFreodResourcesDir().string().c_str());
     CCFileUtils::get()->addPriorityPath(dirs::getModRuntimeDir().string().c_str());
 }
 
@@ -234,7 +234,7 @@ Mod* Loader::Impl::getLoadedMod(std::string const& id) const {
 
 void Loader::Impl::updateModResources(Mod* mod) {
     if (!mod->isInternal()) {
-        // geode.loader resource is stored somewhere else, which is already added anyway
+        // freod.loader resource is stored somewhere else, which is already added anyway
         auto searchPathRoot = dirs::getModRuntimeDir() / mod->getID() / "resources";
         CCFileUtils::get()->addSearchPath(searchPathRoot.string().c_str());
     }
@@ -282,13 +282,13 @@ void Loader::Impl::queueMods(std::vector<ModMetadata>& modQueue) {
         log::NestScope nest;
         for (auto const& entry : std::filesystem::directory_iterator(dir)) {
             if (!std::filesystem::is_regular_file(entry) ||
-                entry.path().extension() != GEODE_MOD_EXTENSION)
+                entry.path().extension() != FREOD_MOD_EXTENSION)
                 continue;
 
             log::debug("Found {}", entry.path().filename());
             log::NestScope nest;
 
-            auto res = ModMetadata::createFromGeodeFile(entry.path());
+            auto res = ModMetadata::createFromFreodFile(entry.path());
             if (!res) {
                 this->addProblem({
                     LoadProblem::Type::InvalidFile,
@@ -403,16 +403,16 @@ void Loader::Impl::loadModGraph(Mod* node, bool early) {
         return;
     }
 
-    auto geodeVerRes = node->getMetadata().checkGeodeVersion();
-    if (!geodeVerRes) {
+    auto freodVerRes = node->getMetadata().checkFreodVersion();
+    if (!freodVerRes) {
         this->addProblem({
-            node->getMetadata().getGeodeVersion() > this->getVersion() ?
-                LoadProblem::Type::NeedsNewerGeodeVersion : 
-                LoadProblem::Type::UnsupportedGeodeVersion,
+            node->getMetadata().getFreodVersion() > this->getVersion() ?
+                LoadProblem::Type::NeedsNewerFreodVersion : 
+                LoadProblem::Type::UnsupportedFreodVersion,
             node,
-            geodeVerRes.unwrapErr()
+            freodVerRes.unwrapErr()
         });
-        log::error("{}", geodeVerRes.unwrapErr());
+        log::error("{}", freodVerRes.unwrapErr());
         return;
     }
     
@@ -438,8 +438,8 @@ void Loader::Impl::loadModGraph(Mod* node, bool early) {
     m_lateRefreshedModCount += early ? 0 : 1;
 
     auto unzipFunction = [this, node]() {
-        log::debug("Unzipping .geode file");
-        auto res = node->m_impl->unzipGeodeFile(node->getMetadata());
+        log::debug("Unzipping .freod file");
+        auto res = node->m_impl->unzipFreodFile(node->getMetadata());
         return res;
     };
 
@@ -900,7 +900,7 @@ void Loader::Impl::releaseNextMod() {
 }
 
 // TODO: Support for quoted launch args w/ spaces (this will be backwards compatible)
-// e.g. "--geode:arg=My spaced value"
+// e.g. "--freod:arg=My spaced value"
 void Loader::Impl::initLaunchArguments() {
     auto launchStr = this->getLaunchCommand();
     auto args = string::split(launchStr, " ");
@@ -956,7 +956,7 @@ Result<tulip::hook::HandlerHandle> Loader::Impl::getOrCreateHandler(void* addres
         m_handlerHandles[address].second++;
         return Ok(m_handlerHandles[address].first);
     }
-    GEODE_UNWRAP_INTO(auto handle, tulip::hook::createHandler(address, metadata));
+    FREOD_UNWRAP_INTO(auto handle, tulip::hook::createHandler(address, metadata));
     m_handlerHandles[address].first = handle;
     m_handlerHandles[address].second = 1;
     return Ok(handle);
@@ -977,7 +977,7 @@ Result<> Loader::Impl::removeHandlerIfNeeded(void* address) {
     }
     auto handle = m_handlerHandles[address].first;
     if (m_handlerHandles[address].second == 0) {
-        GEODE_UNWRAP(tulip::hook::removeHandler(handle));
+        FREOD_UNWRAP(tulip::hook::removeHandler(handle));
     }
     return Ok();
 }
@@ -991,12 +991,12 @@ void Loader::Impl::forceSafeMode() {
 }
 
 void Loader::Impl::installModManuallyFromFile(std::filesystem::path const& path, std::function<void()> after) {
-    auto res = ModMetadata::createFromGeodeFile(path);
+    auto res = ModMetadata::createFromFreodFile(path);
     if (!res) {
         FLAlertLayer::create(
             "Invalid File",
             fmt::format(
-                "The path <cy>'{}'</c> is not a valid Geode mod: {}",
+                "The path <cy>'{}'</c> is not a valid Freod mod: {}",
                 path.string(),
                 res.unwrapErr()
             ),
@@ -1025,10 +1025,10 @@ void Loader::Impl::installModManuallyFromFile(std::filesystem::path const& path,
         static size_t MAX_ATTEMPTS = 10;
 
         // Figure out a free path to install to
-        auto installTo = dirs::getModsDir() / fmt::format("{}.geode", meta.getID());
+        auto installTo = dirs::getModsDir() / fmt::format("{}.freod", meta.getID());
         size_t counter = 0;
         while (std::filesystem::exists(installTo, ec) && counter < MAX_ATTEMPTS) {
-            installTo = dirs::getModsDir() / fmt::format("{}-{}.geode", meta.getID(), counter);
+            installTo = dirs::getModsDir() / fmt::format("{}-{}.freod", meta.getID(), counter);
             counter += 1;
         }
 

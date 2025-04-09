@@ -1,12 +1,12 @@
-#include <Geode/modify/Field.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/modify/Field.hpp>
-#include <Geode/modify/CCNode.hpp>
+#include <Freod/modify/Field.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/modify/Field.hpp>
+#include <Freod/modify/CCNode.hpp>
 #include <cocos2d.h>
 #include <queue>
 
-using namespace geode::prelude;
-using namespace geode::modifier;
+using namespace freod::prelude;
+using namespace freod::modifier;
 
 #pragma warning(push)
 #pragma warning(disable : 4273)
@@ -35,7 +35,7 @@ public:
     }
 };
 
-class GeodeNodeMetadata final : public cocos2d::CCObject {
+class FreodNodeMetadata final : public cocos2d::CCObject {
 private:
     // for performance reasons, this key is the hash of the class name
     std::unordered_map<uint64_t, FieldContainer*, NoHashHasher<uint64_t>> m_classFieldContainers;
@@ -49,25 +49,25 @@ private:
     friend class ProxyCCNode;
     friend class cocos2d::CCNode;
 
-    GeodeNodeMetadata() {}
+    FreodNodeMetadata() {}
 
-    virtual ~GeodeNodeMetadata() {
+    virtual ~FreodNodeMetadata() {
         for (auto& [_, container] : m_classFieldContainers) {
             delete container;
         }
     }
 
 public:
-    static GeodeNodeMetadata* set(CCNode* target) {
+    static FreodNodeMetadata* set(CCNode* target) {
         if (!target) return nullptr;
 
         auto old = target->m_pUserObject;
         // faster than dynamic_cast, technically can
         // but extremely unlikely to fail
         if (old && old->getTag() == METADATA_TAG) {
-            return static_cast<GeodeNodeMetadata*>(old);
+            return static_cast<FreodNodeMetadata*>(old);
         }
-        auto meta = new GeodeNodeMetadata();
+        auto meta = new FreodNodeMetadata();
         meta->autorelease();
         meta->setTag(METADATA_TAG);
 
@@ -96,7 +96,7 @@ public:
 };
 
 // proxy forwards
-#include <Geode/modify/CCNode.hpp>
+#include <Freod/modify/CCNode.hpp>
 struct ProxyCCNode : Modify<ProxyCCNode, CCNode> {
     virtual CCObject* getUserObject() {
         if (auto asNode = typeinfo_cast<CCNode*>(this)) {
@@ -126,19 +126,19 @@ size_t modifier::getFieldIndexForClass(char const* name) {
 }
 
 FieldContainer* CCNode::getFieldContainer(char const* forClass) {
-    return GeodeNodeMetadata::set(this)->getFieldContainer(forClass);
+    return FreodNodeMetadata::set(this)->getFieldContainer(forClass);
 }
 
 const std::string& CCNode::getID() {
-    return GeodeNodeMetadata::set(this)->m_id;
+    return FreodNodeMetadata::set(this)->m_id;
 }
 
 void CCNode::setID(std::string const& id) {
-    GeodeNodeMetadata::set(this)->m_id = id;
+    FreodNodeMetadata::set(this)->m_id = id;
 }
 
 void CCNode::setID(std::string&& id) {
-    GeodeNodeMetadata::set(this)->m_id = std::move(id);
+    FreodNodeMetadata::set(this)->m_id = std::move(id);
 }
 
 CCNode* CCNode::getChildByID(std::string_view id) {
@@ -331,32 +331,32 @@ void CCNode::setLayout(Layout* layout, bool apply, bool respectAnchor) {
         }
         this->ignoreAnchorPointForPosition(false);
     }
-    GeodeNodeMetadata::set(this)->m_layout = layout;
+    FreodNodeMetadata::set(this)->m_layout = layout;
     if (apply) {
         this->updateLayout();
     }
 }
 
 Layout* CCNode::getLayout() {
-    return GeodeNodeMetadata::set(this)->m_layout.data();
+    return FreodNodeMetadata::set(this)->m_layout.data();
 }
 
 void CCNode::setLayoutOptions(LayoutOptions* options, bool apply) {
-    GeodeNodeMetadata::set(this)->m_layoutOptions = options;
+    FreodNodeMetadata::set(this)->m_layoutOptions = options;
     if (apply && m_pParent) {
         m_pParent->updateLayout();
     }
 }
 
 LayoutOptions* CCNode::getLayoutOptions() {
-    return GeodeNodeMetadata::set(this)->m_layoutOptions.data();
+    return FreodNodeMetadata::set(this)->m_layoutOptions.data();
 }
 
 void CCNode::updateLayout(bool updateChildOrder) {
     if (updateChildOrder) {
         this->sortAllChildren();
     }
-    if (auto layout = GeodeNodeMetadata::set(this)->m_layout.data()) {
+    if (auto layout = FreodNodeMetadata::set(this)->m_layout.data()) {
         layout->apply(this);
     }
 }
@@ -374,7 +374,7 @@ ListenerResult AttributeSetFilter::handle(std::function<Callback> fn, UserObject
 AttributeSetFilter::AttributeSetFilter(std::string const& id) : m_targetID(id) {}
 
 void CCNode::setUserObject(std::string const& id, CCObject* value) {
-    auto meta = GeodeNodeMetadata::set(this);
+    auto meta = FreodNodeMetadata::set(this);
     if (value) {
         meta->m_userObjects[id] = value;
     }
@@ -385,7 +385,7 @@ void CCNode::setUserObject(std::string const& id, CCObject* value) {
 }
 
 CCObject* CCNode::getUserObject(std::string const& id) {
-    auto meta = GeodeNodeMetadata::set(this);
+    auto meta = FreodNodeMetadata::set(this);
     if (meta->m_userObjects.count(id)) {
         return meta->m_userObjects.at(id);
     }
@@ -393,7 +393,7 @@ CCObject* CCNode::getUserObject(std::string const& id) {
 }
 
 void CCNode::addEventListenerInternal(std::string const& id, EventListenerProtocol* listener) {
-    auto meta = GeodeNodeMetadata::set(this);
+    auto meta = FreodNodeMetadata::set(this);
     if (id.size()) {
         if (meta->m_idEventListeners.contains(id)) {
             meta->m_idEventListeners.at(id).reset(listener);
@@ -411,7 +411,7 @@ void CCNode::addEventListenerInternal(std::string const& id, EventListenerProtoc
 }
 
 void CCNode::removeEventListener(EventListenerProtocol* listener) {
-    auto meta = GeodeNodeMetadata::set(this);
+    auto meta = FreodNodeMetadata::set(this);
     std::erase_if(meta->m_eventListeners, [=](auto& l) {
         return l.get() == listener;
     });
@@ -421,11 +421,11 @@ void CCNode::removeEventListener(EventListenerProtocol* listener) {
 }
 
 void CCNode::removeEventListener(std::string const& id) {
-    GeodeNodeMetadata::set(this)->m_idEventListeners.erase(id);
+    FreodNodeMetadata::set(this)->m_idEventListeners.erase(id);
 }
 
 EventListenerProtocol* CCNode::getEventListener(std::string const& id) {
-    auto meta = GeodeNodeMetadata::set(this);
+    auto meta = FreodNodeMetadata::set(this);
     if (meta->m_idEventListeners.contains(id)) {
         return meta->m_idEventListeners.at(id).get();
     }
@@ -433,8 +433,8 @@ EventListenerProtocol* CCNode::getEventListener(std::string const& id) {
 }
 
 size_t CCNode::getEventListenerCount() {
-    return GeodeNodeMetadata::set(this)->m_idEventListeners.size() +
-        GeodeNodeMetadata::set(this)->m_eventListeners.size();
+    return FreodNodeMetadata::set(this)->m_idEventListeners.size() +
+        FreodNodeMetadata::set(this)->m_eventListeners.size();
 }
 
 void CCNode::addChildAtPosition(CCNode* child, Anchor anchor, CCPoint const& offset, bool useAnchorLayout) {

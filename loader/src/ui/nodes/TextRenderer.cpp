@@ -1,9 +1,9 @@
-#include <Geode/ui/TextRenderer.hpp>
-#include <Geode/utils/casts.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/utils/string.hpp>
+#include <Freod/ui/TextRenderer.hpp>
+#include <Freod/utils/casts.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/utils/string.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 using namespace std::string_literals;
 
 bool TextDecorationWrapper::init(

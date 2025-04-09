@@ -1,29 +1,29 @@
-#include <Geode/modify/LoadingLayer.hpp>
-#include <Geode/modify/CCLayer.hpp>
-#include <Geode/utils/cocos.hpp>
+#include <Freod/modify/LoadingLayer.hpp>
+#include <Freod/modify/CCLayer.hpp>
+#include <Freod/utils/cocos.hpp>
 #include <array>
 #include <fmt/format.h>
 #include <loader/LoaderImpl.hpp>
 #include <loader/console.hpp>
 #include <loader/updater.hpp>
-#include <Geode/utils/NodeIDs.hpp>
+#include <Freod/utils/NodeIDs.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
     struct Fields {
         bool m_menuDisabled = false;
         CCLabelBMFont* m_smallLabel = nullptr;
         CCLabelBMFont* m_smallLabel2 = nullptr;
-        int m_geodeLoadStep = 0;
+        int m_freodLoadStep = 0;
         int m_totalMods = 0;
     };
 
     static void onModify(auto& self) {
-        if (!self.setHookPriority("LoadingLayer::init", geode::node_ids::GEODE_ID_PRIORITY)) {
+        if (!self.setHookPriority("LoadingLayer::init", freod::node_ids::FREOD_ID_PRIORITY)) {
             log::warn("Failed to set LoadingLayer::init hook priority, node IDs may not work properly");
         }
-        GEODE_FORWARD_COMPAT_DISABLE_HOOKS_INNER("Switching to fallback custom loading layer")
+        FREOD_FORWARD_COMPAT_DISABLE_HOOKS_INNER("Switching to fallback custom loading layer")
     }
 
     void updateLoadedModsLabel() {
@@ -31,7 +31,7 @@ struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
         auto count = std::count_if(allMods.begin(), allMods.end(), [&](auto& item) {
             return item->isEnabled();
         });
-        auto str = fmt::format("Geode: Loaded {}/{} mods", count, m_fields->m_totalMods);
+        auto str = fmt::format("Freod: Loaded {}/{} mods", count, m_fields->m_totalMods);
         this->setSmallText(str);
         auto currentMod = LoaderImpl::get()->m_currentlyLoadingMod;
         auto modName = currentMod ? currentMod->getName() : "Unknown";
@@ -69,13 +69,13 @@ struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
         m_fields->m_smallLabel = CCLabelBMFont::create("", "goldFont.fnt");
         m_fields->m_smallLabel->setPosition(winSize.width / 2, 30.f);
         m_fields->m_smallLabel->setScale(.45f);
-        m_fields->m_smallLabel->setID("geode-small-label");
+        m_fields->m_smallLabel->setID("freod-small-label");
         this->addChild(m_fields->m_smallLabel);
 
         m_fields->m_smallLabel2 = CCLabelBMFont::create("", "goldFont.fnt");
         m_fields->m_smallLabel2->setPosition(winSize.width / 2, 15.f);
         m_fields->m_smallLabel2->setScale(.45f);
-        m_fields->m_smallLabel2->setID("geode-small-label-2");
+        m_fields->m_smallLabel2->setID("freod-small-label-2");
         this->addChild(m_fields->m_smallLabel2);
 
         return true;
@@ -94,19 +94,19 @@ struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
 
     void setupLoaderResources() {
         log::debug("Verifying Loader Resources");
-        this->setSmallText("Verifying Geode Resources");
+        this->setSmallText("Verifying Freod Resources");
         // verify loader resources
         Loader::get()->queueInMainThread([&]() {
             if (!updater::verifyLoaderResources()) {
                 log::debug("Downloading Loader Resources");
-                this->setSmallText("Downloading Geode Resources");
+                this->setSmallText("Downloading Freod Resources");
                 this->addChild(EventListenerNode<updater::ResourceDownloadFilter>::create(
                     this, &CustomLoadingLayer::updateResourcesProgress
                 ));
             }
             else {
                 log::debug("Loading Loader Resources");
-                this->setSmallText("Loading Geode Resources");
+                this->setSmallText("Loading Freod Resources");
                 updater::updateSpecialFiles();
                 this->continueLoadAssets();
             }
@@ -117,12 +117,12 @@ struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
         std::visit(makeVisitor {
             [&](updater::UpdateProgress const& progress) {
                 this->setSmallText(fmt::format(
-                    "Downloading Geode Resources: {}%", progress.first
+                    "Downloading Freod Resources: {}%", progress.first
                 ));
             },
             [&](updater::UpdateFinished) {
                 log::debug("Downloaded Loader Resources");
-                this->setSmallText("Downloaded Geode Resources");
+                this->setSmallText("Downloaded Freod Resources");
                 this->continueLoadAssets();
             },
             [&](updater::UpdateFailed const& error) {
@@ -132,11 +132,11 @@ struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
                     error + ".\n"
                     "You will have to install resources manually by downloading resources.zip "
                     "from the latest release on GitHub: "
-                    "https://github.com/geode-sdk/geode/releases/latest.\n"
+                    "https://github.com/freod-sdk/freod/releases/latest.\n"
                     "The game will be loaded as normal, but please be aware "
                     "that it is very likely to crash. "
                 );
-                this->setSmallText("Failed to Download Geode Resources");
+                this->setSmallText("Failed to Download Freod Resources");
                 this->continueLoadAssets();
             }
         }, event->status);
@@ -164,7 +164,7 @@ struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
     }
     
     int getCurrentStep() {
-        return m_fields->m_geodeLoadStep + m_loadStep + getLoadedMods();
+        return m_fields->m_freodLoadStep + m_loadStep + getLoadedMods();
     }
 
     int getTotalStep() {
@@ -183,7 +183,7 @@ struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
     }
 
     void continueLoadAssets() {
-        ++m_fields->m_geodeLoadStep;
+        ++m_fields->m_freodLoadStep;
         Loader::get()->queueInMainThread([this]() {
             this->loadAssets();
         });
@@ -198,7 +198,7 @@ struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
 
     // hook
     void loadAssets() {
-        switch (m_fields->m_geodeLoadStep) {
+        switch (m_fields->m_freodLoadStep) {
         case 0:
             if (this->skipOnRefresh()) this->setupLoadingMods();
             break;
@@ -220,8 +220,8 @@ struct CustomLoadingLayer : Modify<CustomLoadingLayer, LoadingLayer> {
 
 struct FallbackCustomLoadingLayer : Modify<FallbackCustomLoadingLayer, CCLayer> {
     static void onModify(auto& self) {
-        GEODE_FORWARD_COMPAT_ENABLE_HOOKS_INNER("")
-        else if (!self.setHookPriority("CCLayer::init", geode::node_ids::GEODE_ID_PRIORITY)) {
+        FREOD_FORWARD_COMPAT_ENABLE_HOOKS_INNER("")
+        else if (!self.setHookPriority("CCLayer::init", freod::node_ids::FREOD_ID_PRIORITY)) {
             log::warn("Failed to set CCLayer::init hook priority, node IDs may not work properly");
         }
     }
@@ -238,7 +238,7 @@ struct FallbackCustomLoadingLayer : Modify<FallbackCustomLoadingLayer, CCLayer> 
         auto winSize = CCDirector::sharedDirector()->getWinSize();
 
         auto label = CCLabelBMFont::create(
-            "Loading Geode without UI, see console for details.",
+            "Loading Freod without UI, see console for details.",
             "goldFont.fnt"
         );
         // this code is weird but its to avoid any virtual calls,
@@ -249,7 +249,7 @@ struct FallbackCustomLoadingLayer : Modify<FallbackCustomLoadingLayer, CCLayer> 
         label->CCLabelBMFont::setScale(.45f);
         label->CCNode::setZOrder(99);
         this->CCNode::addChild(label);
-        // label->setID("geode-small-label");
+        // label->setID("freod-small-label");
 
         // TODO: verify loader resources on fallback?
 

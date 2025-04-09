@@ -1,18 +1,18 @@
 #include "ModDeveloperItem.hpp"
 
-#include <Geode/cocos/base_nodes/CCNode.h>
-#include <Geode/ui/Layout.hpp>
-#include <Geode/cocos/cocoa/CCGeometry.h>
-#include <Geode/cocos/label_nodes/CCLabelBMFont.h>
-#include <Geode/cocos/platform/CCPlatformMacros.h>
-#include <Geode/cocos/sprite_nodes/CCSprite.h>
-#include <Geode/DefaultInclude.hpp>
-#include <Geode/loader/Loader.hpp>
-#include <Geode/loader/Log.hpp>
-#include <Geode/loader/Mod.hpp>
-#include <Geode/ui/TextArea.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/utils/ColorProvider.hpp>
+#include <Freod/cocos/base_nodes/CCNode.h>
+#include <Freod/ui/Layout.hpp>
+#include <Freod/cocos/cocoa/CCGeometry.h>
+#include <Freod/cocos/label_nodes/CCLabelBMFont.h>
+#include <Freod/cocos/platform/CCPlatformMacros.h>
+#include <Freod/cocos/sprite_nodes/CCSprite.h>
+#include <Freod/DefaultInclude.hpp>
+#include <Freod/loader/Loader.hpp>
+#include <Freod/loader/Log.hpp>
+#include <Freod/loader/Mod.hpp>
+#include <Freod/ui/TextArea.hpp>
+#include <Freod/utils/cocos.hpp>
+#include <Freod/utils/ColorProvider.hpp>
 #include <GUI/CCControlExtension/CCScale9Sprite.h>
 #include <ccTypes.h>
 #include <fmt/core.h>
@@ -71,7 +71,7 @@ bool ModDeveloperItem::init(
         auto menu = CCMenu::create();
         menu->setAnchorPoint({1.0f, 0.5f});
 
-        auto more = createGeodeButton("More");
+        auto more = createFreodButton("More");
 
         auto btn = CCMenuItemSpriteExtra::create(
             more, this, menu_selector(ModDeveloperItem::onMoreByThisDev)

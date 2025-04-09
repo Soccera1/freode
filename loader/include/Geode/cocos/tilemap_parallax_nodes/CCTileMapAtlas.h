@@ -56,11 +56,11 @@ Instead, use the newer TMX file format: CCTMXTiledMap
 */
 class CC_DLL CCTileMapAtlas : public CCAtlasNode 
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
     /** TileMap info */
     CC_PROPERTY(struct sImageTGA*, m_pTGAInfo, TGAInfo);
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTileMapAtlas, CCAtlasNode)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTileMapAtlas, CCAtlasNode)
     /**
      * @js ctor
      */

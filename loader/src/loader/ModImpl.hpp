@@ -2,11 +2,11 @@
 
 #include <matjson.hpp>
 #include "ModPatch.hpp"
-#include <Geode/loader/Loader.hpp>
+#include <Freod/loader/Loader.hpp>
 #include <string_view>
-#include <Geode/loader/ModSettingsManager.hpp>
+#include <Freod/loader/ModSettingsManager.hpp>
 
-namespace geode {
+namespace freod {
     class Mod::Impl {
     public:
         Mod* m_self;
@@ -80,7 +80,7 @@ namespace geode {
         Result<> createTempDir();
 
         // called on a separate thread
-        Result<> unzipGeodeFile(ModMetadata metadata);
+        Result<> unzipFreodFile(ModMetadata metadata);
 
         std::string getID() const;
         std::string getName() const;
@@ -98,7 +98,7 @@ namespace geode {
 
         matjson::Value& getSaveContainer();
 
-#if defined(GEODE_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
+#if defined(FREOD_EXPOSE_SECRET_INTERNALS_IN_HEADERS_DO_NOT_DEFINE_PLEASE)
         void setMetadata(ModMetadata const& metadata);
         std::vector<Mod*> getDependants() const;
 #endif

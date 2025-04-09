@@ -37,14 +37,14 @@ class CCNode;
  */
 class CC_DLL CCComponentContainer
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 protected:
 
 
     CCComponentContainer(CCNode *pNode);
     
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCComponentContainer)
+    FREOD_CUSTOM_CONSTRUCTOR_BEGIN(CCComponentContainer)
     CCComponentContainer() {}
 
     virtual ~CCComponentContainer(void);

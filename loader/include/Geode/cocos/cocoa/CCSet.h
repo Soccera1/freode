@@ -39,14 +39,14 @@ typedef gd::set<CCObject *>::iterator CCSetIterator;
 
 class CC_DLL CCSet : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     /**
      * @js  ctor
      * @lua NA
      */
     CCSet(void);
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSet, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCSet, CCObject)
     /**
      * @lua NA
      */

@@ -1,7 +1,7 @@
 #pragma once
 #include "SettingNodeV3.hpp"
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 using TitleSettingNode = TitleSettingNodeV3;
 using BoolSettingNode = BoolSettingNodeV3;

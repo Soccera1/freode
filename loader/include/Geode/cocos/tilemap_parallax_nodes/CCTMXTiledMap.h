@@ -108,7 +108,7 @@ object->propertyNamed(name_of_the_property);
 */
 class CC_DLL CCTMXTiledMap : public CCNode
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
     /** the map's size property measured in tiles */
     CC_SYNTHESIZE_PASS_BY_REF(CCSize, m_tMapSize, MapSize);
     /** the tiles's size property measured in pixels */
@@ -120,7 +120,7 @@ class CC_DLL CCTMXTiledMap : public CCNode
     /** properties */
     CC_PROPERTY(CCDictionary*, m_pProperties, Properties);
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTMXTiledMap, CCNode)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTMXTiledMap, CCNode)
     /**
      * @js ctor
      */

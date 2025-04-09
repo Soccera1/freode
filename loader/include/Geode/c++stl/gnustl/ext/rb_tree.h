@@ -57,7 +57,7 @@
 
 #include "../stl_tree.h"
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
   // Class rb_tree is not part of the C++ standard.  It is provided for

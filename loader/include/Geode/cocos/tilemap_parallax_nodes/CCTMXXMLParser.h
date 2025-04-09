@@ -88,7 +88,7 @@ This information is obtained from the TMX file.
 */
 class CC_DLL CCTMXLayerInfo : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
     CC_PROPERTY(CCDictionary*, m_pProperties, Properties);
 public:
     gd::string         m_sName;
@@ -101,7 +101,7 @@ public:
     unsigned int        m_uMaxGID;
     CCPoint             m_tOffset;
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTMXLayerInfo, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTMXLayerInfo, CCObject)
     CCTMXLayerInfo();
     virtual ~CCTMXLayerInfo();
 };
@@ -118,7 +118,7 @@ This information is obtained from the TMX file.
 */
 class CC_DLL CCTMXTilesetInfo : public CCObject
 {
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:
     gd::string     m_sName;
     unsigned int    m_uFirstGid;
@@ -130,7 +130,7 @@ public:
     //! size in pixels of the image
     CCSize          m_tImageSize;
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTMXTilesetInfo, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTMXTilesetInfo, CCObject)
     CCTMXTilesetInfo();
     virtual ~CCTMXTilesetInfo();
     CCRect rectForGID(unsigned int gid);
@@ -151,7 +151,7 @@ This information is obtained from the TMX file.
 */
 class CC_DLL CCTMXMapInfo : public CCObject, public CCSAXDelegator
 {    
-    GEODE_FRIEND_MODIFY
+    FREOD_FRIEND_MODIFY
 public:    
     /// map orientation
     CC_SYNTHESIZE(int,    m_nOrientation, Orientation);
@@ -176,7 +176,7 @@ public:
     /// properties
     CC_PROPERTY(CCDictionary*, m_pProperties, Properties);
 public:
-    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTMXMapInfo, CCObject)
+    FREOD_CUSTOM_CONSTRUCTOR_COCOS(CCTMXMapInfo, CCObject)
     /**
      * @js  ctor
      * @lua NA

@@ -1,9 +1,9 @@
 
-#include <Geode/platform/platform.hpp>
-#include <Geode/utils/general.hpp>
-#include <Geode/utils/ranges.hpp>
+#include <Freod/platform/platform.hpp>
+#include <Freod/utils/general.hpp>
+#include <Freod/utils/ranges.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 PlatformID PlatformID::from(const char* str) {
     // todo in v5: this should just be

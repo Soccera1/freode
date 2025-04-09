@@ -2,7 +2,7 @@
 
 #include "Event.hpp"
 
-namespace geode {
+namespace freod {
     enum class GameEventType {
         /// Fired when the game finishes loading, and only once.
         /// The event is triggered right after MenuLayer is initialized and already
@@ -10,7 +10,7 @@ namespace geode {
         Loaded,
     };
 
-    class GEODE_DLL GameEvent final : public Event {
+    class FREOD_DLL GameEvent final : public Event {
     protected:
         GameEventType m_type;
 
@@ -19,7 +19,7 @@ namespace geode {
         GameEventType getType() const;
     };
 
-    class GEODE_DLL GameEventFilter final : public EventFilter<GameEvent> {
+    class FREOD_DLL GameEventFilter final : public EventFilter<GameEvent> {
     public:
         using Callback = void(GameEvent*);
 

@@ -1,9 +1,9 @@
-#include <Geode/DefaultInclude.hpp>
+#include <Freod/DefaultInclude.hpp>
 
-#include <Geode/loader/Mod.hpp>
+#include <Freod/loader/Mod.hpp>
 #include <loader/ModImpl.hpp>
 
-using namespace geode::prelude;
+using namespace freod::prelude;
 
 template <typename T>
 T findSymbolOrMangled(void* so, char const* name, char const* mangled) {
@@ -23,14 +23,14 @@ Result<> Mod::Impl::loadPlatformBinary() {
         }
         m_platformInfo = new PlatformInfo{so};
 
-        auto geodeImplicitEntry = findSymbolOrMangled<void(*)()>(so, "geodeImplicitEntry", "_Z17geodeImplicitEntryv");
-        if (geodeImplicitEntry) {
-            geodeImplicitEntry();
+        auto freodImplicitEntry = findSymbolOrMangled<void(*)()>(so, "freodImplicitEntry", "_Z17freodImplicitEntryv");
+        if (freodImplicitEntry) {
+            freodImplicitEntry();
         }
 
-        auto geodeCustomEntry = findSymbolOrMangled<void(*)()>(so, "geodeCustomEntry", "_Z15geodeCustomEntryv");
-        if (geodeCustomEntry) {
-            geodeCustomEntry();
+        auto freodCustomEntry = findSymbolOrMangled<void(*)()>(so, "freodCustomEntry", "_Z15freodCustomEntryv");
+        if (freodCustomEntry) {
+            freodCustomEntry();
         }
 
         return Ok();

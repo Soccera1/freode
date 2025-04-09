@@ -1,12 +1,12 @@
 #include "ModErrorPopup.hpp"
-#include <Geode/ui/Layout.hpp>
-#include "ui/mods/GeodeStyle.hpp"
+#include <Freod/ui/Layout.hpp>
+#include "ui/mods/FreodStyle.hpp"
 #include "ui/mods/list/ModProblemList.hpp"
 
-#include <Geode/cocos/platform/CCPlatformMacros.h>
-#include <Geode/cocos/cocoa/CCGeometry.h>
-#include <Geode/cocos/cocoa/CCArray.h>
-#include <Geode/loader/Loader.hpp>
+#include <Freod/cocos/platform/CCPlatformMacros.h>
+#include <Freod/cocos/cocoa/CCGeometry.h>
+#include <Freod/cocos/cocoa/CCArray.h>
+#include <Freod/loader/Loader.hpp>
 #include <fmt/core.h>
 
 bool ModErrorPopup::setup(Mod* mod) {
@@ -32,7 +32,7 @@ void ModErrorPopup::createList() {
 
 ModErrorPopup* ModErrorPopup::create(Mod *mod) {
     ModErrorPopup* ret = new ModErrorPopup();
-    if (ret->init(440.f, 280.f, mod, GeodePopupStyle::Default)) {
+    if (ret->init(440.f, 280.f, mod, FreodPopupStyle::Default)) {
         ret->autorelease();
         return ret;
     }

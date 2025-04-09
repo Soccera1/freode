@@ -43,7 +43,7 @@
     : std::true_type								\
     { };
 
-namespace geode::stl {
+namespace freod::stl {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
 _GLIBCXX_HAS_NESTED_TYPE(element_type)
