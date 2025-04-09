@@ -49,3 +49,6 @@ This project is licensed under the GNU AGPL v3.0.
 Portions of this project are derived from software originally licensed under the Boost Software License v1.0, which is compatible with the AGPL.
 
 See LICENSE and BOOST_LICENSE for details.
+
+#### the script I used re-named stuff to freod but eh it's not the end of the world
+#### just know that in the codebase it's called freod
