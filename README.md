@@ -49,3 +49,10 @@ You can contribute to Geode by opening a [Pull Request](https://github.com/geode
 ## Questions, help, etc.
 
 If you have any further questions, need help, or just want to share your love for catgirls, be sure to join [our Discord server](https://discord.gg/9e43WMKzhp)!
+
+## License
+
+This project is licensed under the GNU AGPL v3.0.  
+Portions of this project are derived from software originally licensed under the Boost Software License v1.0, which is compatible with the AGPL.
+
+See LICENSE and BOOST_LICENSE for details.
